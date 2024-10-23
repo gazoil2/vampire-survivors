@@ -1,6 +1,6 @@
 from business.weapons.interfaces import IAtackShapeFactory
 from business.weapons.atack_shape import NormalBullet
-from business.weapons.stats import IPlayerStats
+from business.weapons.stats import ProjectileStats
 import settings
 from presentation.sprite import GreenCircleBullet
 

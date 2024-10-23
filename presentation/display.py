@@ -7,6 +7,7 @@ from business.world.game_world import GameWorld
 from presentation.camera import Camera
 from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
+import time
 
 
 class Display(IDisplay):
@@ -24,6 +25,7 @@ class Display(IDisplay):
 
         self.__ground_tileset = self.__load_ground_tileset()
         self.__world: GameWorld = None
+        self.__font = pygame.font.SysFont(None, 48)
 
     def __load_ground_tileset(self):
         return Tileset(
@@ -73,15 +75,26 @@ class Display(IDisplay):
         health_rect = pygame.Rect(bar_x, bar_y, health_width, bar_height)
         pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
 
+
+    def __draw_time(self):
+        time_start= self.__world.initial_time
+        time_started = time.time() - time_start
+        minutes = int(time_started // 60)
+        seconds = int(time_started % 60)
+        cronometer_text = f"Time: {minutes:02}:{seconds:02}"
+        cronometer_surface = self.__font.render(
+            cronometer_text, True, (255,255,255))
+        self.__screen.blit(cronometer_surface, (10, 70))
+
+
+
     def __draw_player(self):
         adjusted_rect = self.camera.apply(self.__world.player.sprite.rect)
         self.__screen.blit(self.__world.player.sprite.image, adjusted_rect)
 
         self.__draw_player_health_bar()
-
-        # Draw the experience text
-        font = pygame.font.SysFont(None, 48)
-        experience_text = font.render(
+        
+        experience_text = self.__font.render(
             f"XP: {self.__world.player.experience}/{self.__world.player.experience_to_next_level}",
             True,
             (255, 255, 255),
@@ -118,6 +131,6 @@ class Display(IDisplay):
 
         # Draw the player
         self.__draw_player()
-
+        self.__draw_time()
         # Update the display
         pygame.display.flip()

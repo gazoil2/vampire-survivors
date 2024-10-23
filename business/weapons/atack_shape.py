@@ -8,7 +8,7 @@ class NormalBullet(MovableEntity,IBullet):
     """Atack that chooses the nearest enemy"""
     BULLET_SPEED = 5
     BASE_PIERCE = 2
-    def __init__(self,pos_x: float, pos_y: float,sprite : Sprite):
+    def __init__(self,pos_x: float, pos_y: float,sprite : Sprite, Stats):
         super().__init__(pos_x,pos_y,self.BULLET_SPEED,sprite)
         self.__direction = (0,0)
         self.__pierce = self.BASE_PIERCE
@@ -17,6 +17,7 @@ class NormalBullet(MovableEntity,IBullet):
     @property
     def damage_amount(self):
         return 5
+
     def __set_direction(self, monsters : List[IMonster]):
         if not monsters:
             raise ValueError("No hay monstruos para atacar")

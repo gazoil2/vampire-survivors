@@ -15,6 +15,7 @@ from business.weapons.attack_builder import NormalBulletFactory
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from presentation.sprite import PlayerSprite, BulletSprite
+import time
 
 
 def initialize_player():
@@ -30,7 +31,7 @@ def initialize_game_world():
     player = initialize_player()
     weapon = Weapon(10,400,NormalBulletFactory(3))
     player.set_weapon(weapon)
-    return GameWorld(monster_spawner, tile_map, player)
+    return GameWorld(monster_spawner, tile_map, player, time.time())
 
 
 def main():

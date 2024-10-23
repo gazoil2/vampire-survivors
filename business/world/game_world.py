@@ -2,25 +2,26 @@
 
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
-
+import time
 
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer):
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, initial_time : float):
         # Initialize the player and lists for monsters, bullets and gems
         self.__player: IPlayer = player
         self.__monsters: list[IMonster] = []
         self.__bullets: list[IBullet] = []
         self.__experience_gems: list[IExperienceGem] = []
-
+        self.__time_start = initial_time
         # Initialize the tile map
         self.tile_map: ITileMap = tile_map
-
-        
-
         # Initialize the monster spawner
         self.__monster_spawner: IMonsterSpawner = spawner
+
+
+    
+
 
     def update(self):
         self.player.update(self)
@@ -51,6 +52,9 @@ class GameWorld(IGameWorld):
     def remove_bullet(self, bullet: IBullet):
         self.__bullets.remove(bullet)
 
+    @property
+    def initial_time(self):
+        return self.__time_start
     @property
     def player(self) -> IPlayer:
         return self.__player
