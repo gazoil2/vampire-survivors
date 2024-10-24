@@ -16,7 +16,7 @@ class Upgrade:
         """Apply the upgrade based on the weapon level."""
         level -= 2
         if "levels" not in self.upgrades or level >= len(self.upgrades["levels"]):
-            raise ValueError(f"No upgrade data for level {level}.")
+            return stats
 
         # Get the upgrade data (delta) for the specified level
         upgrade_data = self.upgrades["levels"][level]
