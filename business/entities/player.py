@@ -8,6 +8,7 @@ from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
+from business.weapons.stats import PlayerStats
 from presentation.sprite import Sprite
 from business.weapons.interfaces import IWeapon
 
@@ -20,13 +21,14 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     BASE_DAMAGE = 5
 
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite):
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, initial_stats : PlayerStats ):
         super().__init__(pos_x, pos_y, 5, sprite)
         self.__health: int = 100
         self.__experience = 0
         self.__experience_to_next_level = 1
         self.__level = 1
         self.__weapon = None
+        self.__stats = initial_stats
         self._logger.debug("Created %s", self)
 
     def __str__(self):
@@ -68,7 +70,12 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             self.__experience = 0
             self.__level += 1
             self.__experience_to_next_level = self.__experience_to_next_level * 2
+            if self.__weapon != None:
+                self.__weapon.upgrade()
 
+    @property
+    def stats(self):
+        return self.__stats
     #def __shoot_at_nearest_enemy(self, world: IGameWorld):
         
         

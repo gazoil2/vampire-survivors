@@ -2,21 +2,27 @@ from typing import List
 from business.entities.interfaces import IBullet, IMonster
 from business.entities.entity import MovableEntity
 from business.world.interfaces import IGameWorld
+from business.weapons.stats import ProjectileStats
 from presentation.sprite import Sprite
 
 class NormalBullet(MovableEntity,IBullet):
     """Atack that chooses the nearest enemy"""
     BULLET_SPEED = 5
     BASE_PIERCE = 2
-    def __init__(self,pos_x: float, pos_y: float,sprite : Sprite, Stats):
-        super().__init__(pos_x,pos_y,self.BULLET_SPEED,sprite)
+    BASE_DAMAGE = 5
+    def __init__(self,pos_x: float, pos_y: float,sprite : Sprite, projectile_stats: ProjectileStats):
+        self.__stats = projectile_stats
+        new_velocity = self.BULLET_SPEED * (self.__stats.velocity / 100)
+        super().__init__(pos_x,pos_y,new_velocity,sprite)
+        sprite.scale_image(self.__stats.area_of_effect / 100)
         self.__direction = (0,0)
         self.__pierce = self.BASE_PIERCE
+        
         self.__has_set_direction = False
 
     @property
     def damage_amount(self):
-        return 5
+        return self.BASE_DAMAGE * (self.__stats.power / 100)
 
     def __set_direction(self, monsters : List[IMonster]):
         if not monsters:

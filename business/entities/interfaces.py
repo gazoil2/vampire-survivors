@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 
 from presentation.sprite import Sprite
-
+from business.weapons.stats import PlayerStats
 
 class ICanDealDamage(ABC):
     """Interface for entities that can deal damage."""
@@ -165,6 +165,15 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
 
         Returns:
             int: The experience required to reach the next level.
+        """
+
+    @property
+    @abstractmethod
+    def stats(self) -> PlayerStats:
+        """The projectile stats of the player
+        
+        Returns:
+            PlayerStats: Stats of a player
         """
 
 class IAtackShape(IUpdatable,IHasPosition):

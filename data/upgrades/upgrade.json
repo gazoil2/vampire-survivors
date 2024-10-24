@@ -1,0 +1,16 @@
+{
+    "GreenWand": {
+      "levels": [
+        {
+          "power": 10
+        },
+        {
+          "area_of_effect": 400
+        },
+        {
+          "reload_time": -20
+        }
+      ]
+    }
+  }
+  

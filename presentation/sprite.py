@@ -68,6 +68,17 @@ class Sprite(pygame.sprite.Sprite):
         if self.__is_in_damage_countdown > 0:
             self.__decrease_damage_countdown()
 
+    def scale_image(self, scale_factor: float):
+        """Scales the image by a scale factor.
+
+        Args:
+            scale_factor (float): The factor by which to scale the image.
+        """
+        original_size = self._image.get_size()
+        new_width = int(original_size[0] * scale_factor)
+        new_height = int(original_size[1] * scale_factor)
+        self._image = pygame.transform.scale(self.__original_image, (new_width, new_height))
+        self._rect.size = self._image.get_size()  # Update the rect to match the new image size
 
 class PlayerSprite(Sprite):
     """A class representing the player sprite."""

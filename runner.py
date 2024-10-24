@@ -10,8 +10,9 @@ from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
 from game import Game
-from business.weapons.weapon import Weapon
+from business.weapons.weapon import GreenWand
 from business.weapons.attack_builder import NormalBulletFactory
+from business.weapons.stats import ProjectileStats, PlayerStats
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from presentation.sprite import PlayerSprite, BulletSprite
@@ -21,7 +22,7 @@ import time
 def initialize_player():
     """Initializes the player object"""
     x, y = settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2
-    return Player(x, y, PlayerSprite(x, y))
+    return Player(x, y, PlayerSprite(x, y), PlayerStats.get_base_player_stats())
 
 
 def initialize_game_world():
@@ -29,7 +30,7 @@ def initialize_game_world():
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    weapon = Weapon(10,400,NormalBulletFactory(3))
+    weapon = GreenWand(ProjectileStats.get_empty_projectile_stats(),NormalBulletFactory(), "data/upgrades/upgrade.json")
     player.set_weapon(weapon)
     return GameWorld(monster_spawner, tile_map, player, time.time())
 
