@@ -1,6 +1,6 @@
 from business.weapons.stats import ProjectileStats
 class Inventory:
-    def __init__(self,items, boosters) -> None:
+    def __init__(self, items, boosters) -> None:
         self.__items = items
         self.__passive_items = boosters
         

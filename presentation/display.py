@@ -70,17 +70,16 @@ class Display(IDisplay):
         pygame.draw.rect(self.__screen, (255, 0, 0), bg_rect)
 
         # Draw the health bar (green)
-        health_percentage = player.health / 100  # Assuming max health is 100 (code smell?)
+        health_percentage = player.health / player.stats.max_health
         health_width = int(bar_width * health_percentage)
         health_rect = pygame.Rect(bar_x, bar_y, health_width, bar_height)
         pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
 
 
     def __draw_time(self):
-        time_start= self.__world.initial_time
-        time_started = time.time() - time_start
-        minutes = int(time_started // 60)
-        seconds = int(time_started % 60)
+        time_elapsed= self.__world.time_elapsed
+        minutes = int(time_elapsed // 60)
+        seconds = int(time_elapsed % 60)
         cronometer_text = f"Time: {minutes:02}:{seconds:02}"
         cronometer_surface = self.__font.render(
             cronometer_text, True, (255,255,255))

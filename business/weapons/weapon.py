@@ -15,7 +15,6 @@ class GreenWand(IWeapon):
 
     def __shoot(self, world: IGameWorld):
         new_stats = self.__stats + world.player.stats.projectile_stats
-        print(new_stats)
         self.__cooldown_handler = CooldownHandler(new_stats.reload_time)
         bullet = self.__atack_shape.create_atack_shape(world.player.pos_x, world.player.pos_y, new_stats)
         world.add_bullet(bullet)

@@ -5,17 +5,6 @@ from abc import ABC, abstractmethod
 from presentation.sprite import Sprite
 from business.weapons.stats import PlayerStats
 
-class ICanDealDamage(ABC):
-    """Interface for entities that can deal damage."""
-
-    @property
-    @abstractmethod
-    def damage_amount(self) -> int:
-        """The amount of damage the entity can deal.
-
-        Returns:
-            int: The amount of damage the entity can deal.
-        """
 
 
 class IDamageable(ABC):
@@ -35,9 +24,29 @@ class IDamageable(ABC):
         """Take damage.
 
         Args:
-            amount (int): The amount of damage to take.
+            amount (int): The damage an attack deals.
         """
+    
 
+class ICanDealDamage(ABC):
+    """Interface for entities that can deal damage."""
+
+    @property
+    @abstractmethod
+    def damage_amount(self) -> int:
+        """The amount of damage the entity can deal.
+
+        Returns:
+            int: The amount of damage the entity can deal.
+        """
+    
+    @abstractmethod
+    def attack(self, damageable : IDamageable):
+        """Attacks a damageable.
+        
+        Args:
+            damageable (IDamegeable): the object that receives damage.
+        """
 
 class IUpdatable(ABC):
     """Interface for entities that can be updated."""

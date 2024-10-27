@@ -5,7 +5,7 @@
           "power": 10
         },
         {
-          "area_of_effect": 400
+          "area_of_effect": 20
         },
         {
           "reload_time": -20

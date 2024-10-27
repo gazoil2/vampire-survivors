@@ -1,15 +1,14 @@
 """Player entity module."""
 
 import pygame
-
-from business.handlers.cooldown_handler import CooldownHandler
-from business.entities.bullet import Bullet
+from typing import Dict
 from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
 from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
 from business.world.interfaces import IGameWorld
 from business.weapons.stats import PlayerStats
 from presentation.sprite import Sprite
+from business.handlers.cooldown_handler import CooldownHandler
 from business.weapons.interfaces import IWeapon
 
 
@@ -19,7 +18,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     The player is the main character of the game. It can move around the game world and shoot at monsters.
     """
 
-    BASE_DAMAGE = 5
 
     def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, initial_stats : PlayerStats ):
         super().__init__(pos_x, pos_y, 5, sprite)
@@ -29,6 +27,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__level = 1
         self.__weapon = None
         self.__stats = initial_stats
+        self.__attacked_enemies : Dict[IDamageable,CooldownHandler] = {}
         self._logger.debug("Created %s", self)
 
     def __str__(self):
@@ -54,9 +53,19 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def health(self) -> int:
         return self.__health
 
-    def take_damage(self, amount):
+    def take_damage(self, amount : int):
         self.__health = max(0, self.__health - amount)
         self.sprite.take_damage()
+    
+    def attack(self, damageable : IDamageable):
+        if damageable not in self.__attacked_enemies:
+            self.__attacked_enemies[damageable] = CooldownHandler(100)
+            damageable.take_damage(self.stats.armor)
+        else:
+            cooldown_handler = self.__attacked_enemies[damageable]
+            if cooldown_handler.is_action_ready():
+                damageable.take_damage(self.stats.armor)
+                cooldown_handler.put_on_cooldown()
 
     def pickup_gem(self, gem: ExperienceGem):
         self.__gain_experience(gem.amount)
@@ -76,25 +85,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     @property
     def stats(self):
         return self.__stats
-    #def __shoot_at_nearest_enemy(self, world: IGameWorld):
-        
-        
-     #    if not world.monsters:
-     #        return  # No monsters to shoot at
-        
-
-        # Find the nearest monster
- #        monster = min(
-  #           world.monsters,
-   #          key=lambda monster: (
-   #              (monster.pos_x - self.pos_x) ** 2 + (monster.pos_y - self.pos_y) ** 2
-   #          ),
-   #      )
-        
-        #print("SHOOTOOTOTOO")
-        # Create a bullet towards the nearest monster
-     #    bullet = Bullet(self.pos_x, self.pos_y, monster.pos_x, monster.pos_y, 10)
-    #     world.add_bullet(bullet)
 
 
     def update(self, world: IGameWorld):

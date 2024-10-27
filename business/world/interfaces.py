@@ -10,7 +10,9 @@ class IGameWorld(ABC):
 
     The game world is the environment in which the game entities exist.
     """
-
+    @property
+    def time_elapsed(self):
+        return self.__time_elapsed
     @abstractmethod
     def add_monster(self, monster: IMonster):
         """Adds a monster to the world.

@@ -12,8 +12,6 @@ Poder cerrar el juego:
 - Guardar las estadísticas del jugador
 
 ## Media Prioridad
-Terminar los getters y setters de player stats
-Sumar y restar player stats con player stats y con projectile stats
 Crear el inventario
 
 

@@ -30,8 +30,9 @@ class InputHandler(IInputHandler):
 
         return x,y
 
-    
-
+    def is_paused(self):
+        keys = pygame.key.get_pressed()
+        return keys[pygame.K_p]
     def process_input(self):
         keys = pygame.key.get_pressed()
         direction = self.__get_direction(keys)

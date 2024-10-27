@@ -16,7 +16,6 @@ from business.weapons.stats import ProjectileStats, PlayerStats
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from presentation.sprite import PlayerSprite, BulletSprite
-import time
 
 
 def initialize_player():
@@ -32,7 +31,7 @@ def initialize_game_world():
     player = initialize_player()
     weapon = GreenWand(ProjectileStats.get_empty_projectile_stats(),NormalBulletFactory(), "data/upgrades/upgrade.json")
     player.set_weapon(weapon)
-    return GameWorld(monster_spawner, tile_map, player, time.time())
+    return GameWorld(monster_spawner, tile_map, player, 0)
 
 
 def main():

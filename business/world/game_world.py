@@ -2,8 +2,7 @@
 
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
-import time
-
+from settings import FPS
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
@@ -13,7 +12,7 @@ class GameWorld(IGameWorld):
         self.__monsters: list[IMonster] = []
         self.__bullets: list[IBullet] = []
         self.__experience_gems: list[IExperienceGem] = []
-        self.__time_start = initial_time
+        self.__time_elapsed = initial_time
         # Initialize the tile map
         self.tile_map: ITileMap = tile_map
         # Initialize the monster spawner
@@ -24,6 +23,7 @@ class GameWorld(IGameWorld):
 
 
     def update(self):
+        self.__time_elapsed += 1/FPS
         self.player.update(self)
 
         for monster in self.monsters:
@@ -53,8 +53,8 @@ class GameWorld(IGameWorld):
         self.__bullets.remove(bullet)
 
     @property
-    def initial_time(self):
-        return self.__time_start
+    def time_elapsed(self):
+        return self.__time_elapsed
     @property
     def player(self) -> IPlayer:
         return self.__player

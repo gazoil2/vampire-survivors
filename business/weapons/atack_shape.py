@@ -1,8 +1,10 @@
-from typing import List
+from typing import List, Dict
 from business.entities.interfaces import IBullet, IMonster
 from business.entities.entity import MovableEntity
 from business.world.interfaces import IGameWorld
 from business.weapons.stats import ProjectileStats
+from business.handlers.cooldown_handler import CooldownHandler
+from business.entities.interfaces import IDamageable
 from presentation.sprite import Sprite
 
 class NormalBullet(MovableEntity,IBullet):
@@ -17,7 +19,7 @@ class NormalBullet(MovableEntity,IBullet):
         sprite.scale_image(self.__stats.area_of_effect / 100)
         self.__direction = (0,0)
         self.__pierce = self.BASE_PIERCE
-        
+        self.__attacked_enemies = []
         self.__has_set_direction = False
 
     @property
@@ -45,8 +47,14 @@ class NormalBullet(MovableEntity,IBullet):
     def health(self) -> int:
         return self.__pierce
         
-    def take_damage(self, _: int):
-        self.__pierce -= 1
+    def take_damage(self, _ : int):
+        pass
     
+    def attack(self, damageable : IDamageable):
+        if damageable not in self.__attacked_enemies:
+            damageable.take_damage(self.BASE_DAMAGE)
+            self.__attacked_enemies.append(damageable)
+            self.__pierce -= 1
+
     def __str__(self) -> str:
         return f"NormalBullet at position ({self._pos_x}, {self._pos_y})"
