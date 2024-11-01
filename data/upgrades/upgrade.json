@@ -1,16 +1,25 @@
 {
-    "GreenWand": {
+    "greenwand": {
+      "type": "weapon", 
+      "max_level": 3,
       "levels": [
         {
-          "power": 10
+          "damage": 10
         },
         {
-          "area_of_effect": 20
+          "area_of_effect": 0.2
         },
         {
-          "reload_time": -20
+          "reload_time": -280
         }
       ]
+    },
+    "Spinach":{
+      "type": "passive",
+      "affects": "power",
+      "increase": 10,
+      "max_level": 5
+
     }
-  }
+}
   

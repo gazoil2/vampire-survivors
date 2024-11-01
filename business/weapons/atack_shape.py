@@ -1,4 +1,5 @@
 from typing import List, Dict
+from random import choice
 from business.entities.interfaces import IBullet, IMonster
 from business.entities.entity import MovableEntity
 from business.world.interfaces import IGameWorld
@@ -9,22 +10,19 @@ from presentation.sprite import Sprite
 
 class NormalBullet(MovableEntity,IBullet):
     """Atack that chooses the nearest enemy"""
-    BULLET_SPEED = 5
-    BASE_PIERCE = 2
-    BASE_DAMAGE = 5
     def __init__(self,pos_x: float, pos_y: float,sprite : Sprite, projectile_stats: ProjectileStats):
         self.__stats = projectile_stats
-        new_velocity = self.BULLET_SPEED * (self.__stats.velocity / 100)
+        new_velocity = self.__stats.velocity
         super().__init__(pos_x,pos_y,new_velocity,sprite)
-        sprite.scale_image(self.__stats.area_of_effect / 100)
+        sprite.scale_image(self.__stats.area_of_effect)
         self.__direction = (0,0)
-        self.__pierce = self.BASE_PIERCE
+        self.__pierce = self.__stats.pierce
         self.__attacked_enemies = []
         self.__has_set_direction = False
 
     @property
     def damage_amount(self):
-        return self.BASE_DAMAGE * (self.__stats.power / 100)
+        return self.__stats.damage
 
     def __set_direction(self, monsters : List[IMonster]):
         if not monsters:
@@ -41,7 +39,6 @@ class NormalBullet(MovableEntity,IBullet):
                 world.remove_bullet(self)
         self.move(self.__direction[0],self.__direction[1])
         super().update(world)
-   
     
     @property
     def health(self) -> int:
@@ -52,9 +49,36 @@ class NormalBullet(MovableEntity,IBullet):
     
     def attack(self, damageable : IDamageable):
         if damageable not in self.__attacked_enemies:
-            damageable.take_damage(self.BASE_DAMAGE)
+            damageable.take_damage(self.__stats.damage)
             self.__attacked_enemies.append(damageable)
             self.__pierce -= 1
 
     def __str__(self) -> str:
         return f"NormalBullet at position ({self._pos_x}, {self._pos_y})"
+
+import random
+
+class RandomBullet(NormalBullet):
+    def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
+        super().__init__(pos_x, pos_y, sprite, projectile_stats)
+
+    def __set_direction(self, monsters: List[IMonster]):
+        if not monsters:
+            raise ValueError("No hay monstruos para atacar")
+        self.__has_set_direction = True
+        # Use random.choice to select a random monster
+        random_monster = random.choice(monsters)
+        self.__direction = self._get_direction_to(random_monster.pos_x, random_monster.pos_y)
+
+    def update(self, world: IGameWorld):
+        super().update(world)
+    
+    def take_damage(self, _: int):
+        pass
+
+    def attack(self, damageable: IDamageable):
+        return super().attack(damageable)
+
+    @property
+    def damage_amount(self):
+        return self.__stats.damage

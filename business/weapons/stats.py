@@ -1,10 +1,13 @@
-class ProjectileStats:
+
+
+class ProjectileStatsMultiplier:
     @staticmethod
     def get_empty_projectile_stats():
-        return ProjectileStats(0,0,0,0,0,0)
+        return ProjectileStatsMultiplier(0,0,0,0,0,0)
     @staticmethod
     def get_base_projectile_stats():
-        return ProjectileStats(100,100,100,100,300,1)
+        return ProjectileStatsMultiplier(100,100,100,100,100,1)
+
     def __init__(self, power : int, velocity: int, duration: int, area_of_effect: int, reload_time: int, projectile_count: int) -> None:
         self.__power = power
         self.__velocity = velocity
@@ -55,12 +58,12 @@ class ProjectileStats:
     
     @property
     def reload_time(self) -> int:
-        """Gets the reload time of the projectile (in milliseconds)."""
+        """Gets the reload time of the projectile (percentage)."""
         return self.__reload_time
     
     @reload_time.setter
     def reload_time(self, value: int) -> None:
-        """Sets the reload time of the projectile (in milliseconds)."""
+        """Sets the reload time of the projectile (percentage)."""
         self.__reload_time = value
     
     @property
@@ -73,11 +76,11 @@ class ProjectileStats:
         """Sets the number of projectiles (integer)."""
         self.__projectile_count = value
     
-    def __add__(self, value: "ProjectileStats") -> "ProjectileStats":
+    def __add__(self, value: "ProjectileStatsMultiplier") -> "ProjectileStatsMultiplier":
         """Adds two ProjectileStats objects."""
-        if not isinstance(value, ProjectileStats):
+        if not isinstance(value, ProjectileStatsMultiplier):
             raise ValueError("Cannot add stats with an object that is not of type ProjectileStats")
-        return ProjectileStats(
+        return ProjectileStatsMultiplier(
             value.power + self.power, 
             value.velocity + self.velocity, 
             value.duration + self.duration, 
@@ -86,11 +89,11 @@ class ProjectileStats:
             value.projectile_count + self.projectile_count
         )
     
-    def __sub__(self, value: "ProjectileStats") -> "ProjectileStats":
+    def __sub__(self, value: "ProjectileStatsMultiplier") -> "ProjectileStatsMultiplier":
         """Subtracts one ProjectileStats object from another."""
-        if not isinstance(value, ProjectileStats):
+        if not isinstance(value, ProjectileStatsMultiplier):
             raise ValueError("Cannot subtract stats with an object that is not of type ProjectileStats")
-        return ProjectileStats(
+        return ProjectileStatsMultiplier(
             self.power - value.power, 
             self.velocity - value.velocity, 
             self.duration - value.duration, 
@@ -101,11 +104,11 @@ class ProjectileStats:
     def __str__(self) -> str:
         """Return a string representation of the projectile stats."""
         return (f"ProjectileStats(power={self.__power}%, velocity={self.__velocity}%, duration={self.__duration}%, "
-                f"area_of_effect={self.__area_of_effect}%, reload_time={self.__reload_time}ms, "
+                f"area_of_effect={self.__area_of_effect}%, reload_time={self.__reload_time}%, "
                 f"projectile_count={self.__projectile_count})")
 
 class PlayerStats:
-    def __init__(self, max_health: int, recovery: int, armor: int, movement_speed: int, lifes: int, projectile_stats: ProjectileStats):
+    def __init__(self, max_health: int, recovery: int, armor: int, movement_speed: int, lifes: int, projectile_stats: ProjectileStatsMultiplier):
         self.__max_health = max_health
         self.__recovery = recovery
         self.__armor = armor
@@ -115,10 +118,10 @@ class PlayerStats:
 
     @staticmethod
     def get_empty_player_stats():
-        return PlayerStats(0,0,0,0,0,ProjectileStats.get_empty_projectile_stats())
+        return PlayerStats(0,0,0,0,0,ProjectileStatsMultiplier.get_empty_projectile_stats())
     @staticmethod
     def get_base_player_stats():
-        return PlayerStats(100,0,0,5,0,ProjectileStats.get_base_projectile_stats())
+        return PlayerStats(100,0,0,5,0,ProjectileStatsMultiplier.get_base_projectile_stats())
     @property
     def max_health(self) -> int:
         """Gets the player's max health."""
@@ -170,18 +173,18 @@ class PlayerStats:
         self.__lifes = value
 
     @property
-    def projectile_stats(self) -> ProjectileStats:
+    def projectile_stats(self) -> ProjectileStatsMultiplier:
         """Gets the player's projectile stats."""
         return self.__projectile_stats
 
     @projectile_stats.setter
-    def projectile_stats(self, value: ProjectileStats) -> None:
+    def projectile_stats(self, value: ProjectileStatsMultiplier) -> None:
         """Sets the player's projectile stats."""
         self.__projectile_stats = value
 
     def __add__(self, value):
         """Adds PlayerStats or ProjectileStats."""
-        if isinstance(value, ProjectileStats):
+        if isinstance(value, ProjectileStatsMultiplier):
             # Adds only the projectile stats
             return PlayerStats(
                 self.__max_health,
@@ -206,7 +209,7 @@ class PlayerStats:
 
     def __sub__(self, value):
         """Subtracts PlayerStats or ProjectileStats."""
-        if isinstance(value, ProjectileStats):
+        if isinstance(value, ProjectileStatsMultiplier):
             # Subtract only the projectile stats
             return PlayerStats(
                 self.__max_health,
@@ -234,3 +237,125 @@ class PlayerStats:
         return (f"PlayerStats(max_health={self.__max_health}, recovery={self.__recovery}, armor={self.__armor}, "
                 f"movement_speed={self.__movement_speed}, lifes={self.__lifes}, "
                 f"projectile_stats={str(self.__projectile_stats)})")
+
+class ProjectileStats:
+    def __init__(self, damage, velocity, area_of_effect, reload_time, projectile_count, pierce, duration) -> None:
+        """
+        Initializes the ProjectileStats instance with specified attributes.
+
+        :param damage: The damage dealt by the projectile.
+        :param velocity: The speed of the projectile.
+        :param area_of_effect: The area affected by the projectile.
+        :param reload_time: The time taken to reload the projectile in miliseconds.
+        :param projectile_count: The number of projectiles fired.
+        :param pierce: The number of times the projectile can pierce through an enemy.
+        :param duration: The number of miliseconds a projectile lasts.
+        """
+        self.__damage = damage
+        self.__velocity = velocity
+        self.__area_of_effect = area_of_effect
+        self.__reload_time = reload_time
+        self.__projectile_count = projectile_count
+        self.__pierce = pierce
+        self.__duration = duration
+    @staticmethod
+    def get_empty_stats():
+        """
+        Returns an instance of ProjectileStats with all attributes set to zero.
+        """
+        return ProjectileStats(0, 0, 0, 0, 0, 0, 0)
+
+    @staticmethod
+    def get_base_stats():
+        """
+        Returns an instance of ProjectileStats with base attribute values.
+        """
+        return ProjectileStats(5, 5, 1, 300, 1, 1, 1000)
+
+    @property
+    def damage(self):
+        """Returns the damage dealt by the projectile."""
+        return self.__damage
+
+    @damage.setter
+    def damage(self, value):
+        """Sets the damage dealt by the projectile."""
+        self.__damage = value
+
+    @property
+    def velocity(self):
+        """Returns the speed of the projectile."""
+        return self.__velocity
+
+    @velocity.setter
+    def velocity(self, value):
+        """Sets the speed of the projectile."""
+        self.__velocity = value
+
+    @property
+    def area_of_effect(self):
+        """Returns the area multiplier of the projectile."""
+        return self.__area_of_effect
+
+    @area_of_effect.setter
+    def area_of_effect(self, value):
+        """Sets the area multiplier of the projectile."""
+        self.__area_of_effect = value
+
+    @property
+    def reload_time(self):
+        """Returns the time taken to reload the projectile."""
+        return self.__reload_time
+
+    @reload_time.setter
+    def reload_time(self, value):
+        """Sets the time taken to reload the projectile."""
+        self.__reload_time = value
+
+    @property
+    def projectile_count(self):
+        """Returns the number of projectiles fired."""
+        return self.__projectile_count
+
+    @projectile_count.setter
+    def projectile_count(self, value):
+        """Sets the number of projectiles fired."""
+        self.__projectile_count = value
+
+    @property
+    def pierce(self):
+        """Returns the number of time a projectile can pierce through an enemy"""
+        return self.__pierce
+
+    @pierce.setter
+    def pierce(self,value):
+        """Sets the number of time a projectile can pierce through an enemy"""
+        self.__pierce = value
+
+    @property
+    def duration(self):
+        """Get the number of miliseconds a projectile lasts"""
+        return self.__duration
+
+    @duration.setter
+    def duration(self, value):
+        """Sets the number of miliseconds a projectile lasts"""
+        self.__duration = value
+
+    def __mul__(self, value: 'ProjectileStatsMultiplier'):
+        """
+        Multiplies the projectile stats with a ProjectileStatsMultiplier.
+
+        :param value: An instance of ProjectileStatsMultiplier to apply.
+        :return: A new ProjectileStats instance with modified attributes.
+        """
+        if isinstance(value, ProjectileStatsMultiplier):
+            return ProjectileStats(
+                self.__damage * (value.power / 100),
+                self.__velocity * (value.velocity / 100),
+                self.__area_of_effect * (value.area_of_effect / 100),
+                self.__reload_time * (value.reload_time / 100),
+                self.__projectile_count + value.projectile_count,
+                self.__pierce,
+                self.__duration * (value.duration / 100)
+            )

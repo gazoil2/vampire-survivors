@@ -47,7 +47,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     @property
     def damage_amount(self):
-        return Player.BASE_DAMAGE
+        return self.stats.armor
 
     @property
     def health(self) -> int:

@@ -10,9 +10,10 @@ from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
 from game import Game
-from business.weapons.weapon import GreenWand
-from business.weapons.attack_builder import NormalBulletFactory
-from business.weapons.stats import ProjectileStats, PlayerStats
+from business.weapons.weapon import Weapon
+from business.weapons.attack_builder import GreenBulletFactory
+from business.weapons.stats import ProjectileStatsMultiplier, PlayerStats, ProjectileStats
+from business.weapons.factories.weapon_factory import WeaponFactory
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from presentation.sprite import PlayerSprite, BulletSprite
@@ -29,7 +30,7 @@ def initialize_game_world():
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    weapon = GreenWand(ProjectileStats.get_empty_projectile_stats(),NormalBulletFactory(), "data/upgrades/upgrade.json")
+    weapon = WeaponFactory.get_shotgun()
     player.set_weapon(weapon)
     return GameWorld(monster_spawner, tile_map, player, 0)
 

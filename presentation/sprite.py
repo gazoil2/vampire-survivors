@@ -116,20 +116,16 @@ class BulletSprite(Sprite):
 
         super().__init__(image, rect)
 
-
-class GreenCircleBullet(Sprite):
-    """A class representing a green circle bullet."""
-
-    def __init__(self, pos_x: float, pos_y: float, radius: int = 5):
+class CircleBullet(Sprite):
+    """A class representing a red circle bullet."""
+    def __init__(self, pos_x: float, pos_y: float, radius: int = 5, color = (0,0,0)):
         # Create a surface with alpha transparency
         image = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)  
         # Draw a green circle
-        pygame.draw.circle(image, (0, 255, 0), (radius, radius), radius)  
+        pygame.draw.circle(image, (255, 0, 0), (radius, radius), radius)  
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
-
-
 class ExperienceGemSprite(Sprite):
     """A class representing the experience gem sprite."""
 
