@@ -1,10 +1,11 @@
+from typing import List
 from business.weapons.stats import ProjectileStatsMultiplier
-class Inventory:
-    def __init__(self, items, boosters, maxsize=5 ) -> None:
-        self.__items = items
+from business.weapons.interfaces import IUpdatable, IUpgradable, PassiveItems
+class Inventory(IUpdatable):
+    def __init__(self, weapons : List[IUpgradable], boosters : List[PassiveItems], maxsize=5 ) -> None:
+        self.__weapons = weapons
         self.__passive_items = boosters
         self.__maxsize = maxsize
-        
 
     def get_combined_stats(self):
         final_stats = ProjectileStatsMultiplier.get_empty_projectile_stats()
@@ -12,3 +13,9 @@ class Inventory:
             final_stats += passive.stats 
         
         return final_stats
+
+    def update(self, world):
+        for weapon in self.__weapons:
+            weapon.update(world)
+    
+    

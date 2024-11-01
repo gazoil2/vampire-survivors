@@ -9,7 +9,8 @@ from business.world.interfaces import IGameWorld
 from business.weapons.stats import PlayerStats
 from presentation.sprite import Sprite
 from business.handlers.cooldown_handler import CooldownHandler
-from business.weapons.interfaces import IWeapon
+from business.weapons.interfaces import IUpgradable
+from business.weapons.inventory import Inventory
 
 
 class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
@@ -19,13 +20,13 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """
 
 
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, initial_stats : PlayerStats ):
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, initial_stats : PlayerStats, inventory : Inventory ):
         super().__init__(pos_x, pos_y, 5, sprite)
         self.__health: int = 100
         self.__experience = 0
         self.__experience_to_next_level = 1
         self.__level = 1
-        self.__weapon = None
+        self.__inventory = inventory
         self.__stats = initial_stats
         self.__attacked_enemies : Dict[IDamageable,CooldownHandler] = {}
         self._logger.debug("Created %s", self)
@@ -52,6 +53,14 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     @property
     def health(self) -> int:
         return self.__health
+    
+    @property
+    def stats(self):
+        return self.__stats
+    
+    @property
+    def inventory(self):
+        return self.__inventory
 
     def take_damage(self, amount : int):
         self.__health = max(0, self.__health - amount)
@@ -70,7 +79,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def pickup_gem(self, gem: ExperienceGem):
         self.__gain_experience(gem.amount)
     
-    def set_weapon(self, weapon : IWeapon):
+    def set_weapon(self, weapon : IUpgradable):
         self.__weapon = weapon
 
     def __gain_experience(self, amount: int):
@@ -82,13 +91,10 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
             if self.__weapon != None:
                 self.__weapon.upgrade()
 
-    @property
-    def stats(self):
-        return self.__stats
+   
 
 
     def update(self, world: IGameWorld):
         super().update(world)
-        if self.__weapon != None:
-            self.__weapon.update(world)
+        self.__inventory.update()
         

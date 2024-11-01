@@ -73,6 +73,13 @@ class MovableEntity(Entity, ICanMove):
             self._speed,
         )
         self.sprite.update_pos(self._pos_x, self._pos_y)
+    
+    def update_position(self, new_x: float, new_y: float):
+        """Directly updates the position of the entity without moving."""
+        self._pos_x = new_x
+        self._pos_y = new_y
+        self.sprite.update_pos(self._pos_x, self._pos_y)  # Update sprite position
+        self._logger.debug("Position updated to (%.2f, %.2f)", self._pos_x, self._pos_y)
 
     def _get_direction_to(self, target_x: float, target_y: float) -> Tuple[float, float]:
         """Calculates the direction vector to the target position."""

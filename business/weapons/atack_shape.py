@@ -1,3 +1,4 @@
+import math
 from typing import List, Dict
 from random import choice
 from business.entities.interfaces import IBullet, IMonster
@@ -12,8 +13,7 @@ class NormalBullet(MovableEntity,IBullet):
     """Atack that chooses the nearest enemy"""
     def __init__(self,pos_x: float, pos_y: float,sprite : Sprite, projectile_stats: ProjectileStats):
         self.__stats = projectile_stats
-        new_velocity = self.__stats.velocity
-        super().__init__(pos_x,pos_y,new_velocity,sprite)
+        super().__init__(pos_x,pos_y,self.__stats.velocity,sprite)
         sprite.scale_image(self.__stats.area_of_effect)
         self.__direction = (0,0)
         self.__pierce = self.__stats.pierce
@@ -38,6 +38,7 @@ class NormalBullet(MovableEntity,IBullet):
             except ValueError:
                 world.remove_bullet(self)
         self.move(self.__direction[0],self.__direction[1])
+        print(self.__direction)
         super().update(world)
     
     @property
@@ -56,7 +57,6 @@ class NormalBullet(MovableEntity,IBullet):
     def __str__(self) -> str:
         return f"NormalBullet at position ({self._pos_x}, {self._pos_y})"
 
-import random
 
 class RandomBullet(NormalBullet):
     def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
@@ -67,7 +67,7 @@ class RandomBullet(NormalBullet):
             raise ValueError("No hay monstruos para atacar")
         self.__has_set_direction = True
         # Use random.choice to select a random monster
-        random_monster = random.choice(monsters)
+        random_monster = choice(monsters)
         self.__direction = self._get_direction_to(random_monster.pos_x, random_monster.pos_y)
 
     def update(self, world: IGameWorld):
@@ -82,3 +82,102 @@ class RandomBullet(NormalBullet):
     @property
     def damage_amount(self):
         return self.__stats.damage
+
+
+class RotatingBullet(MovableEntity, IBullet):
+    """Bullet that orbits around the player and disappears after a set duration."""
+    BASE_ATTACK_RESET = 500
+    BASE_ORBIT_RANGE = 60
+    def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
+        self.__stats = projectile_stats
+        sprite.scale_image(self.__stats.area_of_effect)
+        super().__init__(pos_x, pos_y, projectile_stats.velocity, sprite)
+        self.__angle = 0
+        self.__attacked_enemies = []
+        self.__reset_attack_timer = CooldownHandler(self.BASE_ATTACK_RESET)
+        self.__time_out_handler = CooldownHandler(projectile_stats.duration)
+ 
+    @property
+    def health(self):
+        return 1
+
+    @property
+    def damage_amount(self):
+        return self.__stats.damage
+
+    def update(self, world: IGameWorld):
+        # Check if the bullet's duration has expired
+        if self.__time_out_handler.is_action_ready():
+            world.remove_bullet(self)  # Remove bullet from the world when its lifetime ends
+            return
+        if self.__reset_attack_timer.is_action_ready():
+            self.__reset_attack_timer.put_on_cooldown()
+            self.__attacked_enemies = []
+        # Update the angle for circular motion
+        self.__angle += 0.05  
+
+        # Get player's position
+        player_pos_x = world.player.pos_x
+        player_pos_y = world.player.pos_y
+
+        # Calculate the position based on orbiting around the player
+        direction_x = math.cos(self.__angle) * self.BASE_ORBIT_RANGE
+        direction_y = math.sin(self.__angle) * self.BASE_ORBIT_RANGE
+        
+        # Calculate the target position relative to the player's position
+        target_pos_x = player_pos_x + direction_x
+        target_pos_y = player_pos_y + direction_y
+
+        # Use the update_position function to set the bullet's position
+        self.update_position(target_pos_x, target_pos_y)
+
+    def attack(self, damageable: IDamageable):
+        """Damage a target if it hasn't already been damaged."""
+        damageable.take_damage(self.__stats.damage)
+
+    def take_damage(self, _: int):
+        """Rotating bullets ignore damage since they disappear after a duration."""
+        pass
+
+    def __str__(self) -> str:
+        return f"RotatingBullet at position ({self._pos_x}, {self._pos_y})"
+
+
+class TrailBullet(MovableEntity, IBullet):
+    """Bullet that orbits around the player and disappears after a set duration."""
+
+    def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
+        self.__stats = projectile_stats
+        sprite.scale_image(self.__stats.area_of_effect)
+        super().__init__(pos_x, pos_y, projectile_stats.velocity, sprite)
+        self.__time_out_handler = CooldownHandler(projectile_stats.duration)
+        self.__attacked_enemies = []
+        
+    @property
+    def health(self):
+        return 1
+
+    @property
+    def damage_amount(self):
+        return self.__stats.damage
+
+    def update(self, world: IGameWorld):
+        # Check if the bullet's duration has expired
+        if self.__time_out_handler.is_action_ready():
+            world.remove_bullet(self)  # Remove bullet from the world when its lifetime ends
+            return
+
+        super().update(world)
+
+    def attack(self, damageable: IDamageable):
+        """Damage a target if it hasn't already been damaged."""
+        if damageable not in self.__attacked_enemies:
+            damageable.take_damage(self.__stats.damage)
+            self.__attacked_enemies.append(damageable)
+
+    def take_damage(self, _: int):
+        """Rotating bullets ignore damage since they disappear after a duration."""
+        pass
+
+    def __str__(self) -> str:
+        return f"RotatingBullet at position ({self._pos_x}, {self._pos_y})"

@@ -1,11 +1,11 @@
 from business.weapons.stats import ProjectileStatsMultiplier, ProjectileStats
-from business.weapons.interfaces import IAtackShapeFactory, IWeapon
+from business.weapons.interfaces import IAtackShapeFactory, IUpgradable
 from business.weapons.atack_shape import NormalBullet
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.game_world import IGameWorld
 from business.weapons.upgrade import Upgrade
 
-class Weapon(IWeapon):
+class Weapon(IUpgradable):
     def __init__(self, projectile_stats: ProjectileStats, atack_shape: IAtackShapeFactory, json_file: str,name : str ,weapon_level: int = 1):
         self.__cooldown_handler = CooldownHandler(projectile_stats.reload_time)
         self.__atack_shape = atack_shape

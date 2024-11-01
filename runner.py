@@ -30,7 +30,7 @@ def initialize_game_world():
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    weapon = WeaponFactory.get_shotgun()
+    weapon = WeaponFactory.get_bible()
     player.set_weapon(weapon)
     return GameWorld(monster_spawner, tile_map, player, 0)
 

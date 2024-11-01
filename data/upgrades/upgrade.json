@@ -20,6 +20,66 @@
       "increase": 10,
       "max_level": 5
 
+    },
+    "Armor": {
+        "type": "passive",
+        "affects": "armor",
+        "increase": 1,
+        "max_level": 5
+    },
+    "HollowHeart": {
+        "type": "passive",
+        "affects": "max_health",
+        "increase": 20,
+        "max_level": 5
+    },
+    "Pummarola": {
+        "type": "passive",
+        "affects": "recovery",
+        "increase": 0.2,
+        "max_level": 5
+    },
+    "EmptyTome": {
+        "type": "passive",
+        "affects": "reload_time",
+        "increase": -8,
+        "max_level": 5
+    },
+    "Candelabrador": {
+        "type": "passive",
+        "affects": "area_of_effect",
+        "increase": 10,
+        "max_level": 5
+    },
+    "Bracer": {
+        "type": "passive",
+        "affects": "velocity",
+        "increase": 10,
+        "max_level": 5
+    },
+    "Spellbinder": {
+        "type": "passive",
+        "affects": "duration",
+        "increase": 10,
+        "max_level": 5
+    },
+    "Wings": {
+        "type": "passive",
+        "affects": "movement_speed",
+        "increase": 10,
+        "max_level": 5
+    },
+    "Attractorb": {
+        "type": "passive",
+        "affects": "pickup_range",
+        "increase": 1,
+        "max_level": 5
+    },
+    "Tirajisú": {
+        "type": "passive",
+        "affects": "lifes",
+        "increase": 1,
+        "max_level": 2
     }
 }
   
