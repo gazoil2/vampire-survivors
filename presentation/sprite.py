@@ -122,7 +122,7 @@ class CircleBullet(Sprite):
         # Create a surface with alpha transparency
         image = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)  
         # Draw a green circle
-        pygame.draw.circle(image, (255, 0, 0), (radius, radius), radius)  
+        pygame.draw.circle(image, color, (radius, radius), radius)  
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
