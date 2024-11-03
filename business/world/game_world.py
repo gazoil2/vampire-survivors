@@ -2,37 +2,41 @@
 
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
+from business.world.ingameclock import InGameClock
 from settings import FPS
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, initial_time : float):
-        # Initialize the player and lists for monsters, bullets and gems
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, initial_time: float):
         self.__player: IPlayer = player
         self.__monsters: list[IMonster] = []
         self.__bullets: list[IBullet] = []
         self.__experience_gems: list[IExperienceGem] = []
-        self.__time_elapsed = initial_time
+        
+        # Use the singleton InGameClock
+        self.__clock = InGameClock(initial_time)
+
         # Initialize the tile map
         self.tile_map: ITileMap = tile_map
         # Initialize the monster spawner
         self.__monster_spawner: IMonsterSpawner = spawner
 
-
-    
-
-
     def update(self):
-        self.__time_elapsed += 1/FPS
-        self.player.update(self)
+        # Update the clock only when the game is running
+        self.__clock.update(1 / FPS)
+        self.__player.update(self)
 
-        for monster in self.monsters:
+        for monster in self.__monsters:
             monster.update(self)
 
-        for bullet in self.bullets:
+        for bullet in self.__bullets:
             bullet.update(self)
 
         self.__monster_spawner.update(self)
+
+    @property
+    def time_elapsed(self):
+        return self.__clock.time_elapsed
 
     def add_monster(self, monster: IMonster):
         self.__monsters.append(monster)
@@ -52,9 +56,6 @@ class GameWorld(IGameWorld):
     def remove_bullet(self, bullet: IBullet):
         self.__bullets.remove(bullet)
 
-    @property
-    def time_elapsed(self):
-        return self.__time_elapsed
     @property
     def player(self) -> IPlayer:
         return self.__player

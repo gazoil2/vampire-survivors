@@ -87,6 +87,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     def __calculate_stats(self):
         new_stats = PlayerStats.get_base_player_stats() + self.inventory.get_combined_stats()
+        self._speed = self.stats.movement_speed
         self.__stats = new_stats
     
     def __gain_level(self):
@@ -106,7 +107,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
 
     def update(self, world: IGameWorld):
         super().update(world)
-        self._speed = self.stats.movement_speed
+        
         self.__health = min(self.stats.max_health,self.__health + self.stats.recovery)
         self.__inventory.update(world)
         

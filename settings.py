@@ -1,5 +1,5 @@
 # Display
-GAME_TITLE = "Generic Game"
+GAME_TITLE = "Vampire survivors"
 FPS = 60
 
 # Tile dimensions

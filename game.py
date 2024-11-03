@@ -42,15 +42,19 @@ class Game:
             self.__paused = self.__input_handler.is_paused()
             if self.__paused:
                 self.__clock.tick(settings.FPS)
+                self.__input_handler.process_input()
                 self.__process_game_events()
+                self.__display.render_pause_screen()
+                self.__display.update_display()
             else:
                 try:
+                    self.__clock.tick(settings.FPS)
                     self.__process_game_events()
                     self.__input_handler.process_input()
                     self.__world.update()
                     CollisionHandler.handle_collisions(self.__world)
                     DeathHandler.check_deaths(self.__world)
                     self.__display.render_frame()
-                    self.__clock.tick(settings.FPS)
+                    self.__display.update_display()
                 except DeadPlayerException:
                     self.__running = False

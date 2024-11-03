@@ -78,6 +78,7 @@ class Display(IDisplay):
 
     def __draw_time(self):
         time_elapsed= self.__world.time_elapsed
+        time_elapsed /= 1000
         minutes = int(time_elapsed // 60)
         seconds = int(time_elapsed % 60)
         cronometer_text = f"Time: {minutes:02}:{seconds:02}"
@@ -102,6 +103,17 @@ class Display(IDisplay):
 
     def load_world(self, world: GameWorld):
         self.__world = world
+
+
+    def render_pause_screen(self):
+        """Draws the pause screen overlay."""
+        overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))
+        pause_text = self.__font.render("Paused", True, (255, 255, 255))
+        text_rect = pause_text.get_rect(center=(self.__screen.get_width() // 2, self.__screen.get_height() // 2))
+        self.render_frame()
+        self.__screen.blit(overlay, (0, 0))
+        self.__screen.blit(pause_text, text_rect)
 
     def render_frame(self):
         # Update the camera to follow the player
@@ -131,5 +143,6 @@ class Display(IDisplay):
         # Draw the player
         self.__draw_player()
         self.__draw_time()
-        # Update the display
+        
+    def update_display(self):
         pygame.display.flip()

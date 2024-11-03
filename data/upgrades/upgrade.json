@@ -146,9 +146,9 @@
   "Wings": {
       "type": "passive",
       "affects": "movement_speed",
-      "increase": 1000,
+      "increase": 0.5,
       "max_level": 5,
-      "unlock_info": "Increases movement speed by 10%."
+      "unlock_info": "Increases movement speed by 0.5."
   },
   "Tirajisú": {
       "type": "passive",
