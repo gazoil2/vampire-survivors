@@ -3,23 +3,64 @@ from typing import List
 from business.weapons.stats import PlayerStats
 from business.weapons.passive_item import PassiveItem
 class PassiveItemFactory:
-    def __init__(self, json_file: str, player_stats: PlayerStats):
-        self.json_file = json_file
-        self.player_stats = player_stats
     
+    JSON_FILE = "data/upgrades/upgrade.json"
     @staticmethod
-    def load_passive_items(self) -> List[PassiveItem]:
+    def get_all_passive_items() -> List[PassiveItem]:
         passive_items = []
         
         # Load the JSON data
-        with open(self.json_file, 'r') as file:
+        with open(PassiveItemFactory.JSON_FILE, 'r') as file:
             items_data = json.load(file)
         
         # Iterate through the passive items in the JSON and create PassiveItem instances
         for item_name, item_data in items_data.items():
             if item_data["type"] == "passive":
-                max_level = item_data.get("max_level", 1)
-                passive_item = PassiveItem(item_name, self.player_stats, self.json_file, weapon_level=max_level)
+                passive_item = PassiveItem(item_name)
                 passive_items.append(passive_item)
         
         return passive_items
+
+    @staticmethod
+    def get_spinach():
+        return PassiveItem("Spinach")
+    
+    @staticmethod
+    def get_armor():
+        return PassiveItem("Armor")
+    
+    @staticmethod
+    def get_hollow_heart():
+        return PassiveItem("Hollow Heart")
+    
+    @staticmethod
+    def get_pummarola():
+        return PassiveItem("Pummarola")
+    
+    @staticmethod
+    def get_empty_tome():
+        return PassiveItem("Empty Tome")
+    
+    @staticmethod
+    def get_candelabrador():
+        return PassiveItem("Candelabrador")
+    
+    @staticmethod
+    def get_bracer():
+        return PassiveItem("Bracer")
+    
+    @staticmethod
+    def get_spellbinder():
+        return PassiveItem("Spellbinder")
+    
+    @staticmethod
+    def get_wings():
+        return PassiveItem("Wings")
+    
+    @staticmethod
+    def get_attractorb():
+        return PassiveItem("Attractorb")
+    
+    @staticmethod
+    def get_tirajisu():
+        return PassiveItem("Tirajisú")

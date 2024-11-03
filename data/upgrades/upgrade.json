@@ -1,85 +1,160 @@
 {
-    "greenwand": {
-      "type": "weapon", 
-      "max_level": 3,
-      "levels": [
-        {
-          "damage": 10
-        },
-        {
-          "area_of_effect": 0.2
-        },
-        {
-          "reload_time": -280
-        }
-      ]
-    },
-    "Spinach":{
+  "Green Wand": {
+    "type": "weapon",
+    "max_level": 5,
+    "levels": [
+      {
+        "damage": 10
+      },
+      {
+        "area_of_effect": 0.2
+      },
+      {
+        "reload_time": -280
+      },
+      {
+        "damage": 15
+      },
+      {
+        "area_of_effect": 0.3
+      }
+    ],
+    "unlock_info": "Shoots at the nearest enemy."
+  },
+  "Red Wand": {
+    "type": "weapon",
+    "max_level": 5,
+    "levels": [
+      {
+        "damage": 12
+      },
+      {
+        "area_of_effect": 0.25
+      },
+      {
+        "reload_time": -300
+      },
+      {
+        "damage": 18
+      },
+      {
+        "area_of_effect": 0.35
+      }
+    ],
+    "unlock_info": "Shoots at a random enemy."
+  },
+  "Shotgun": {
+    "type": "weapon",
+    "max_level": 5,
+    "levels": [
+      {
+        "damage": 50
+      },
+      {
+        "projectiles": 5
+      },
+      {
+        "area_of_effect": 0.4
+      },
+      {
+        "reload_time": -500
+      },
+      {
+        "damage": 75
+      }
+    ],
+    "unlock_info": "Fires a big slow moving bullet."
+  },
+  "Bible": {
+    "type": "weapon",
+    "max_level": 5,
+    "levels": [
+      {
+        "damage": 5
+      },
+      {
+        "area_of_effect": 0.1
+      },
+      {
+        "reload_time": -100
+      },
+      {
+        "projectile_speed": 300
+      },
+      {
+        "damage": 7
+      }
+    ],
+    "unlock_info": "Creates a circle of projectiles around the player."
+  },
+  "Spinach": {
       "type": "passive",
       "affects": "power",
       "increase": 10,
-      "max_level": 5
-
-    },
-    "Armor": {
-        "type": "passive",
-        "affects": "armor",
-        "increase": 1,
-        "max_level": 5
-    },
-    "HollowHeart": {
-        "type": "passive",
-        "affects": "max_health",
-        "increase": 20,
-        "max_level": 5
-    },
-    "Pummarola": {
-        "type": "passive",
-        "affects": "recovery",
-        "increase": 0.2,
-        "max_level": 5
-    },
-    "EmptyTome": {
-        "type": "passive",
-        "affects": "reload_time",
-        "increase": -8,
-        "max_level": 5
-    },
-    "Candelabrador": {
-        "type": "passive",
-        "affects": "area_of_effect",
-        "increase": 10,
-        "max_level": 5
-    },
-    "Bracer": {
-        "type": "passive",
-        "affects": "velocity",
-        "increase": 10,
-        "max_level": 5
-    },
-    "Spellbinder": {
-        "type": "passive",
-        "affects": "duration",
-        "increase": 10,
-        "max_level": 5
-    },
-    "Wings": {
-        "type": "passive",
-        "affects": "movement_speed",
-        "increase": 10,
-        "max_level": 5
-    },
-    "Attractorb": {
-        "type": "passive",
-        "affects": "pickup_range",
-        "increase": 1,
-        "max_level": 5
-    },
-    "Tirajisú": {
-        "type": "passive",
-        "affects": "lifes",
-        "increase": 1,
-        "max_level": 2
-    }
+      "max_level": 10,
+      "unlock_info": "Increases damage dealt to enemies by 10%."
+  },
+  "Armor": {
+      "type": "passive",
+      "affects": "armor",
+      "increase": 1,
+      "max_level": 1,
+      "unlock_info": "Increases armor by 1."
+  },
+  "HollowHeart": {
+      "type": "passive",
+      "affects": "max_health",
+      "increase": 20,
+      "max_level": 5,
+      "unlock_info": "Increases maximum health by 20."
+  },
+  "Pummarola": {
+      "type": "passive",
+      "affects": "recovery",
+      "increase": 0.2,
+      "max_level": 5,
+      "unlock_info": "Increases recovery by 0.2."
+  },
+  "EmptyTome": {
+      "type": "passive",
+      "affects": "reload_time",
+      "increase": -8,
+      "max_level": 5,
+      "unlock_info": "Decreases reload time by 8%."
+  },
+  "Candelabrador": {
+      "type": "passive",
+      "affects": "area_of_effect",
+      "increase": 10,
+      "max_level": 5,
+      "unlock_info": "Increases area of effect by 10%."
+  },
+  "Bracer": {
+      "type": "passive",
+      "affects": "velocity",
+      "increase": 10,
+      "max_level": 5,
+      "unlock_info": "Increases velocity by 10%."
+  },
+  "Spellbinder": {
+      "type": "passive",
+      "affects": "duration",
+      "increase": 10,
+      "max_level": 5,
+      "unlock_info": "Increases duration by 10%."
+  },
+  "Wings": {
+      "type": "passive",
+      "affects": "movement_speed",
+      "increase": 1000,
+      "max_level": 5,
+      "unlock_info": "Increases movement speed by 10%."
+  },
+  "Tirajisú": {
+      "type": "passive",
+      "affects": "lifes",
+      "increase": 1,
+      "max_level": 2,
+      "unlock_info": "Adds 1 extra life."
+  }
 }
-  

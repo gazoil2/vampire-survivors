@@ -1,16 +1,17 @@
 from business.weapons.stats import ProjectileStatsMultiplier, ProjectileStats
-from business.weapons.interfaces import IAtackShapeFactory, IUpgradable
+from business.weapons.interfaces import IAtackShapeFactory, IUpgradable, IUpdatable
 from business.weapons.atack_shape import NormalBullet
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.game_world import IGameWorld
 from business.weapons.upgrade import Upgrade
 
-class Weapon(IUpgradable):
-    def __init__(self, projectile_stats: ProjectileStats, atack_shape: IAtackShapeFactory, json_file: str,name : str ,weapon_level: int = 1):
+class Weapon(IUpgradable, IUpdatable):
+    def __init__(self, projectile_stats: ProjectileStats, atack_shape: IAtackShapeFactory,name : str ,weapon_level: int = 1):
         self.__cooldown_handler = CooldownHandler(projectile_stats.reload_time)
         self.__atack_shape = atack_shape
         self.__stats = projectile_stats
-        self.__upgrade = Upgrade(name, json_file) 
+        self.__name = name
+        self.__upgrade = Upgrade(name) 
         self.__weapon_level = weapon_level
 
     def __shoot(self, world: IGameWorld):
@@ -28,3 +29,21 @@ class Weapon(IUpgradable):
             self.__shoot(world)
             self.__cooldown_handler.put_on_cooldown()
         super().update(world)
+
+    @property
+    def name(self):
+        return self.__name
+    
+    def __eq__(self, value):
+        if  isinstance(value, Weapon):
+            return value.__name == self.__name
+        return False
+    
+    def can_be_upgraded(self):
+        return self.__upgrade.max_level > self.__weapon_level
+    
+    def get_next_level_data(self):
+        return self.__upgrade.get_upgrade_data(self.__weapon_level)
+    
+    def get_unlock_info(self):
+        return self.__upgrade.unlock_info

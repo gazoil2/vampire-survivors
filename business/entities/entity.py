@@ -3,7 +3,7 @@
 import logging
 from abc import abstractmethod
 from typing import Tuple
-
+from math import hypot
 from business.entities.interfaces import ICanMove, IDamageable, IHasPosition, IHasSprite
 from business.world.interfaces import IGameWorld
 from presentation.sprite import Sprite
@@ -86,12 +86,16 @@ class MovableEntity(Entity, ICanMove):
         direction_x = target_x - self._pos_x
         direction_y = target_y - self._pos_y
         
-        magnitude = (direction_x ** 2 + direction_y ** 2) ** 0.5
+        # Use hypot to calculate magnitude with higher precision
+        magnitude = hypot(direction_x, direction_y)
 
+        # Avoid division by zero by returning a zero vector if the target is at the same position
+        if magnitude == 0:
+            return 0.0, 0.0
+        
         # Normalize the direction vector
-        if magnitude > 0:
-            direction_x /= magnitude
-            direction_y /= magnitude
+        direction_x /= magnitude
+        direction_y /= magnitude
         
         return direction_x, direction_y
     @property

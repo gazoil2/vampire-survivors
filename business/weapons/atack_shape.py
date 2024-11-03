@@ -38,7 +38,6 @@ class NormalBullet(MovableEntity,IBullet):
             except ValueError:
                 world.remove_bullet(self)
         self.move(self.__direction[0],self.__direction[1])
-        print(self.__direction)
         super().update(world)
     
     @property

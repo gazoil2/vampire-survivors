@@ -14,6 +14,7 @@ from business.weapons.weapon import Weapon
 from business.weapons.attack_builder import GreenBulletFactory
 from business.weapons.stats import ProjectileStatsMultiplier, PlayerStats, ProjectileStats
 from business.weapons.factories.weapon_factory import WeaponFactory
+from business.weapons.inventory import Inventory
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from presentation.sprite import PlayerSprite, BulletSprite
@@ -22,7 +23,7 @@ from presentation.sprite import PlayerSprite, BulletSprite
 def initialize_player():
     """Initializes the player object"""
     x, y = settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2
-    return Player(x, y, PlayerSprite(x, y), PlayerStats.get_base_player_stats())
+    return Player(x, y, PlayerSprite(x, y), Inventory([],[],100))
 
 
 def initialize_game_world():
@@ -30,8 +31,8 @@ def initialize_game_world():
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    weapon = WeaponFactory.get_bible()
-    player.set_weapon(weapon)
+    for action in player.inventory.get_possible_actions():
+        action.do_action()
     return GameWorld(monster_spawner, tile_map, player, 0)
 
 

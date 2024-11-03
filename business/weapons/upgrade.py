@@ -1,8 +1,10 @@
 from business.weapons.stats import ProjectileStats, ProjectileStatsMultiplier, PlayerStats
+from business.weapons.exception import InvalidLevelUp
 import json
 
 class Upgrade:
-    def __init__(self, weapon_name: str, json_file: str):
+    DEFAULT_UPGRADE_PATH = "data/upgrades/upgrade.json"
+    def __init__(self, weapon_name: str, json_file: str = "data/upgrades/upgrade.json"):
         self.weapon_name = weapon_name
         self.upgrades = self.__load_upgrades(json_file)
         self.type = self.upgrades.get("type")
@@ -15,13 +17,12 @@ class Upgrade:
 
     def apply_upgrade(self, level: int, stats: ProjectileStats| PlayerStats) -> ProjectileStats | PlayerStats:
         """Apply the upgrade based on the weapon level."""
-        level -= 2
-        if "levels" not in self.upgrades or level >= (self.upgrades["max_level"]):
-            return stats
-
+        if self.max_level < level:
+            raise InvalidLevelUp(f"No upgrade data available for level {level} for item ")
         if self.type == "passive":
             return self.__apply_passive_upgrade(stats)
         elif self.type == "weapon":
+            level -= 1
             return self.__apply_weapon_upgrade(stats, level)
         # Get the upgrade data (delta) for the specified level
         
@@ -41,8 +42,6 @@ class Upgrade:
             stats.projectile_stats.area_of_effect += increase
         elif affects == "reload_time":
             stats.projectile_stats.reload_time += increase
-        elif affects == "projectile_count":
-            stats.projectile_stats.projectile_count += increase
         elif affects == "max_health":
             stats.max_health += increase
         elif affects == "recovery":
@@ -58,10 +57,41 @@ class Upgrade:
     def __apply_weapon_upgrade(self, stats : ProjectileStats, level):
         upgrade_data = self.upgrades["levels"][level]
         # Apply deltas to current stats
-        stats.damage += upgrade_data.get("d amage", 0)
+        stats.damage += upgrade_data.get("damage", 0)
         stats.area_of_effect += upgrade_data.get("area_of_effect", 0)
         stats.velocity += upgrade_data.get("velocity", 0)
         stats.reload_time += upgrade_data.get("reload_time", 0)  
         stats.duration += upgrade_data.get("duration", 0)
-        stats.projectile_count += upgrade_data.get("projectile_count", 0)
         return stats
+    
+    @property
+    def max_level(self) -> bool:
+        return self.upgrades.get("max_level",0)
+
+    @property
+    def unlock_info(self):
+        return self.upgrades.get("unlock_info", "No information found")
+
+    def get_upgrade_data(self,level):
+        if self.max_level < level:
+            raise InvalidLevelUp(f"No upgrade data available for level {level} for weapon {self.weapon_name}")
+
+        if self.type == "weapon":
+            level_index = level - 1
+            levels = self.upgrades.get("levels", [])
+            upgrade_data = levels[level_index]
+            key = list(upgrade_data.keys())[0]
+            value = list(upgrade_data.values())[0]
+            if value > 0:
+                return f"Increases {key} a {value}"
+            else: 
+                return f"Decreases {key} a {value}"
+            
+        
+        if self.type == "passive":
+            affects = self.upgrades.get("affects")
+            increase = self.upgrades.get("increase")
+            if increase > 0:
+                return f"Increases {affects} a {increase}"
+            else:
+                return f"Decreases {affects} a {increase}"
