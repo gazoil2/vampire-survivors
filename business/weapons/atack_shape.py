@@ -1,6 +1,6 @@
 import math
 from typing import List, Dict
-from random import choice
+from random import uniform
 from business.entities.interfaces import IBullet, IMonster
 from business.entities.entity import MovableEntity
 from business.world.interfaces import IGameWorld
@@ -14,7 +14,8 @@ class NormalBullet(MovableEntity,IBullet):
     def __init__(self,pos_x: float, pos_y: float,sprite : Sprite, projectile_stats: ProjectileStats):
         self.__stats = projectile_stats
         super().__init__(pos_x,pos_y,self.__stats.velocity,sprite)
-        sprite.scale_image(self.__stats.area_of_effect)
+        self.__sprite = sprite
+        self.__sprite.scale_image(self.__stats.area_of_effect)
         self.__direction = (0,0)
         self.__pierce = self.__stats.pierce
         self.__attacked_enemies = []
@@ -29,6 +30,12 @@ class NormalBullet(MovableEntity,IBullet):
             raise ValueError("No hay monstruos para atacar")
         nearest_monster = min(monsters, key=lambda monster: self._get_distance_to(monster))
         self.__direction = self._get_direction_to(nearest_monster.pos_x, nearest_monster.pos_y)
+        direction_x, direction_y = self.__direction
+        angle = math.degrees(math.atan2(direction_y, direction_x))
+
+        if angle < 0:
+            angle += 360
+        self.__sprite.rotate(-angle)
         self.__has_set_direction = True
     
     def update(self, world : IGameWorld):
@@ -57,31 +64,48 @@ class NormalBullet(MovableEntity,IBullet):
         return f"NormalBullet at position ({self._pos_x}, {self._pos_y})"
 
 
-class RandomBullet(NormalBullet):
-    def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
-        super().__init__(pos_x, pos_y, sprite, projectile_stats)
-
-    def __set_direction(self, monsters: List[IMonster]):
-        if not monsters:
-            raise ValueError("No hay monstruos para atacar")
-        self.__has_set_direction = True
-        # Use random.choice to select a random monster
-        random_monster = choice(monsters)
-        self.__direction = self._get_direction_to(random_monster.pos_x, random_monster.pos_y)
-
-    def update(self, world: IGameWorld):
-        super().update(world)
+class RandomBullet(MovableEntity, IBullet):
+    """A bullet that moves in a random direction."""
     
-    def take_damage(self, _: int):
-        pass
-
-    def attack(self, damageable: IDamageable):
-        return super().attack(damageable)
+    def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
+        self.__stats = projectile_stats
+        super().__init__(pos_x, pos_y, self.__stats.velocity, sprite)
+        self.__sprite = sprite
+        self.__sprite.scale_image(self.__stats.area_of_effect)
+        self.__direction = self.__get_random_direction()
+        self.__pierce = self.__stats.pierce
+        self.__attacked_enemies = []
 
     @property
     def damage_amount(self):
         return self.__stats.damage
 
+    def __get_random_direction(self):
+        """Generate a random direction as a tuple (x, y)."""
+        angle = uniform(0, 360)  # Random angle in degrees
+        radian_angle = math.radians(angle)
+        self.__sprite.rotate(-angle)
+        return (math.cos(radian_angle), math.sin(radian_angle))
+
+    def update(self, world: IGameWorld):
+        self.move(self.__direction[0], self.__direction[1])
+        super().update(world)
+
+    @property
+    def health(self) -> int:
+        return self.__pierce
+
+    def take_damage(self, _ : int):
+        pass
+
+    def attack(self, damageable: IDamageable):
+        if damageable not in self.__attacked_enemies:
+            damageable.take_damage(self.__stats.damage)
+            self.__attacked_enemies.append(damageable)
+            self.__pierce -= 1
+
+    def __str__(self) -> str:
+        return f"RandomBullet at position ({self._pos_x}, {self._pos_y})"
 
 class RotatingBullet(MovableEntity, IBullet):
     """Bullet that orbits around the player and disappears after a set duration."""
@@ -148,10 +172,15 @@ class TrailBullet(MovableEntity, IBullet):
     def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
         self.__stats = projectile_stats
         sprite.scale_image(self.__stats.area_of_effect)
-        super().__init__(pos_x, pos_y, projectile_stats.velocity, sprite)
+
+        # Use the sprite's rect to set the center position directly
+        sprite.update_pos(pos_x, pos_y)
+
+        # Call the MovableEntity constructor with the rect position
+        super().__init__(sprite.rect.centerx, sprite.rect.centery, projectile_stats.velocity, sprite)
         self.__time_out_handler = CooldownHandler(projectile_stats.duration)
         self.__attacked_enemies = []
-        
+
     @property
     def health(self):
         return 1

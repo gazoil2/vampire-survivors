@@ -2,9 +2,7 @@
 
 ## Alta Prioridad
 Limite de mapa
-Crear nuevas balas
 Nuevos enemigos
-Poder pausar el juego
 Poder cerrar el juego:
 - Guardar armas
 - Guardar enemigos y sus posiciones
@@ -12,7 +10,7 @@ Poder cerrar el juego:
 - Guardar las estadísticas del jugador
 
 ## Media Prioridad
-Crear el inventario
+
 
 
 ## Baja Prioridad

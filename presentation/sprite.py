@@ -77,8 +77,20 @@ class Sprite(pygame.sprite.Sprite):
         original_size = self._image.get_size()
         new_width = int(original_size[0] * scale_factor)
         new_height = int(original_size[1] * scale_factor)
-        self._image = pygame.transform.scale(self.__original_image, (new_width, new_height))
+        self._image = pygame.transform.scale(self._image, (new_width, new_height))
         self._rect.size = self._image.get_size()  # Update the rect to match the new image size
+    
+    def rotate(self, angle: float):
+        """Rotate the sprite's image by the specified angle.
+
+        Args:
+            angle (float): The angle in degrees to rotate the image.
+        """
+        # Rotate the image
+        self._image = pygame.transform.rotate(self._image, angle)
+        # Update the rect to maintain the center position
+        self._rect = self._image.get_rect(center=self._rect.center)
+
 
 class PlayerSprite(Sprite):
     """A class representing the player sprite."""
@@ -116,8 +128,15 @@ class BulletSprite(Sprite):
 
         super().__init__(image, rect)
 
+class ImageSprite(Sprite):
+    def __init__(self, pos_x: float, pos_y: float, image_to_load : str):
+        image : pygame.Surface  = pygame.image.load(image_to_load).convert_alpha()
+        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
+        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+        super().__init__(image, rect)
+
 class CircleBullet(Sprite):
-    """A class representing a red circle bullet."""
+    """A class representing a circle bullet."""
     def __init__(self, pos_x: float, pos_y: float, radius: int = 5, color = (0,0,0)):
         # Create a surface with alpha transparency
         image = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)  
@@ -126,6 +145,7 @@ class CircleBullet(Sprite):
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
 
         super().__init__(image, rect)
+
 class ExperienceGemSprite(Sprite):
     """A class representing the experience gem sprite."""
 

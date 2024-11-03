@@ -113,6 +113,9 @@ class ICanMove(IHasPosition):
             direction_x (float): The direction in x-coordinate.
             direction_y (float): The direction in y-coordinate.
         """
+    
+    def update_position(self, new_x: float, new_y: float):
+        """Directly updates the position of the entity."""
 
 
 class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):

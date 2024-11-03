@@ -1,4 +1,26 @@
 {
+  "Goo Wand": {
+    "type": "weapon",
+    "max_level": 5,
+    "levels": [
+      {
+        "damage": 10
+      },
+      {
+        "damage": 15
+      },
+      {
+        "damage": 20
+      },
+      {
+        "damage": 25
+      },
+      {
+        "damage": 30
+      }
+    ],
+    "unlock_info": "Casts a trail of goo that damages enemies."
+  },
   "Green Wand": {
     "type": "weapon",
     "max_level": 5,
@@ -10,7 +32,7 @@
         "area_of_effect": 0.2
       },
       {
-        "reload_time": -280
+        "reload_time": -100
       },
       {
         "damage": 15
@@ -32,7 +54,7 @@
         "area_of_effect": 0.25
       },
       {
-        "reload_time": -300
+        "reload_time": -30
       },
       {
         "damage": 18

@@ -1,7 +1,7 @@
 """Module for the CollisionHandler class."""
 
 from typing import List
-
+from settings import WORLD_WIDTH, WORLD_HEIGHT
 from business.entities.interfaces import IBullet, IExperienceGem, IHasSprite, IMonster, IPlayer
 from business.world.interfaces import IGameWorld
 
@@ -46,3 +46,7 @@ class CollisionHandler:
         CollisionHandler.__handle_bullets(world.bullets, world.monsters)
         CollisionHandler.__handle_monsters(world.monsters, world.player)
         CollisionHandler.__handle_gems(world.experience_gems, world.player, world)
+        world.player.update_position(
+            max(0, min(world.player.pos_x, WORLD_WIDTH - world.player.sprite.rect.width)),
+            max(0, min(world.player.pos_y, WORLD_HEIGHT - world.player.sprite.rect.height))
+        )
