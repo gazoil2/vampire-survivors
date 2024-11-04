@@ -17,7 +17,7 @@ from business.weapons.factories.weapon_factory import WeaponFactory
 from business.weapons.inventory import Inventory
 from presentation.display import Display
 from presentation.input_handler import InputHandler
-from presentation.sprite import PlayerSprite, BulletSprite
+from presentation.sprite import PlayerSprite
 
 
 def initialize_player():
@@ -31,8 +31,7 @@ def initialize_game_world():
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     player = initialize_player()
-    for action in player.inventory.get_possible_actions():
-        action.do_action()
+    player.inventory.add_item_to_inventory(WeaponFactory.get_green_wand())
     return GameWorld(monster_spawner, tile_map, player, 0)
 
 

@@ -15,6 +15,7 @@ class Sprite(pygame.sprite.Sprite):
         super().__init__(*groups)
         self.__is_in_damage_countdown = 0
         self.__original_image: pygame.Surface = image
+        self._mask: pygame.mask.Mask = pygame.mask.from_surface(image)
 
     @property
     def image(self) -> pygame.Surface:
@@ -34,6 +35,15 @@ class Sprite(pygame.sprite.Sprite):
         """
         return self._rect
 
+    @property
+    def mask(self) -> pygame.mask.Mask:
+        """The mask of the sprite.
+
+        Returns:
+            pygame.mask.Mask: The mask of the sprite.
+        """
+        return self._mask
+
     def update_pos(self, pos_x: float, pos_y: float):
         """Update the position of the sprite.
 
@@ -47,7 +57,7 @@ class Sprite(pygame.sprite.Sprite):
         self._image = self.__original_image.copy()
 
     def __change_color(self, color: tuple[int, int, int]):
-        self._image = self.__original_image.copy()  # Make a copy of the original image
+        self._image = self._image.copy()  # Make a copy of the original image
         self._image.fill(color, special_flags=pygame.BLEND_MULT)  # Change color
         self._image.set_colorkey((0, 0, 0))  # Set transparency if necessary
 
@@ -74,12 +84,20 @@ class Sprite(pygame.sprite.Sprite):
         Args:
             scale_factor (float): The factor by which to scale the image.
         """
-        original_size = self._image.get_size()
+        original_size = self.__original_image.get_size()
         new_width = int(original_size[0] * scale_factor)
         new_height = int(original_size[1] * scale_factor)
+        
+        # Scale the image
         self._image = pygame.transform.scale(self._image, (new_width, new_height))
-        self._rect.size = self._image.get_size()  # Update the rect to match the new image size
-    
+        
+        # Update the mask
+        self._mask = pygame.mask.from_surface(self._image)
+        
+        # Update the rect size and center to maintain position
+        self._rect = self._image.get_rect(center=self.rect.center)
+
+
     def rotate(self, angle: float):
         """Rotate the sprite's image by the specified angle.
 
@@ -88,10 +106,47 @@ class Sprite(pygame.sprite.Sprite):
         """
         # Rotate the image
         self._image = pygame.transform.rotate(self._image, angle)
+        
+        # Update the mask
+        self._mask = pygame.mask.from_surface(self._image)
+        
+        # Update the rect to maintain the center position
+        self._rect = self._image.get_rect(center=self._rect.center)
+
+    def flip(self, horizontal: bool = False, vertical: bool = False):
+        """Flip the sprite's image horizontally and/or vertically.
+
+        Args:
+            horizontal (bool): If True, flip the image horizontally.
+            vertical (bool): If True, flip the image vertically.
+        """
+        # Flip the image based on the arguments
+        self._image = pygame.transform.flip(self.__original_image, horizontal, vertical)
+        
+        # Update the mask
+        self._mask = pygame.mask.from_surface(self._image)
+        
         # Update the rect to maintain the center position
         self._rect = self._image.get_rect(center=self._rect.center)
 
 
+#
+#class PlayerSprite(Sprite):
+#    """A class representing the player sprite."""
+#
+#    ASSET = "./assets/player/necromancer.png"
+#    IDLE_POSITIONS = [0,1,2,3,4,5,6,7]
+#    WALKING_POSITIONS = [18,19,20,21,22,23,24,25]
+#    SCALE = 5
+#
+#    def __init__(self, pos_x: float, pos_y: float):
+#        self.__tile_set = Tileset(PlayerSprite.ASSET,160,128,17,7)
+#        image: pygame.Surface = self.__tile_set.get_tile(0)
+#        scaled_dimensions = tuple(d * self.SCALE for d in settings.TILE_DIMENSION)
+#        image = pygame.transform.scale(image, scaled_dimensions).convert_alpha()
+#        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+#        super().__init__(image, rect)
+#
 class PlayerSprite(Sprite):
     """A class representing the player sprite."""
 
@@ -108,25 +163,23 @@ class PlayerSprite(Sprite):
 class MonsterSprite(Sprite):
     """A class representing the monster sprite."""
 
-    ASSET = "./assets/monster.png"
+    ASSET_FOLDER = "./assets/enemies/"
 
-    def __init__(self, pos_x: float, pos_y: float):
-        image: pygame.Surface = pygame.image.load(MonsterSprite.ASSET).convert_alpha()
+    def __init__(self, pos_x: float, pos_y: float, file_name : str):
+        image: pygame.Surface = pygame.image.load(MonsterSprite.ASSET_FOLDER + file_name + ".png").convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
         rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
-
+        self.__flipped = False
         super().__init__(image, rect)
+    
+
+    def flip(self, horizontal = False, _ = False):
+        if horizontal != self.__flipped:
+            self.__flipped = horizontal
+            return super().flip(horizontal, False)
 
 
-class BulletSprite(Sprite):
-    """A class representing the bullet sprite."""
 
-    def __init__(self, pos_x: float, pos_y: float):
-        image = pygame.Surface((5, 5), pygame.SRCALPHA)  # pylint: disable=E1101
-        pygame.draw.circle(image, (255, 255, 0), (2, 2), 5)
-        rect: pygame.rect = image.get_rect(center=(int(pos_x), int(pos_y)))
-
-        super().__init__(image, rect)
 
 class ImageSprite(Sprite):
     def __init__(self, pos_x: float, pos_y: float, image_to_load : str):

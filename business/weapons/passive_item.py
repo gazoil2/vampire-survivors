@@ -7,6 +7,7 @@ class PassiveItem(IUpgradable):
         self.__level = weapon_level
         self.__upgrade = Upgrade(name)
         self.__stats = PlayerStats.get_empty_player_stats()
+        self.__upgrade.apply_upgrade(self.__level,self.__stats)
     
     def upgrade(self):
         self.__stats = self.__upgrade.apply_upgrade(self.__level,self.__stats)
@@ -14,6 +15,10 @@ class PassiveItem(IUpgradable):
     @property
     def stats(self):
         return self.__stats
+    
+    @property
+    def name(self):
+        return self.__name
     
     def __eq__(self, value):
         if isinstance(value, PassiveItem):

@@ -6,6 +6,7 @@ from business.entities.entity import MovableEntity
 from business.entities.interfaces import IDamageable, IMonster, IPlayer, ICanDealDamage
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.interfaces import IGameWorld
+from business.weapons.stats import MonsterStats
 from presentation.sprite import Sprite
 from business.entities.experience_gem import ExperienceGem
 
@@ -13,7 +14,7 @@ class Monster(MovableEntity, IMonster):
     """A monster entity in the game."""
     MONSTER_ATTACK_COOLDOWN = 1000
     MONSTER_SPEED = 2
-    def __init__(self, src_x: int, src_y: int, sprite: Sprite):
+    def __init__(self, src_x: int, src_y: int, sprite: Sprite, monster_stats : MonsterStats):
         """
         Initializes a Monster entity.
 
@@ -31,9 +32,13 @@ class Monster(MovableEntity, IMonster):
                 within a short duration.
         """
         super().__init__(src_x, src_y, self.MONSTER_SPEED, sprite)
-        self.__health: int = 10
-        self.__damage = 10
+        self.__sprite = sprite
+        self.__monster_stats = monster_stats
+        self.__health: int = monster_stats.health
+        self.__damage = monster_stats.damage
+        self._speed = monster_stats.speed
         self.__attacked_enemies : Dict[IDamageable,CooldownHandler] = {}
+        
         self._logger.debug("Created %s", self)
 
     @property
@@ -42,12 +47,21 @@ class Monster(MovableEntity, IMonster):
 
     def __get_direction_towards_the_player(self, world: IGameWorld):
         direction_x = world.player.pos_x - self.pos_x
-        if direction_x != 0:
-            direction_x = direction_x // abs(direction_x)
-
         direction_y = world.player.pos_y - self.pos_y
-        if direction_y != 0:
-            direction_y = direction_y // abs(direction_y)
+
+        # Use a small threshold to prevent flickering when close to the player
+        threshold = 1  # You can adjust this value based on your game's mechanics
+
+        # Determine direction based on the distance, ensuring to avoid flickering
+        if abs(direction_x) < threshold:
+            direction_x = 0
+        else:
+            direction_x = 1 if direction_x > 0 else -1
+
+        if abs(direction_y) < threshold:
+            direction_y = 0
+        else:
+            direction_y = 1 if direction_y > 0 else -1
 
         return direction_x, direction_y
 
@@ -70,7 +84,10 @@ class Monster(MovableEntity, IMonster):
         direction_x, direction_y = self.__get_direction_towards_the_player(world)
         if (direction_x, direction_y) == (0, 0):
             return
-
+        if direction_x == 1:
+            self.__sprite.flip(False)
+        elif direction_x == -1:
+            self.__sprite.flip(True)
         monsters = [m for m in world.monsters if m != self]
         dx, dy = direction_x * self.speed, direction_y * self.speed
         if not self.__movement_collides_with_entities(dx, dy, monsters, world.player):
@@ -91,7 +108,7 @@ class Monster(MovableEntity, IMonster):
     
     def attack(self, damageable : IDamageable):
         if damageable not in self.__attacked_enemies:
-            self.__attacked_enemies[damageable] = CooldownHandler(self.MONSTER_ATTACK_COOLDOWN)
+            self.__attacked_enemies[damageable] = CooldownHandler(self.__monster_stats.attack_cooldown)
             damageable.take_damage(self.__damage)
         else:
             cooldown_handler = self.__attacked_enemies[damageable]
@@ -101,7 +118,8 @@ class Monster(MovableEntity, IMonster):
     
     def drop_loot(self, game_world):
         # Create an ExperienceGem at the enemy's position
-        exp_gem = ExperienceGem(self._pos_x, self._pos_y, amount=1)
+        
+        exp_gem = ExperienceGem(self._pos_x, self._pos_y, amount=self.__monster_stats.xp_drop)
         # Add the exp_gem to your game world (make sure you have a reference to it)
         game_world.add_experience_gem(exp_gem)  # Replace with your actual method to add entities
         self._logger.debug("Enemy died, dropping experience gem at %s", exp_gem)

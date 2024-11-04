@@ -15,7 +15,6 @@ class NormalBullet(MovableEntity,IBullet):
         self.__stats = projectile_stats
         super().__init__(pos_x,pos_y,self.__stats.velocity,sprite)
         self.__sprite = sprite
-        self.__sprite.scale_image(self.__stats.area_of_effect)
         self.__direction = (0,0)
         self.__pierce = self.__stats.pierce
         self.__attacked_enemies = []
@@ -35,6 +34,7 @@ class NormalBullet(MovableEntity,IBullet):
 
         if angle < 0:
             angle += 360
+        self.__sprite.scale_image(self.__stats.area_of_effect)
         self.__sprite.rotate(-angle)
         self.__has_set_direction = True
     
@@ -114,6 +114,7 @@ class RotatingBullet(MovableEntity, IBullet):
     def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
         self.__stats = projectile_stats
         sprite.scale_image(self.__stats.area_of_effect)
+        sprite.rotate(90)
         super().__init__(pos_x, pos_y, projectile_stats.velocity, sprite)
         self.__angle = 0
         self.__attacked_enemies = []

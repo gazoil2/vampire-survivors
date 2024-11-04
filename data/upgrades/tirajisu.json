@@ -1,0 +1,8 @@
+{
+  "Tirajisú": {
+      "type": "passive",
+      "affects": "lifes",
+      "increase": 1,
+      "max_level": 2,
+      "unlock_info": "Adds 1 extra life."
+  }}

@@ -22,7 +22,7 @@ class Upgrade:
         if self.type == "passive":
             return self.__apply_passive_upgrade(stats)
         elif self.type == "weapon":
-            level -= 1
+            level -= 2
             return self.__apply_weapon_upgrade(stats, level)
         # Get the upgrade data (delta) for the specified level
         

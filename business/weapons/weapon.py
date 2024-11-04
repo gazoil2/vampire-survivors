@@ -23,7 +23,6 @@ class Weapon(IUpgradable, IUpdatable):
     def upgrade(self):
         self.__weapon_level += 1
         self.__stats = self.__upgrade.apply_upgrade(self.__weapon_level, self.__stats)
-
     def update(self, world: IGameWorld):
         if self.__cooldown_handler.is_action_ready():
             self.__shoot(world)

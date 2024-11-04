@@ -62,8 +62,9 @@ class Inventory(IUpdatable):
             if weapon.can_be_upgraded():
                 upgrade_data = weapon.get_next_level_data()  # Get the upgrade data for the next level
                 upgrades.append(ActionStrategy(
-                    description=upgrade_data,
-                    action_function=lambda w=weapon: self.upgrade_item(w)
+                    description=f"{upgrade_data} {weapon.name}",
+                    action_function=lambda w=weapon: self.upgrade_item(w),
+                    item_name=weapon.name
                 ))
         return upgrades
 
@@ -71,10 +72,11 @@ class Inventory(IUpdatable):
         upgrades = []
         for passive in self.__passive_items:
             if passive.can_be_upgraded():
-                upgrade_data = passive.get_next_level_data()  # Assuming a similar method exists for passive items
+                upgrade_data = passive.get_unlock_info() # Assuming a similar method exists for passive items
                 upgrades.append(ActionStrategy(
-                    description=upgrade_data,
-                    action_function=lambda p=passive: self.upgrade_item(p)
+                    description=f" {upgrade_data} ",
+                    action_function=lambda p=passive: self.upgrade_item(p),
+                    item_name=passive.name
                 ))
         return upgrades
 
@@ -85,7 +87,8 @@ class Inventory(IUpdatable):
                 unlock_data = weapon.get_unlock_info()
                 possible_weapons.append(ActionStrategy(
                     description=unlock_data,
-                    action_function=lambda w=weapon: self.add_item_to_inventory(w)
+                    action_function=lambda w=weapon: self.add_item_to_inventory(w),
+                    item_name=weapon.name
                 ))
         
         return possible_weapons
@@ -97,7 +100,8 @@ class Inventory(IUpdatable):
                 unlock_data = passive.get_unlock_info()
                 possible_passives.append(ActionStrategy(
                     description=unlock_data,
-                    action_function=lambda p=passive: self.add_item_to_inventory(p)
+                    action_function=lambda p=passive: self.add_item_to_inventory(p),
+                    item_name=passive.name
                 ))
         
         return possible_passives

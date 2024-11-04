@@ -91,7 +91,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__stats = new_stats
     
     def __gain_level(self):
-        self.__experience = 0
         self.__level += 1
         self.__experience_to_next_level = self.__experience_to_next_level * 2
         action = choice(self.inventory.get_possible_actions())
@@ -102,7 +101,9 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         
     def __gain_experience(self, amount: int):
         self.__experience += amount
-        if self.__experience >= self.__experience_to_next_level:
+        while self.__experience >= self.__experience_to_next_level:
+            amount_left = self.__experience - self.__experience_to_next_level
+            self.__experience = amount_left
             self.__gain_level()
 
     def update(self, world: IGameWorld):

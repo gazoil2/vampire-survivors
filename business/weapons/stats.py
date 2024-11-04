@@ -336,3 +336,56 @@ class ProjectileStats:
                 self.__pierce,
                 self.__duration * (value.duration / 100)
             )
+    def __str__(self):
+        """
+        Returns a string representation of the ProjectileStats instance.
+
+        :return: A string detailing the projectile's attributes.
+        """
+        return (f"ProjectileStats(damage={self.__damage}, "
+                f"velocity={self.__velocity}, "
+                f"area_of_effect={self.__area_of_effect}, "
+                f"reload_time={self.__reload_time}, "
+                f"pierce={self.__pierce}, "
+                f"duration={self.__duration})")
+
+class MonsterStats:
+    def __init__(self, speed: float, health: int, damage: int, attack_cooldown: int, xp_drop : int) -> None:
+        """
+        Initializes the MonsterStats instance with specified attributes.
+
+        :param speed: The movement speed of the monster.
+        :param health: The total health points of the monster.
+        :param damage: The damage dealt by the monster per attack.
+        :param attack_cooldown: The time taken between attacks in milliseconds.
+        :param xp_drop: The number of xp the monster drops.
+        """
+        self.__speed = speed
+        self.__health = health
+        self.__damage = damage
+        self.__attack_cooldown = attack_cooldown
+        self.__xp_drop = xp_drop
+
+    @property
+    def speed(self):
+        """Returns the movement speed of the monster."""
+        return self.__speed
+
+    @property
+    def health(self):
+        """Returns the total health points of the monster."""
+        return self.__health
+
+    @property
+    def damage(self):
+        """Returns the damage dealt by the monster per attack."""
+        return self.__damage
+
+    @property
+    def attack_cooldown(self):
+        """Returns the time taken between attacks in milliseconds."""
+        return self.__attack_cooldown
+
+    @property 
+    def xp_drop(self):
+        return self.__xp_drop

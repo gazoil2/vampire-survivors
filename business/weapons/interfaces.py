@@ -46,3 +46,7 @@ class IPassiveItem(IUpgradable):
     @property
     def stats(self):
         """Returns the player stats modified by the passive item"""
+    
+    @property
+    def name(self):
+        """Returns the name of the item"""

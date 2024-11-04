@@ -44,7 +44,7 @@ class TestUpgrade(unittest.TestCase):
     def test_get_upgrade_data(self, mock_file):
         """Test retrieving upgrade data."""
         upgrade = Upgrade("Green Wand")
-        actual_data = upgrade.get_upgrade_data(2)
+        actual_data = upgrade.get_upgrade_data(1)
         expected_data = "Increases damage a 5"
         self.assertEqual(actual_data, expected_data)
 
