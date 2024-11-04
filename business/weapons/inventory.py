@@ -99,7 +99,7 @@ class Inventory(IInventory):
         return possible_weapons
 
     def __get_possible_passives(self) -> List[ActionStrategy]:
-        if len(self.__passive_items) >= self.__max_size:
+        if len(self.__passive_items) >= self.__max_size :
             return []
         possible_passives = []
         for passive in self.__all_passives:

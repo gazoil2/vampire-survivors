@@ -63,7 +63,7 @@
         "area_of_effect": 0.35
       }
     ],
-    "unlock_info": "Shoots at a random enemy."
+    "unlock_info": "Shoots at random."
   },
   "Big Bow": {
     "type": "weapon",

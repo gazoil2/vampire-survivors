@@ -1,8 +1,8 @@
 """Module for the Sprite class."""
 
 import pygame
-
 import settings
+import random
 from presentation.tileset import Tileset
 
 
@@ -237,13 +237,49 @@ class CircleBullet(Sprite):
 class ExperienceGemSprite(Sprite):
     """A class representing the experience gem sprite."""
 
-    ASSET = "./assets/experience_gems.png"
+    ASSET = "./assets/Gems/"
+    COLORS = ["TURQUOISE","LIGHT GREEN","BLUE","PURPLE","LILAC","RED","GOLD","DARK BLUE"]
+    LEVELS = [1,2,3,4,5,6,7,8,9]
+    FRAME_DELAY = 8
+    RESOLUTION = 32
+    GEM_SIZES = {
+        1: ((18, 30), 10),
+        2: ((23, 27), 10),
+        3: ((28, 28), 11),
+        4: ((20, 30), 11),
+        5: ((19, 22), 11),
+        6: ((24, 26), 10),
+        7: ((21, 25), 16),
+        8: ((26, 23), 10),
+        9: ((27, 26), 10)
+    }
 
-    def __init__(self, pos_x: float, pos_y: float):
-        tileset = Tileset(
-            ExperienceGemSprite.ASSET, settings.TILE_HEIGHT, settings.TILE_HEIGHT, 2, 2
+
+    def __init__(self, pos_x: float, pos_y: float, level: int):
+        color = random.choice(self.COLORS)
+        gem_size, n_frames = self.GEM_SIZES.get(level, ((self.RESOLUTION, self.RESOLUTION), 10))
+        self.__frames = n_frames
+        self.__frame_counter = 0  # To track the frame delay
+        self.__tileset = Tileset(
+            ExperienceGemSprite.ASSET + f"GEM {level}/GEM {level} - {color} - Spritesheet.png",
+            gem_size[0], gem_size[1], self.__frames, 1
         )
-        image: pygame.Surface = tileset.get_tile(0)
+        image = self.__tileset.get_tile(0)
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
-
         super().__init__(image, rect)
+        self.__current_frame = 0
+
+    def update(self, *args, **kwargs):
+        # Increment the frame counter for delay
+        self.__frame_counter += 1
+
+        # Only update the image every FRAME_DELAY frames
+        if self.__frame_counter >= self.FRAME_DELAY:
+            # Reset the frame counter
+            self.__frame_counter = 0
+
+            # Update the frame and cycle through the tiles
+            self.__current_frame = (self.__current_frame + 1) % self.__frames
+            image = self.__tileset.get_tile(self.__current_frame)
+            self._image = image
+        

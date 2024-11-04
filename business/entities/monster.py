@@ -69,7 +69,7 @@ class Monster(MovableEntity, IMonster):
         self, dx: float, dy: float, entities: List[IMonster], player : IPlayer
     ) -> bool:
         new_position = self.sprite.rect.move(dx, dy).inflate(-10, -10)
-        priority = self._get_distance_to(player)
+        priority = self._get_distance_to(player) - self.__monster_stats.speed * 4
         for entity in entities:
             entity : IMonster
             other_priority = entity._get_distance_to(player)

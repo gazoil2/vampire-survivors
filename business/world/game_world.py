@@ -32,6 +32,8 @@ class GameWorld(IGameWorld):
         for bullet in self.__bullets:
             bullet.update(self)
 
+        for gem in self.__experience_gems:
+            gem.sprite.update()
         self.__monster_spawner.update(self)
 
     @property

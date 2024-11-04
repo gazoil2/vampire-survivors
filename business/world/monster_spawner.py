@@ -18,19 +18,52 @@ from business.weapons.stats import MonsterStats
 
 class MonsterSpawner(IMonsterSpawner):
     """Spawns monsters in the game world."""
+    THRESHOLDS = [10, 20, 30, 50, 70, 100, 150, 200, 300]
     ENEMY_SPAWN_CONFIG = {
-    0: [
-        {"name": "green_tiny_slime", "stats": MonsterStats(speed=1.5, health=10, damage=2, attack_cooldown=1000, xp_drop=2), "cooldown": 300, },
-        {"name": "purple_tiny_slime", "stats": MonsterStats(speed=4.0, health=5, damage=1, attack_cooldown=1200,xp_drop=3), "cooldown": 800, }
-    ],
-    1: [
-        {"name": "green_slime", "stats": MonsterStats(speed=1.2, health=15, damage=3, attack_cooldown=900,xp_drop=5), "cooldown": 400, },
-        {"name": "red_slime", "stats": MonsterStats(speed=0.8, health=90, damage=4, attack_cooldown=1500,xp_drop=10), "cooldown": 1000, }
-    ],
-    2: [
-        {"name": "Orc", "stats": MonsterStats(speed=1.4, health=30, damage=6, attack_cooldown=800, xp_drop=1), "cooldown": 350},
-        {"name": "Witch", "stats": MonsterStats(speed=1.0, health=12, damage=5, attack_cooldown=700,xp_drop=1), "cooldown": 550}
-    ],
+        0: [
+            {"name": "green_tiny_slime", "stats": MonsterStats(speed=1.5, health=10, damage=2, attack_cooldown=1000, xp_drop=THRESHOLDS[0]), "cooldown": 300},
+            {"name": "purple_tiny_slime", "stats": MonsterStats(speed=4.0, health=5, damage=1, attack_cooldown=500, xp_drop=THRESHOLDS[1]), "cooldown": 800},
+        ],
+        1: [
+            {"name": "green_slime", "stats": MonsterStats(speed=1.2, health=15, damage=3, attack_cooldown=500, xp_drop=THRESHOLDS[2]), "cooldown": 400},
+            {"name": "red_slime", "stats": MonsterStats(speed=0.8, health=90, damage=4, attack_cooldown=1500, xp_drop=THRESHOLDS[3]), "cooldown": 1000},
+        ],
+        2: [
+            {"name": "blue_tiny_slime", "stats": MonsterStats(speed=3.5, health=8, damage=1, attack_cooldown=800, xp_drop=THRESHOLDS[2]), "cooldown": 500},
+            {"name": "yellow_tiny_slime", "stats": MonsterStats(speed=2.8, health=6, damage=2, attack_cooldown=1100, xp_drop=THRESHOLDS[3]), "cooldown": 900},
+        ],
+        3: [
+            {"name": "blue_slime", "stats": MonsterStats(speed=1.4, health=20, damage=4, attack_cooldown=1000, xp_drop=THRESHOLDS[4]), "cooldown": 600},
+            {"name": "yellow_slime", "stats": MonsterStats(speed=1.6, health=25, damage=5, attack_cooldown=1200, xp_drop=THRESHOLDS[5]), "cooldown": 700},
+        ],
+        4: [
+            {"name": "black_tiny_slime", "stats": MonsterStats(speed=3.0, health=12, damage=2, attack_cooldown=850, xp_drop=THRESHOLDS[4]), "cooldown": 500},
+            {"name": "red_tiny_slime", "stats": MonsterStats(speed=3.8, health=7, damage=1, attack_cooldown=1000, xp_drop=THRESHOLDS[3]), "cooldown": 700},
+        ],
+        5: [
+            {"name": "black_slime", "stats": MonsterStats(speed=1.0, health=30, damage=6, attack_cooldown=1300, xp_drop=THRESHOLDS[5]), "cooldown": 1000},
+            {"name": "yellow_slime", "stats": MonsterStats(speed=1.2, health=40, damage=7, attack_cooldown=1400, xp_drop=THRESHOLDS[6]), "cooldown": 1200},
+        ],
+        6: [
+            {"name": "red_slime", "stats": MonsterStats(speed=1.1, health=50, damage=8, attack_cooldown=1500, xp_drop=THRESHOLDS[6]), "cooldown": 1100},
+            {"name": "purple_slime", "stats": MonsterStats(speed=0.9, health=60, damage=9, attack_cooldown=1600, xp_drop=THRESHOLDS[7]), "cooldown": 1300},
+        ],
+        7: [
+            {"name": "black_tiny_slime", "stats": MonsterStats(speed=3.5, health=18, damage=3, attack_cooldown=900, xp_drop=THRESHOLDS[5]), "cooldown": 600},
+            {"name": "blue_tiny_slime", "stats": MonsterStats(speed=3.2, health=10, damage=2, attack_cooldown=1000, xp_drop=THRESHOLDS[4]), "cooldown": 750},
+        ],
+        8: [
+            {"name": "black_slime", "stats": MonsterStats(speed=0.9, health=70, damage=10, attack_cooldown=1800, xp_drop=THRESHOLDS[7]), "cooldown": 1300},
+            {"name": "green_slime", "stats": MonsterStats(speed=1.2, health=80, damage=12, attack_cooldown=1700, xp_drop=THRESHOLDS[8]), "cooldown": 1500},
+        ],
+        9: [
+            {"name": "red_slime", "stats": MonsterStats(speed=1.1, health=100, damage=13, attack_cooldown=1600, xp_drop=THRESHOLDS[8]), "cooldown": 1400},
+            {"name": "purple_slime", "stats": MonsterStats(speed=1.3, health=120, damage=14, attack_cooldown=1900, xp_drop=THRESHOLDS[8]), "cooldown": 1600},
+        ],
+        10: [
+            {"name": "yellow_slime", "stats": MonsterStats(speed=1.4, health=150, damage=15, attack_cooldown=2000, xp_drop=THRESHOLDS[8]), "cooldown": 1700},
+            {"name": "black_slime", "stats": MonsterStats(speed=1.0, health=200, damage=18, attack_cooldown=2100, xp_drop=THRESHOLDS[8]), "cooldown": 1800},
+        ]
     }
     def __init__(self):
         self.__logger = logging.getLogger(__name__)
