@@ -16,9 +16,6 @@ class CollisionHandler:
             world (IGameWorld): The game world.
         """
         # Group the bullets, monsters, and gems for collision checking
-        bullet_group = pygame.sprite.Group([bullet.sprite for bullet in world.bullets])
-        monster_group = pygame.sprite.Group([monster.sprite for monster in world.monsters])
-        gem_group = pygame.sprite.Group([gem.sprite for gem in world.experience_gems])
 
         # Create masks for all sprites in each group
         bullet_masks = {bullet.sprite: bullet.sprite.mask for bullet in world.bullets}

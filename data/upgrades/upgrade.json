@@ -65,7 +65,7 @@
     ],
     "unlock_info": "Shoots at a random enemy."
   },
-  "Shotgun": {
+  "Big Bow": {
     "type": "weapon",
     "max_level": 5,
     "levels": [
@@ -123,7 +123,7 @@
       "max_level": 1,
       "unlock_info": "Increases armor by 1."
   },
-  "HollowHeart": {
+  "Hollow Heart": {
       "type": "passive",
       "affects": "max_health",
       "increase": 20,
@@ -137,7 +137,7 @@
       "max_level": 5,
       "unlock_info": "Increases recovery by 0.2."
   },
-  "EmptyTome": {
+  "Empty Tome": {
       "type": "passive",
       "affects": "reload_time",
       "increase": -8,

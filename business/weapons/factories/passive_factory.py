@@ -60,7 +60,3 @@ class PassiveItemFactory:
     @staticmethod
     def get_attractorb():
         return PassiveItem("Attractorb")
-    
-    @staticmethod
-    def get_tirajisu():
-        return PassiveItem("Tirajisú")

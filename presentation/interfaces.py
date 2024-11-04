@@ -23,10 +23,20 @@ class IDisplay(ABC):
     @abstractmethod
     def render_pause_screen(self):
         """Render the pause menu"""
+    
+    @abstractmethod
+    def render_upgrade_screen(self):
+       """Render the upgrade menu"""
 
     @abstractmethod
     def update_display(self):
        """Shows the rendered frames"""
+    
+    
+    @property
+    @abstractmethod
+    def is_in_menu(self):
+        """Returns a bool if the display is in a menu"""
 
 class IInputHandler(ABC):
     """Interface for handling user input."""

@@ -13,7 +13,7 @@ class WeaponFactory:
 
     @staticmethod
     def get_shotgun():
-        return Weapon(ProjectileStats(damage=20, velocity=3, area_of_effect=3, reload_time=3000, pierce=10, duration=500 ), BigBulletFactory(), "Shotgun") 
+        return Weapon(ProjectileStats(damage=20, velocity=3, area_of_effect=3, reload_time=3000, pierce=10, duration=500 ), BigBulletFactory(), "Big Bow") 
     
     @staticmethod
     def get_bible():

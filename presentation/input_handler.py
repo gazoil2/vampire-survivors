@@ -54,4 +54,12 @@ class InputHandler(IInputHandler):
         # Only process movement if the game is not paused
         if not self.paused:
             direction = self.__get_direction(keys)
+            if direction == (0,0):
+                self.__world.player.sprite.idle_sprite_update()
+            else:
+                self.__world.player.sprite.walking_sprite_update()
+            if direction[0] == 1:
+                self.__world.player.sprite.set_facing_left()
+            elif direction[0] == -1:
+                self.__world.player.sprite.set_facing_right()
             self.__world.player.move(direction[0], direction[1])

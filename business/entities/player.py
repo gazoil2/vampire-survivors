@@ -11,6 +11,7 @@ from business.weapons.stats import PlayerStats
 from presentation.sprite import Sprite
 from business.handlers.cooldown_handler import CooldownHandler
 from business.weapons.interfaces import IUpgradable
+from business.exceptions import LevelUpException 
 from business.weapons.inventory import Inventory
 
 
@@ -93,10 +94,7 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def __gain_level(self):
         self.__level += 1
         self.__experience_to_next_level = self.__experience_to_next_level * 2
-        action = choice(self.inventory.get_possible_actions())
-        print(action.description)
-        action.do_action()
-        self.__calculate_stats()
+        raise LevelUpException
   
         
     def __gain_experience(self, amount: int):

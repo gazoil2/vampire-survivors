@@ -1,7 +1,7 @@
 from typing import List
 from business.weapons.stats import PlayerStats
 from business.weapons.weapon import Weapon
-from business.weapons.interfaces import IUpdatable, IPassiveItem
+from business.weapons.interfaces import IUpdatable, IPassiveItem, IActionStrategy
 from business.weapons.passive_item import PassiveItem
 from business.weapons.exception import InvalidItemError, FullInventoryError, ItemNotFoundError
 from business.weapons.factories.weapon_factory import WeaponFactory
@@ -107,5 +107,5 @@ class Inventory(IUpdatable):
         return possible_passives
 
     
-    def get_possible_actions(self) -> List[ActionStrategy]:
+    def get_possible_actions(self) -> List[IActionStrategy]:
         return self.__get_possible_passives() + self.__get_possible_weapons() + self.__get_possible_passive_upgrades() + self.__get_possible_weapon_upgrades()

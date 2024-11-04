@@ -3,31 +3,32 @@
 import pygame
 
 import settings
+import random
 from business.world.game_world import GameWorld
+from business.upgrades.upgradestrategy import ActionStrategy
 from presentation.camera import Camera
 from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
-import time
-
+from presentation.button import Button
+from business.weapons.interfaces import IInventory
 
 class Display(IDisplay):
     """Class for displaying the game world."""
 
     def __init__(self):
-        # Set the window display mode
         self.__screen = pygame.display.set_mode(settings.SCREEN_DIMENSION)
-
-        # Set the window title
         pygame.display.set_caption(settings.GAME_TITLE)
-
-        # Initialize the camera
         self.camera = Camera()
-
         self.__ground_tileset = self.__load_ground_tileset()
         self.__world: GameWorld = None
         self.__font_large = pygame.font.SysFont(None, 48)
         self.__font_small = pygame.font.SysFont(None, 24)
+        self.__is_in_menu = False
+        self.__buttons = None
 
+    @property
+    def is_in_menu(self):
+        return self.__is_in_menu
     def __load_ground_tileset(self):
         return Tileset(
             "./assets/tiles/dungeon.png", settings.TILE_WIDTH, settings.TILE_HEIGHT, 15, 7
@@ -185,6 +186,49 @@ class Display(IDisplay):
         self.__draw_player_and_projectile_info()
         self.__screen.blit(pause_text, text_rect)
 
+    def render_upgrade_screen(self, inventory : IInventory):
+        overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))
+        self.render_frame()
+        self.__screen.blit(overlay, (0, 0))
+        self.__is_in_menu = True
+
+        # Only create new buttons if they haven't been created yet (i.e., first time rendering)
+        if self.__buttons is None:
+            possible_actions = inventory.get_possible_actions()
+
+            # Ensure there are at least 3 actions to choose from
+            if len(possible_actions) < 3:
+                choices = possible_actions  # Use all if less than 3
+            else:
+                choices = random.sample(possible_actions, 3)  # Randomly select 3
+
+            button_height = 100
+            button_width = 550
+            button_margin = 10
+            start_y = (self.__screen.get_height() - (button_height * len(choices) + button_margin * (len(choices) - 1))) // 2
+
+            self.__buttons = []
+            for index, action in enumerate(choices):
+                button = Button(
+                    x=(self.__screen.get_width() - button_width) // 2,
+                    y=start_y + index * (button_height + button_margin),
+                    width=button_width,
+                    height=button_height,
+                    action_strategy=action
+                )
+                self.__buttons.append(button)
+
+        # Draw the buttons
+        for button in self.__buttons:
+            button.draw(self.__screen)
+            button.update(pygame.mouse.get_pos())
+            ended = button.handle_event()
+            if ended:
+                self.__is_in_menu = False
+                self.__buttons = None
+
+        
     def render_frame(self):
         # Update the camera to follow the player
         self.camera.update(self.__world.player.sprite.rect)
@@ -203,18 +247,12 @@ class Display(IDisplay):
             if self.camera.camera_rect.colliderect(monster.sprite.rect):
                 adjusted_rect = self.camera.apply(monster.sprite.rect)
                 self.__screen.blit(monster.sprite.image, adjusted_rect)
-                #mask_surface = monster.sprite.mask.to_surface()
-                #mask_surface.fill((255, 255, 255), special_flags=pygame.BLEND_RGBA_MULT)
-                #self.__screen.blit(mask_surface, adjusted_rect)
 
         # Draw the bullets
         for bullet in self.__world.bullets:
             if self.camera.camera_rect.colliderect(bullet.sprite.rect):
                 adjusted_rect = self.camera.apply(bullet.sprite.rect)
                 self.__screen.blit(bullet.sprite.image, adjusted_rect)
-                #mask_surface = bullet.sprite.mask.to_surface()
-                #mask_surface.fill((255, 255, 255), special_flags=pygame.BLEND_RGBA_MULT)
-                #self.__screen.blit(mask_surface, adjusted_rect)
 
         # Draw the player
         self.__draw_player()

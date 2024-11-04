@@ -41,7 +41,7 @@ class TileMap(ITileMap):
                 elif x == 1 and y == 1:
                     tile_index = 48  # Touching top and left walls
                 elif x == settings.WORLD_COLUMNS - 2 and y == 1:
-                    tile_index = 56  # Touching top and right walls
+                    tile_index = 55  # Touching top and right walls
                 elif x == 1 and y == settings.WORLD_ROWS - 2:
                     tile_index = 63  # Touching bottom and left walls
                 elif x == settings.WORLD_COLUMNS - 2 and y == settings.WORLD_ROWS - 2:

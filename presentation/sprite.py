@@ -121,7 +121,7 @@ class Sprite(pygame.sprite.Sprite):
             vertical (bool): If True, flip the image vertically.
         """
         # Flip the image based on the arguments
-        self._image = pygame.transform.flip(self.__original_image, horizontal, vertical)
+        self._image = pygame.transform.flip(self._image, horizontal, vertical)
         
         # Update the mask
         self._mask = pygame.mask.from_surface(self._image)
@@ -130,35 +130,70 @@ class Sprite(pygame.sprite.Sprite):
         self._rect = self._image.get_rect(center=self._rect.center)
 
 
-#
-#class PlayerSprite(Sprite):
-#    """A class representing the player sprite."""
-#
-#    ASSET = "./assets/player/necromancer.png"
-#    IDLE_POSITIONS = [0,1,2,3,4,5,6,7]
-#    WALKING_POSITIONS = [18,19,20,21,22,23,24,25]
-#    SCALE = 5
-#
-#    def __init__(self, pos_x: float, pos_y: float):
-#        self.__tile_set = Tileset(PlayerSprite.ASSET,160,128,17,7)
-#        image: pygame.Surface = self.__tile_set.get_tile(0)
-#        scaled_dimensions = tuple(d * self.SCALE for d in settings.TILE_DIMENSION)
-#        image = pygame.transform.scale(image, scaled_dimensions).convert_alpha()
-#        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
-#        super().__init__(image, rect)
-#
+
 class PlayerSprite(Sprite):
     """A class representing the player sprite."""
 
-    ASSET = "./assets/adventurer-idle-00.png"
+    ASSET_FOLDER = "./assets/player/"
+    IDLE_POSITIONS = [0,1,2,3,4,5,6,7]
+    WALKING_POSITIONS = [8,9,10,11,12,13,14,15]
+    SCALE = 2
 
     def __init__(self, pos_x: float, pos_y: float):
-        image: pygame.Surface = pygame.image.load(PlayerSprite.ASSET).convert_alpha()
-        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
-        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+        self._image: pygame.Surface =  pygame.image.load(self.ASSET_FOLDER + "1.png").convert_alpha()
+        self.__scale()
+        self._rect: pygame.Rect = self._image.get_rect(center=(int(pos_x), int(pos_y)))
+        self.__frame_count = 0
+        self.__frame_delay = 6
+        self.__idle_frame = 0
+        self.__walk_frames = 0
+        self.__facing_right = False
+        super().__init__(self._image, self._rect)
+    
+    def set_facing_right(self):
+        self.__facing_right = True
+    
+    def set_facing_left(self):
+        self.__facing_right = False
 
-        super().__init__(image, rect)
+    def __scale(self):
+        scaled_dimensions = tuple(d * self.SCALE for d in settings.TILE_DIMENSION)
+        self._image = pygame.transform.scale(self._image, scaled_dimensions).convert_alpha()
+    
+    def idle_sprite_update(self):
+        self.__frame_count += 1
+        if self.__frame_count > self.__frame_delay:
+            self.__frame_count = 0
+            self.__idle_set_image()
+    def walking_sprite_update(self):
+        self.__frame_count += 1
+        if self.__frame_count > self.__frame_delay:
+            self.__frame_count = 0
+            self.__walking_set_image()
 
+    def __walking_set_image(self):
+        self._image: pygame.Surface =  pygame.image.load(self.ASSET_FOLDER + str(self.WALKING_POSITIONS[self.__walk_frames]) + ".png").convert_alpha()
+        self.__scale()
+        self.flip(self.__facing_right)
+        self.__walk_frames = (self.__walk_frames + 1) % 7
+    def __idle_set_image(self):
+        self._image: pygame.Surface =  pygame.image.load(self.ASSET_FOLDER + str(self.IDLE_POSITIONS[self.__idle_frame]) + ".png").convert_alpha()
+        self.__scale()
+        self.flip(self.__facing_right)
+        self.__idle_frame = (self.__idle_frame + 1) % 7
+
+#class PlayerSprite(Sprite):
+#    """A class representing the player sprite."""
+#
+#    ASSET = "./assets/adventurer-idle-00.png"
+#
+#    def __init__(self, pos_x: float, pos_y: float):
+#        image: pygame.Surface = pygame.image.load(PlayerSprite.ASSET).convert_alpha()
+#        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
+#        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+#
+#        super().__init__(image, rect)
+#
 
 class MonsterSprite(Sprite):
     """A class representing the monster sprite."""

@@ -1,7 +1,6 @@
 # Tareas Prioritarias
 
 ## Alta Prioridad
-Limite de mapa
 Nuevos enemigos
 Poder cerrar el juego:
 - Guardar armas

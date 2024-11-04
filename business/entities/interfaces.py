@@ -1,12 +1,11 @@
 """This module contains interfaces for the entities in the game."""
 
 from abc import ABC, abstractmethod
-
+from typing import TYPE_CHECKING
 from presentation.sprite import Sprite
 from business.weapons.stats import PlayerStats
-
-
-
+if TYPE_CHECKING:
+    from business.weapons.interfaces import IInventory
 class IDamageable(ABC):
     """Interface for entities that can take damage."""
 
@@ -187,6 +186,13 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         Returns:
             PlayerStats: Stats of a player
         """
-
+    @property
+    @abstractmethod
+    def inventory(self) -> "IInventory":
+        """The inventory of the player
+        
+        Returns: 
+            IInventory: Inventory of the player
+        """
 class IAtackShape(IUpdatable,IHasPosition):
     """Interface for the diferent shapes an atack has"""

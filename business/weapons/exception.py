@@ -16,4 +16,3 @@ class ItemNotFoundError(Exception):
     """Raised when an item is not found in the inventory."""
     def __init__(self, item):
         super().__init__(f"Item '{item}' not found in inventory.")
-        self.item = item

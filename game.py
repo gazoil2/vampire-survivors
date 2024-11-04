@@ -5,7 +5,7 @@ import logging
 import pygame
 
 import settings
-from business.exceptions import DeadPlayerException
+from business.exceptions import DeadPlayerException, LevelUpException
 from business.handlers.colission_handler import CollisionHandler
 from business.handlers.death_handler import DeathHandler
 from business.world.interfaces import IGameWorld
@@ -56,5 +56,12 @@ class Game:
                     DeathHandler.check_deaths(self.__world)
                     self.__display.render_frame()
                     self.__display.update_display()
+                except LevelUpException:
+                    self.__display.render_upgrade_screen(self.__world.player.inventory)
+                    while self.__display.is_in_menu and self.__running:
+                        self.__clock.tick(settings.FPS)
+                        self.__process_game_events()
+                        self.__display.render_upgrade_screen(self.__world.player.inventory)
+                        self.__display.update_display()
                 except DeadPlayerException:
                     self.__running = False

@@ -1,6 +1,7 @@
 from abc import ABC,abstractmethod
+from typing import List
 from business.entities.interfaces import IAtackShape, IUpdatable
-from business.weapons.stats import ProjectileStats
+from business.weapons.stats import ProjectileStats, PlayerStats
 class IAtackShapeFactory:
     @abstractmethod
     def create_atack_shape(self, pos_x, pos_y, projectile_stats : ProjectileStats) -> IAtackShape:
@@ -42,6 +43,10 @@ class IUpgradable:
             str: A string describing the item.
 
         """
+class IWeapon(IUpdatable,IUpgradable):
+    @property
+    def name(self):
+        """Returns the name of the item"""
 class IPassiveItem(IUpgradable):
     @property
     def stats(self):
@@ -50,3 +55,40 @@ class IPassiveItem(IUpgradable):
     @property
     def name(self):
         """Returns the name of the item"""
+
+class IActionStrategy:
+    @abstractmethod
+    def do_action(self):
+        """Activates the function set as a parameter"""
+    
+    
+    @property
+    @abstractmethod
+    def description(self):
+        """Returns the description of the function"""
+    
+    @property
+    @abstractmethod
+    def name(self):
+        """Returns the name of the action"""
+
+class IInventory(IUpdatable, ABC):
+    @abstractmethod
+    def get_combined_stats(self) -> PlayerStats:
+        """Returns the combined stats from all passive items in the inventory."""
+
+    @abstractmethod
+    def add_item_to_inventory(self, item: IPassiveItem | IWeapon) -> None:
+        """Adds an item (weapon or passive item) to the inventory."""
+
+    @abstractmethod
+    def upgrade_item(self, item: IPassiveItem | IWeapon) -> None:
+        """Upgrades an item in the inventory."""
+
+    @abstractmethod
+    def update(self, world) -> None:
+        """Updates the inventory state based on the game world."""
+
+    @abstractmethod
+    def get_possible_actions(self) -> List[IActionStrategy]:
+        """Returns a list of possible actions that can be performed with items in the inventory."""
