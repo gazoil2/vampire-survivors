@@ -1,13 +1,13 @@
 from typing import List
 from business.weapons.stats import PlayerStats
 from business.weapons.weapon import Weapon
-from business.weapons.interfaces import IUpdatable, IPassiveItem, IActionStrategy
+from business.weapons.interfaces import IUpdatable, IPassiveItem, IActionStrategy, IInventory
 from business.weapons.passive_item import PassiveItem
 from business.weapons.exception import InvalidItemError, FullInventoryError, ItemNotFoundError
 from business.weapons.factories.weapon_factory import WeaponFactory
 from business.weapons.factories.passive_factory import PassiveItemFactory
 from business.upgrades.upgradestrategy import ActionStrategy
-class Inventory(IUpdatable):
+class Inventory(IInventory):
     def __init__(self, weapons : List[Weapon], boosters : List[IPassiveItem], maxsize=5 ) -> None:
         self.__weapons : List[Weapon] = weapons
         self.__passive_items : List[IPassiveItem] = boosters
@@ -20,6 +20,9 @@ class Inventory(IUpdatable):
         for passive in self.__passive_items:
             final_stats += passive.stats 
         return final_stats
+
+    def get_max_size(self):
+        return self.__max_size
 
     def add_item_to_inventory(self, item : IPassiveItem | Weapon):
         if isinstance(item,Weapon):
@@ -37,17 +40,17 @@ class Inventory(IUpdatable):
         """Upgrade an item in the inventory."""
         if isinstance(item, Weapon):
             for weapon in self.__weapons:
-                if weapon == item:  # Assuming weapons are comparable (implement __eq__ in Weapon class)
+                if weapon == item: 
                     if weapon.can_be_upgraded():
-                        weapon.upgrade()  # Assuming the upgrade method modifies the weapon stats
+                        weapon.upgrade()  
                         return
             raise ItemNotFoundError(item)
 
         elif isinstance(item, PassiveItem):
             for passive in self.__passive_items:
-                if passive == item:  # Assuming passive items are comparable
+                if passive == item: 
                     if passive.can_be_upgraded():
-                        passive.upgrade()  # Assuming the upgrade method modifies the passive item stats
+                        passive.upgrade()
                         return
             raise ItemNotFoundError(item)
         else:
@@ -60,9 +63,9 @@ class Inventory(IUpdatable):
         upgrades = []
         for weapon in self.__weapons:
             if weapon.can_be_upgraded():
-                upgrade_data = weapon.get_next_level_data()  # Get the upgrade data for the next level
+                upgrade_data = weapon.get_next_level_data() 
                 upgrades.append(ActionStrategy(
-                    description=f"{upgrade_data} {weapon.name}",
+                    description=f"{upgrade_data}",
                     action_function=lambda w=weapon: self.upgrade_item(w),
                     item_name=weapon.name
                 ))
@@ -72,7 +75,7 @@ class Inventory(IUpdatable):
         upgrades = []
         for passive in self.__passive_items:
             if passive.can_be_upgraded():
-                upgrade_data = passive.get_unlock_info() # Assuming a similar method exists for passive items
+                upgrade_data = passive.get_unlock_info() 
                 upgrades.append(ActionStrategy(
                     description=f" {upgrade_data} ",
                     action_function=lambda p=passive: self.upgrade_item(p),
@@ -81,6 +84,8 @@ class Inventory(IUpdatable):
         return upgrades
 
     def __get_possible_weapons(self) -> List[ActionStrategy]:
+        if len(self.__weapons) >= self.__max_size:
+            return []
         possible_weapons = []
         for weapon in self.__all_weapons:
             if weapon not in self.__weapons: 
@@ -94,9 +99,11 @@ class Inventory(IUpdatable):
         return possible_weapons
 
     def __get_possible_passives(self) -> List[ActionStrategy]:
+        if len(self.__passive_items) >= self.__max_size:
+            return []
         possible_passives = []
         for passive in self.__all_passives:
-            if passive not in self.__passive_items:
+            if passive not in self.__passive_items :
                 unlock_data = passive.get_unlock_info()
                 possible_passives.append(ActionStrategy(
                     description=unlock_data,
@@ -106,6 +113,12 @@ class Inventory(IUpdatable):
         
         return possible_passives
 
+    def get_passives(self):
+        return self.__passive_items
+    
+    def get_weapons(self):
+        return self.__weapons
+    
     
     def get_possible_actions(self) -> List[IActionStrategy]:
         return self.__get_possible_passives() + self.__get_possible_weapons() + self.__get_possible_passive_upgrades() + self.__get_possible_weapon_upgrades()

@@ -194,5 +194,9 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         Returns: 
             IInventory: Inventory of the player
         """
+    
+    @abstractmethod
+    def update_stats(self):
+        """Updates the stats of the player after a level up"""
 class IAtackShape(IUpdatable,IHasPosition):
     """Interface for the diferent shapes an atack has"""

@@ -57,11 +57,12 @@ class Game:
                     self.__display.render_frame()
                     self.__display.update_display()
                 except LevelUpException:
-                    self.__display.render_upgrade_screen(self.__world.player.inventory)
+                    self.__display.render_upgrade_screen()
                     while self.__display.is_in_menu and self.__running:
                         self.__clock.tick(settings.FPS)
                         self.__process_game_events()
-                        self.__display.render_upgrade_screen(self.__world.player.inventory)
+                        self.__display.render_upgrade_screen()
                         self.__display.update_display()
+                    self.__world.player.update_stats()
                 except DeadPlayerException:
                     self.__running = False

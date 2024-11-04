@@ -92,3 +92,16 @@ class IInventory(IUpdatable, ABC):
     @abstractmethod
     def get_possible_actions(self) -> List[IActionStrategy]:
         """Returns a list of possible actions that can be performed with items in the inventory."""
+    
+    @abstractmethod
+    def get_passives(self) -> List[IPassiveItem]:
+        """Returns the list of passives the player has"""
+    
+    @abstractmethod
+    def get_weapons(self) -> List[IWeapon]:
+        """Returns the list of weapons the player has"""
+    
+    @property
+    @abstractmethod
+    def get_max_size(self) -> int:
+        """Returns the max quantity of weapons or passive the inventory can have"""

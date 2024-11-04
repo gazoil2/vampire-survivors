@@ -83,19 +83,19 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     def pickup_gem(self, gem: ExperienceGem):
         self.__gain_experience(gem.amount)
     
-    def set_weapon(self, weapon : IUpgradable):
-        self.__weapon = weapon
+    def update_stats(self):
+        self.__calculate_stats()
 
     def __calculate_stats(self):
         new_stats = PlayerStats.get_base_player_stats() + self.inventory.get_combined_stats()
-        self._speed = self.stats.movement_speed
+        self._speed = new_stats.movement_speed
         self.__stats = new_stats
     
     def __gain_level(self):
         self.__level += 1
         self.__experience_to_next_level = self.__experience_to_next_level * 2
         raise LevelUpException
-  
+    
         
     def __gain_experience(self, amount: int):
         self.__experience += amount

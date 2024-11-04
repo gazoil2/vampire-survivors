@@ -73,7 +73,7 @@
         "damage": 50
       },
       {
-        "projectiles": 5
+        "pierce": 5
       },
       {
         "area_of_effect": 0.4

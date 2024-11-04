@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 
 from business.world.interfaces import IGameWorld
+from business.weapons.interfaces import IInventory
 
 
 class IDisplay(ABC):

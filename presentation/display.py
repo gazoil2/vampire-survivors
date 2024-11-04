@@ -9,7 +9,7 @@ from business.upgrades.upgradestrategy import ActionStrategy
 from presentation.camera import Camera
 from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
-from presentation.button import Button
+from presentation.button import UpgradeButton, FramedImage
 from business.weapons.interfaces import IInventory
 
 class Display(IDisplay):
@@ -23,6 +23,7 @@ class Display(IDisplay):
         self.__world: GameWorld = None
         self.__font_large = pygame.font.SysFont(None, 48)
         self.__font_small = pygame.font.SysFont(None, 24)
+        self.__inventory = None
         self.__is_in_menu = False
         self.__buttons = None
 
@@ -147,14 +148,15 @@ class Display(IDisplay):
 
 
     def __draw_time(self):
-        time_elapsed= self.__world.time_elapsed
+        time_elapsed = self.__world.time_elapsed
         time_elapsed /= 1000
         minutes = int(time_elapsed // 60)
         seconds = int(time_elapsed % 60)
-        cronometer_text = f"Time: {minutes:02}:{seconds:02}"
-        cronometer_surface = self.__font_large.render(
-            cronometer_text, True, (255,255,255))
-        self.__screen.blit(cronometer_surface, (10, 70))
+        cronometer_text = f"{minutes:02}:{seconds:02}"
+        cronometer_surface = self.__font_large.render(cronometer_text, True, (255, 255, 255))
+        screen_width = settings.SCREEN_WIDTH
+        time_position_x = (screen_width - cronometer_surface.get_width()) // 2
+        self.__screen.blit(cronometer_surface, (time_position_x, 10))
 
 
 
@@ -162,14 +164,23 @@ class Display(IDisplay):
         adjusted_rect = self.camera.apply(self.__world.player.sprite.rect)
         self.__screen.blit(self.__world.player.sprite.image, adjusted_rect)
 
+        # Draw the player's health bar
         self.__draw_player_health_bar()
-        
-        experience_text = self.__font_large.render(
-            f"XP: {self.__world.player.experience}/{self.__world.player.experience_to_next_level}",
-            True,
-            (255, 255, 255),
-        )
-        self.__screen.blit(experience_text, (10, 10))
+
+        # Draw the player's experience bar
+        self.__draw_experience_bar()
+
+    def __draw_experience_bar(self):
+        bar_width = settings.SCREEN_WIDTH
+        bar_height = 20
+        x_position = 0  
+        y_position = settings.SCREEN_HEIGHT - bar_height  
+        experience = self.__world.player.experience
+        experience_to_next_level = self.__world.player.experience_to_next_level
+        fill_percentage = experience / experience_to_next_level
+        fill_width = int(bar_width * fill_percentage)
+        pygame.draw.rect(self.__screen, (50, 50, 50), (x_position, y_position, bar_width, bar_height))
+        pygame.draw.rect(self.__screen, (0, 255, 0), (x_position, y_position, fill_width, bar_height))
 
     def load_world(self, world: GameWorld):
         self.__world = world
@@ -186,7 +197,7 @@ class Display(IDisplay):
         self.__draw_player_and_projectile_info()
         self.__screen.blit(pause_text, text_rect)
 
-    def render_upgrade_screen(self, inventory : IInventory):
+    def render_upgrade_screen(self):
         overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))
         self.render_frame()
@@ -195,6 +206,7 @@ class Display(IDisplay):
 
         # Only create new buttons if they haven't been created yet (i.e., first time rendering)
         if self.__buttons is None:
+            inventory = self.__world.player.inventory
             possible_actions = inventory.get_possible_actions()
 
             # Ensure there are at least 3 actions to choose from
@@ -210,7 +222,7 @@ class Display(IDisplay):
 
             self.__buttons = []
             for index, action in enumerate(choices):
-                button = Button(
+                button = UpgradeButton(
                     x=(self.__screen.get_width() - button_width) // 2,
                     y=start_y + index * (button_height + button_margin),
                     width=button_width,
@@ -227,6 +239,51 @@ class Display(IDisplay):
             if ended:
                 self.__is_in_menu = False
                 self.__buttons = None
+
+    def __render_inventory_items(self):
+        # Get weapons and passives from the inventory
+        inventory = self.__world.player.inventory
+        weapons = inventory.get_weapons()
+        passives = inventory.get_passives()
+        max_size = inventory.get_max_size()
+    
+        # Set initial grid parameters
+        padding = 0
+        x_offset, y_offset = 0, 32  # Initial position to start drawing items
+        item_size = (64, 64)
+
+        # Render weapons (first row)
+        for i in range(max_size):
+            x_position = x_offset + (i % 5) * (item_size[0] + padding)  # Arrange 5 items per row
+            y_position = y_offset  # Weapons in the first row (same y_offset)
+            try:
+                weapon = weapons[i]
+                self.__render_item(weapon.name, (x_position, y_position))
+            except IndexError:
+                #self.__render_item("weapon",(x_position, y_position))
+                pass
+                
+
+
+        # Update y_offset to place passives in the second row
+        y_offset += item_size[1] + padding
+
+        for i in range(max_size):
+            x_position = x_offset + (i % 5) * (item_size[0] + padding)  # Arrange 5 items per row
+            y_position = y_offset  # Weapons in the first row (same y_offset)
+            if len(passives) > i:
+                passive = passives[i]
+                self.__render_item(passive.name, (x_position, y_position))
+            else:
+                pass
+                #self.__render_item("passive",(x_position, y_position))
+
+
+    
+    def __render_item(self, item_name, position: tuple):
+        image_path = f"./assets/items/{item_name}.png"
+        framed_image = FramedImage(image_path)
+        framed_image.draw(self.__screen, position)
 
         
     def render_frame(self):
@@ -255,6 +312,7 @@ class Display(IDisplay):
                 self.__screen.blit(bullet.sprite.image, adjusted_rect)
 
         # Draw the player
+        self.__render_inventory_items()
         self.__draw_player()
         self.__draw_time()
         

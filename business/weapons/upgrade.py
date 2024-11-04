@@ -83,15 +83,15 @@ class Upgrade:
             key = list(upgrade_data.keys())[0]
             value = list(upgrade_data.values())[0]
             if value > 0:
-                return f"Increases {key} a {value}"
+                return f"Increases {key} by {value}"
             else: 
-                return f"Decreases {key} a {value}"
+                return f"Decreases {key} by {value}"
             
         
         if self.type == "passive":
             affects = self.upgrades.get("affects")
             increase = self.upgrades.get("increase")
             if increase > 0:
-                return f"Increases {affects} a {increase}"
+                return f"Increases {affects} by {increase}"
             else:
-                return f"Decreases {affects} a {increase}"
+                return f"Decreases {affects} by {increase}"
