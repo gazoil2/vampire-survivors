@@ -21,7 +21,7 @@ class MonsterSpawner(IMonsterSpawner):
     ENEMY_SPAWN_CONFIG = {
     0: [
         {"name": "green_tiny_slime", "stats": MonsterStats(speed=1.5, health=10, damage=2, attack_cooldown=1000, xp_drop=2), "cooldown": 300, },
-        {"name": "spinach", "stats": MonsterStats(speed=4.0, health=5, damage=1, attack_cooldown=1200,xp_drop=3), "cooldown": 800, }
+        {"name": "purple_tiny_slime", "stats": MonsterStats(speed=4.0, health=5, damage=1, attack_cooldown=1200,xp_drop=3), "cooldown": 800, }
     ],
     1: [
         {"name": "green_slime", "stats": MonsterStats(speed=1.2, health=15, damage=3, attack_cooldown=900,xp_drop=5), "cooldown": 400, },
