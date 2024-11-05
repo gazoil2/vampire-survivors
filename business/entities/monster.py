@@ -77,7 +77,7 @@ class Monster(MovableEntity, IMonster):
         self, dx: float, dy: float, entities: List[IMonster], player : IPlayer
     ) -> bool:
         new_position = self.sprite.rect.move(dx, dy).inflate(-10, -10)
-        priority = self._get_distance_to(player) - self.__monster_stats.speed * 4
+        priority = self._get_distance_to(player) - self.__monster_stats.speed 
         for entity in entities:
             entity : IMonster
             other_priority = entity._get_distance_to(player)
@@ -127,4 +127,5 @@ class Monster(MovableEntity, IMonster):
     def drop_loot(self, game_world):
         exp_gem = ExperienceGem(self._pos_x, self._pos_y, amount=self.__monster_stats.xp_drop)
         game_world.add_experience_gem(exp_gem)  
+        print(game_world.experience_gems)
         self._logger.debug("Enemy died, dropping experience gem at %s", exp_gem)
