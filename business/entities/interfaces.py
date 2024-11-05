@@ -145,7 +145,7 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage, ISerializable)
     def name(self) -> str:
         """Returns the name of the monster"""
 
-class IBullet(IUpdatable, ICanMove, ICanDealDamage, IDamageable):
+class IBullet(IUpdatable, ICanMove, ICanDealDamage, IDamageable, ISerializable):
     """Interface for bullet entities."""
 
 
@@ -212,6 +212,6 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage, ISerializable):
     @abstractmethod
     def update_stats(self):
         """Updates the stats of the player after a level up"""
-class IAtackShape(IUpdatable,IHasPosition):
+class IAtackShape(IUpdatable,IHasPosition, ISerializable):
     """Interface for the diferent shapes an atack has"""
 

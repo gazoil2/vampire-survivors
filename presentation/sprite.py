@@ -210,7 +210,12 @@ class ImageSprite(Sprite):
         image : pygame.Surface  = pygame.image.load(image_to_load).convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
         rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
+        self._path = image_to_load
         super().__init__(image, rect)
+    
+    @property
+    def image_path(self):
+        return self._path
 
 class CircleBullet(Sprite):
     """A class representing a circle bullet."""

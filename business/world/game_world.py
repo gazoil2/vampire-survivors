@@ -8,14 +8,15 @@ from persistance.xpDAO import xpDAO
 from persistance.playerDAO import PlayerDAO
 from persistance.inventoryDAO import InventoryDao
 from persistance.clockDAO import ClockDAO
+from persistance.bulletDAO import BulletDAO
 from settings import FPS
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, xp_dao : xpDAO, enemy_dao : EnemyDAO, inventory_dao : InventoryDao, player_dao : PlayerDAO, clock_dao : ClockDAO):
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, xp_dao : xpDAO, enemy_dao : EnemyDAO, inventory_dao : InventoryDao, player_dao : PlayerDAO, clock_dao : ClockDAO, bullet_dao : BulletDAO):
         self.__player: IPlayer = player
         self.__monsters: list[IMonster] = enemy_dao.load_monsters()
-        self.__bullets: list[IBullet] = []
+        self.__bullets: list[IBullet] = bullet_dao.load_bullets()
         self.__experience_gems: list[IExperienceGem] = xp_dao.load_xp()
 
         self.__clock = InGameClock()
@@ -26,6 +27,7 @@ class GameWorld(IGameWorld):
         self.__inventory_dao = inventory_dao
         self.__player_dao = player_dao
         self.__clock_dao = clock_dao
+        self.__bullet_dao = bullet_dao
         self.__monster_spawner: IMonsterSpawner = spawner
 
     def update(self):
@@ -86,6 +88,7 @@ class GameWorld(IGameWorld):
         self.__clock_dao.save_time()
         self.__enemy_dao.save_monsters(self.__monsters)
         self.__xp_dao.save_xp(self.__experience_gems)
+        self.__bullet_dao.save_bullets(self.__bullets)
 
 
     def delete_data(self):

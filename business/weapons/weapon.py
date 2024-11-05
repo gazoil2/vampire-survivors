@@ -1,6 +1,6 @@
 from business.weapons.stats import ProjectileStatsMultiplier, ProjectileStats
 from business.weapons.interfaces import IAtackShapeFactory, IWeapon
-from business.weapons.atack_shape import NormalBullet
+from business.weapons.attack_shape import NormalBullet
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.game_world import IGameWorld
 from business.weapons.upgrade import Upgrade

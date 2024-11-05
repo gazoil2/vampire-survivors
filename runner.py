@@ -21,6 +21,7 @@ from persistance.inventoryDAO import InventoryDao
 from persistance.xpDAO import xpDAO
 from persistance.enemyDAO import EnemyDAO
 from persistance.clockDAO import ClockDAO
+from persistance.bulletDAO import BulletDAO
 
 SAVE_FILE = "data/save_file.json"
 
@@ -34,7 +35,8 @@ def initialize_game_world():
     inventory_dao = InventoryDao(SAVE_FILE)
     player_dao = PlayerDAO(SAVE_FILE)
     clock_dao = ClockDAO(SAVE_FILE)
-    return GameWorld(monster_spawner, tile_map, player_dao.load_player(inventory_dao.load_inventory()),xp_dao,enemy_dao,inventory_dao,player_dao, clock_dao)
+    bullet_dao = BulletDAO(SAVE_FILE)
+    return GameWorld(monster_spawner, tile_map, player_dao.load_player(inventory_dao.load_inventory()),xp_dao,enemy_dao,inventory_dao,player_dao, clock_dao, bullet_dao)
 
 
 def main():

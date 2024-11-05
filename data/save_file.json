@@ -1,27 +1,40 @@
 {
     "Player": {
-        "health": 83,
-        "experience": 280,
-        "experience_to_next_level": 480,
-        "pos_x": 903.1549416771907,
-        "pos_y": 855.1650429449548
+        "health": 99,
+        "experience": 81,
+        "experience_to_next_level": 160,
+        "pos_x": 699.6015510839152,
+        "pos_y": 594.2462120245866
     },
     "weapons": [
         {
-            "level": 2,
+            "level": 1,
             "name": "Green Wand"
         },
         {
             "level": 1,
             "name": "Red Wand"
+        },
+        {
+            "level": 1,
+            "name": "Spectral Wand"
+        },
+        {
+            "level": 1,
+            "name": "Big Bow"
         }
     ],
-    "passives": [],
-    "Time": 21699.9999999999,
+    "passives": [
+        {
+            "name": "Empty Tome",
+            "level": 1
+        }
+    ],
+    "Time": 13366.666666666833,
     "Monsters": [
         {
-            "pos_x": 903.5263517551085,
-            "pos_y": 693.1846853010255,
+            "pos_x": 489.84554416388204,
+            "pos_y": 593.9571965155596,
             "health": 10,
             "speed": 1.5,
             "damage": 2,
@@ -30,8 +43,8 @@
             "name": "green_tiny_slime"
         },
         {
-            "pos_x": 896.9075567284905,
-            "pos_y": 739.6663953377933,
+            "pos_x": 382.19121523133117,
+            "pos_y": 386.58966414741604,
             "health": 10,
             "speed": 1.5,
             "damage": 2,
@@ -40,8 +53,8 @@
             "name": "green_tiny_slime"
         },
         {
-            "pos_x": 887.8358761719858,
-            "pos_y": 608.0059697508367,
+            "pos_x": 338.70414818835815,
+            "pos_y": 359.10259710444325,
             "health": 10,
             "speed": 1.5,
             "damage": 2,
@@ -50,8 +63,8 @@
             "name": "green_tiny_slime"
         },
         {
-            "pos_x": 650.3613088101642,
-            "pos_y": 850.2851903644032,
+            "pos_x": 913.6845058322886,
+            "pos_y": 300.917045251635,
             "health": 10,
             "speed": 1.5,
             "damage": 2,
@@ -60,98 +73,8 @@
             "name": "green_tiny_slime"
         },
         {
-            "pos_x": 757.6448404094174,
-            "pos_y": 855.4442635585186,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 693.1628240003275,
-            "pos_y": 863.738329701449,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 590.168614282422,
-            "pos_y": 822.0924958366616,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 934.8959235991556,
-            "pos_y": 735.7529214236284,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 871.4682169002756,
-            "pos_y": 854.3006486383739,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 547.4754864787914,
-            "pos_y": 863.0023984133604,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 858.7740430761128,
-            "pos_y": 565.5379323193054,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 589.2105512150854,
-            "pos_y": 896.8180194846757,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 977.0639251369548,
-            "pos_y": 706.2087655463462,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 605.9259735953059,
-            "pos_y": 862.6488450227797,
+            "pos_x": 944.23906934965,
+            "pos_y": 255.36248173426344,
             "health": 5,
             "speed": 4.0,
             "damage": 1,
@@ -160,8 +83,48 @@
             "name": "purple_tiny_slime"
         },
         {
-            "pos_x": 544.2497833620569,
-            "pos_y": 793.657466994131,
+            "pos_x": 1080.9601551083963,
+            "pos_y": 182.64139597552358,
+            "health": 10,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "pos_x": 786.5423702085529,
+            "pos_y": 773.7885822331396,
+            "health": 10,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "pos_x": 653.3657466994111,
+            "pos_y": 395.611958724,
+            "health": 10,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "pos_x": 667.2738636073752,
+            "pos_y": 811.9723484172114,
+            "health": 10,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "pos_x": 245.05739520663084,
+            "pos_y": 308.4558441227159,
             "health": 5,
             "speed": 4.0,
             "damage": 1,
@@ -170,381 +133,427 @@
             "name": "purple_tiny_slime"
         },
         {
-            "pos_x": 874.7377695219723,
-            "pos_y": 522.5067093990502,
+            "pos_x": 668,
+            "pos_y": 354.2462120245866,
             "health": 10,
             "speed": 1.5,
             "damage": 2,
             "cooldown": 1000,
             "xp_drop": 10,
             "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 836.1501974156131,
-            "pos_y": 479.02321369354587,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 857.8712831743715,
-            "pos_y": 679.7442994522869,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 504.1427483683713,
-            "pos_y": 855.1757569573471,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 536.3653134235258,
-            "pos_y": 906.2652416360285,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 715.8046532517363,
-            "pos_y": 813.1549416771736,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 714.6797615707097,
-            "pos_y": 892.2253967444179,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 817.6631303726574,
-            "pos_y": 634.3229432149773,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 984.2893218813663,
-            "pos_y": 825.0508652763185,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 845.9474016201195,
-            "pos_y": 434.60721446243724,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 824.7975105767996,
-            "pos_y": 855.552777848643,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 390.12088706767247,
-            "pos_y": 854.9711754931003,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 792.2072862499415,
-            "pos_y": 462.8670990922599,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 902.8198051533932,
-            "pos_y": 651.1320343559617,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 903.2132034355955,
-            "pos_y": 789.748304065637,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 799.8251621595907,
-            "pos_y": 831.9902051045456,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 471.6173157302046,
-            "pos_y": 954.5477272147621,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 972.2685066011716,
-            "pos_y": 660.8864350760176,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 1307.6901692108136,
-            "pos_y": 445.46477246638784,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 899.3122292025614,
-            "pos_y": 994.8528137423934,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 583.3146276159412,
-            "pos_y": 239.15968593875365,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 357.33304448274157,
-            "pos_y": 952.8319984622124,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 405.00714267493754,
-            "pos_y": 955.1579002700248,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 756.7609306503459,
-            "pos_y": 680.9259735953008,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 211.97413408594602,
-            "pos_y": 1008.1909088590135,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 1316.333350855065,
-            "pos_y": 490.8215908221293,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 532.936074863072,
-            "pos_y": 748.1011178080269,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
-        },
-        {
-            "pos_x": 441.6690475583125,
-            "pos_y": 1048.4959953866448,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 800.5165042944943,
-            "pos_y": 1068.6485386504605,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 429.51890270786964,
-            "pos_y": 481.363961030679,
-            "health": 10,
-            "speed": 1.5,
-            "damage": 2,
-            "cooldown": 1000,
-            "xp_drop": 10,
-            "name": "green_tiny_slime"
-        },
-        {
-            "pos_x": 1374.669660302952,
-            "pos_y": 455.48528137423864,
-            "health": 5,
-            "speed": 4.0,
-            "damage": 1,
-            "cooldown": 500,
-            "xp_drop": 20,
-            "name": "purple_tiny_slime"
         }
     ],
     "Experience": [
         {
-            "pos_x": 623.247564417436,
-            "pos_y": 471.1373913621691,
-            "amount": 10
-        },
-        {
-            "pos_x": 874.5044904544177,
-            "pos_y": 755.9308973256108,
-            "amount": 10
-        },
-        {
-            "pos_x": 944.8923522616928,
-            "pos_y": 744.9884194358086,
-            "amount": 10
-        },
-        {
-            "pos_x": 1059.0416305603608,
-            "pos_y": 723.8965363437728,
-            "amount": 10
-        },
-        {
-            "pos_x": 1037.169787206533,
-            "pos_y": 780.7475644174223,
-            "amount": 10
-        },
-        {
-            "pos_x": 995.7332790675548,
-            "pos_y": 749.6222394605084,
-            "amount": 10
-        },
-        {
-            "pos_x": 784.2842712474621,
-            "pos_y": 716.3782463805514,
+            "pos_x": 382.4163056034258,
+            "pos_y": 239.58369439657207,
             "amount": 20
         },
         {
-            "pos_x": 997.7728175868635,
-            "pos_y": 720.6699666752623,
+            "pos_x": 475.5218613006989,
+            "pos_y": 131.5218613006976,
             "amount": 10
         },
         {
-            "pos_x": 801.1501974156149,
-            "pos_y": 805.9090360249091,
+            "pos_x": 351.6173157302046,
+            "pos_y": 261.50400461335505,
             "amount": 10
         },
         {
-            "pos_x": 761.1986642785898,
-            "pos_y": 780.7442994522879,
+            "pos_x": 372.90663761154894,
+            "pos_y": 206.7264427649422,
             "amount": 20
         },
         {
-            "pos_x": 954.1403499550145,
-            "pos_y": 786.4313306014955,
+            "pos_x": 727.7154223802297,
+            "pos_y": 290.2845776197818,
             "amount": 10
         },
         {
-            "pos_x": 746.5988988633962,
-            "pos_y": 625.2587117057227,
+            "pos_x": 756.3532470182727,
+            "pos_y": 274.64675298172546,
+            "amount": 20
+        },
+        {
+            "pos_x": 727.4210498649934,
+            "pos_y": 157.07642481806744,
             "amount": 10
         },
         {
-            "pos_x": 1024.5944084089977,
-            "pos_y": 841.7457787486842,
+            "pos_x": 471.3969696196705,
+            "pos_y": 153.89444430272795,
             "amount": 10
+        },
+        {
+            "pos_x": 755.9063312392316,
+            "pos_y": 91.5200756319633,
+            "amount": 10
+        },
+        {
+            "pos_x": 373.2457787487005,
+            "pos_y": 254.37467504308427,
+            "amount": 10
+        },
+        {
+            "pos_x": 257.10259710444126,
+            "pos_y": 209.11269837220803,
+            "amount": 20
+        },
+        {
+            "pos_x": 655.8629150101515,
+            "pos_y": 127.53048327204912,
+            "amount": 20
+        },
+        {
+            "pos_x": 580.8626086378479,
+            "pos_y": 291.6815472394519,
+            "amount": 10
+        },
+        {
+            "pos_x": 588.7689398770592,
+            "pos_y": 488.3229432149754,
+            "amount": 20
+        },
+        {
+            "pos_x": 369.1434880165778,
+            "pos_y": 388.82516215959805,
+            "amount": 10
+        },
+        {
+            "pos_x": 676.5147186257618,
+            "pos_y": 362.73149339882525,
+            "amount": 10
+        },
+        {
+            "pos_x": 783.4156928587959,
+            "pos_y": 541.0624458405125,
+            "amount": 10
+        },
+        {
+            "pos_x": 466.36753236814775,
+            "pos_y": 737.878679656443,
+            "amount": 10
+        },
+        {
+            "pos_x": 687.5441558772841,
+            "pos_y": 808.7903679018707,
+            "amount": 20
+        },
+        {
+            "pos_x": 474.32294321497676,
+            "pos_y": 526.2132034355966,
+            "amount": 10
+        },
+        {
+            "pos_x": 679.2786078689378,
+            "pos_y": 484.32294321497574,
+            "amount": 20
+        },
+        {
+            "pos_x": 571.5691552395614,
+            "pos_y": 479.5691552395643,
+            "amount": 10
+        },
+        {
+            "pos_x": 544.7087655463522,
+            "pos_y": 503.65746699413313,
+            "amount": 10
+        },
+        {
+            "pos_x": 438.6356056934344,
+            "pos_y": 593.6431816442541,
+            "amount": 10
+        },
+        {
+            "pos_x": 365.2206524828532,
+            "pos_y": 367.47191514132425,
+            "amount": 10
+        },
+        {
+            "pos_x": 317.49094475276087,
+            "pos_y": 346.74220741123213,
+            "amount": 10
+        },
+        {
+            "pos_x": 589.6949134723686,
+            "pos_y": 402.05129855222015,
+            "amount": 10
+        },
+        {
+            "pos_x": 589.7520023066834,
+            "pos_y": 669.49821433127,
+            "amount": 10
+        },
+        {
+            "pos_x": 623.0636187646264,
+            "pos_y": 393.6851185769209,
+            "amount": 10
+        },
+        {
+            "pos_x": 650.9943366214759,
+            "pos_y": 370.754400720051,
+            "amount": 20
+        },
+        {
+            "pos_x": 982.6274169979738,
+            "pos_y": 181.9741340859456,
+            "amount": 10
+        },
+        {
+            "pos_x": 968.8388347648367,
+            "pos_y": 146.76271631908284,
+            "amount": 10
+        },
+        {
+            "pos_x": 856.4088565561808,
+            "pos_y": 299.19269452774523,
+            "amount": 10
+        },
+        {
+            "pos_x": 542.6223663640872,
+            "pos_y": 712.6238456604995,
+            "amount": 20
+        },
+        {
+            "pos_x": 970.9601551083963,
+            "pos_y": 477.6413959755242,
+            "amount": 10
+        },
+        {
+            "pos_x": 1009.1439212924681,
+            "pos_y": 473.4576297914503,
+            "amount": 10
+        },
+        {
+            "pos_x": 358.85669145217423,
+            "pos_y": 448.1079541106462,
+            "amount": 10
+        },
+        {
+            "pos_x": 699.8474567361843,
+            "pos_y": 733.0936687607709,
+            "amount": 10
+        },
+        {
+            "pos_x": 376.487067042973,
+            "pos_y": 790.7591449816159,
+            "amount": 10
+        },
+        {
+            "pos_x": 852.4903320081212,
+            "pos_y": 444.7558800164654,
+            "amount": 20
+        }
+    ],
+    "Bullets": [
+        {
+            "pos_x": 96.27613185861934,
+            "pos_y": 274.3045085341844,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 300.0,
+            "pierce": 1,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 822.1504920503216,
+            "pos_y": 582.7445515992742,
+            "damage": 20.0,
+            "velocity": 3.0,
+            "area_of_effect": 3.0,
+            "reload_time": 2760.0,
+            "pierce": 8,
+            "duration": 500.0,
+            "bullet_type": "Normalbullet"
+        },
+        {
+            "pos_x": 863.0541124771346,
+            "pos_y": 25.60327610985494,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 519.9233786055026,
+            "pos_y": 1506.632488173263,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 1158.3045074868783,
+            "pos_y": 1448.525302315742,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 1288.2615193612407,
+            "pos_y": 1323.611860192046,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 482.77951416218315,
+            "pos_y": 0.783447878517868,
+            "damage": 20.0,
+            "velocity": 3.0,
+            "area_of_effect": 3.0,
+            "reload_time": 2760.0,
+            "pierce": 8,
+            "duration": 500.0,
+            "bullet_type": "Bigbullet"
+        },
+        {
+            "pos_x": 459.60191621571175,
+            "pos_y": 1251.5133532496195,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 1,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 435.01734288816533,
+            "pos_y": 1153.2665359632529,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 250.48301302153374,
+            "pos_y": 866.8991985339064,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 1,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 819.7360604614084,
+            "pos_y": 202.24149310320854,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 948.1050548019691,
+            "pos_y": 377.11489544439075,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 1,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 458.53726513242316,
+            "pos_y": 637.9841822415231,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 751.7769881772296,
+            "pos_y": 685.3654951874912,
+            "damage": 20.0,
+            "velocity": 3.0,
+            "area_of_effect": 3.0,
+            "reload_time": 2760.0,
+            "pierce": 10,
+            "duration": 500.0,
+            "bullet_type": "Bigbullet"
+        },
+        {
+            "pos_x": 820.9790518559118,
+            "pos_y": 475.21889454517896,
+            "damage": 5.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.0,
+            "reload_time": 460.0,
+            "pierce": 1,
+            "duration": 1000.0,
+            "bullet_type": "Normalbullet"
+        },
+        {
+            "pos_x": 557.0873921400034,
+            "pos_y": 666.9766355109707,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 766.1567946478795,
+            "pos_y": 559.6716613530125,
+            "damage": 10.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.5,
+            "reload_time": 276.0,
+            "pierce": 2,
+            "duration": 1000.0,
+            "bullet_type": "RandomBullet"
+        },
+        {
+            "pos_x": 699.6015510839152,
+            "pos_y": 594.2462120245866,
+            "damage": 2.0,
+            "velocity": 0.0,
+            "area_of_effect": 6.0,
+            "reload_time": 644.0,
+            "pierce": 80,
+            "duration": 300.0,
+            "bullet_type": "Trailbullet"
+        },
+        {
+            "pos_x": 712.9971925517696,
+            "pos_y": 621.0894009123606,
+            "damage": 5.0,
+            "velocity": 5.0,
+            "area_of_effect": 1.0,
+            "reload_time": 460.0,
+            "pierce": 1,
+            "duration": 1000.0,
+            "bullet_type": "Normalbullet"
         }
     ]
 }

@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock,patch
-from business.weapons.atack_shape import NormalBullet, ProjectileStats
+from business.weapons.attack_shape import NormalBullet, ProjectileStats
 from business.entities.interfaces import IDamageable
 class TestBullet(unittest.TestCase):
     def setUp(self):
