@@ -21,7 +21,9 @@ class PlayerDAO:
         player_data : dict = data.get("Player",{})
         pos_x = player_data.get("pos_x",SCREEN_WIDTH//2)
         pos_y = player_data.get("pos_y",SCREEN_HEIGHT//2)
-        return Player(pos_x,pos_y,PlayerSprite(pos_x,pos_y),inventory)
+        experience = player_data.get("experience",0)
+        player_experience_to_next_level = player_data.get("experience_to_next_level",30)
+        return Player(pos_x,pos_y,PlayerSprite(pos_x,pos_y),inventory,experience,player_experience_to_next_level)
 
     def delete_all_data(self):
         self.__write_to_json({})

@@ -5,7 +5,7 @@ import logging
 import pygame
 
 import settings
-from business.exceptions import DeadPlayerException, LevelUpException
+from business.exceptions import DeadPlayerException, LevelUpException, ExitPauseMenu
 from business.handlers.colission_handler import CollisionHandler
 from business.handlers.death_handler import DeathHandler
 from business.world.interfaces import IGameWorld

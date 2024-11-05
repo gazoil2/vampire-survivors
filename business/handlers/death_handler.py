@@ -23,7 +23,7 @@ class DeathHandler:
             world (IGameWorld): The game world to check for dead entities.
         """
         for monster in world.monsters:
-            if monster.health <= 0 or not DeathHandler.__is_entity_within_world_boundaries(monster):
+            if monster.health <= 0 :
                 monster.drop_loot(world)
                 world.remove_monster(monster)
                 

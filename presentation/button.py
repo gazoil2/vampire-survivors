@@ -1,6 +1,6 @@
 import pygame
 from business.weapons.interfaces import IActionStrategy
-from typing import Callable
+from typing import Callable, List
 
 class FramedImage:
     def __init__(self, image_path: str, size: tuple = (64,64), frame_color=(255, 215, 0), frame_thickness=4):
@@ -17,7 +17,7 @@ class FramedImage:
 
 
 class MenuButton:
-    def __init__(self, x: int, y: int, width: int, height: int, action: callable, label: str = "", font_size: int = 36):
+    def __init__(self, x: int, y: int, width: int, height: int, action: List[Callable], label: str = "", font_size: int = 36):
         """Initializes the MenuButton.
         
         Args:
@@ -30,7 +30,7 @@ class MenuButton:
             font_size (int): The font size for the label.
         """
         self.rect = pygame.Rect(x, y, width, height)
-        self.action = action  # Callable action triggered when button is clicked
+        self.actions = action  # Callable action triggered when button is clicked
         self.label = label
         self.font = pygame.font.Font(None, font_size)  # Font for rendering text
         self.hovered = False  # To track hover state
@@ -54,8 +54,8 @@ class MenuButton:
     def handle_event(self):
         """Handles the button click event. If clicked, triggers the action."""
         if self.hovered and pygame.mouse.get_pressed()[0]:
-            self.action()  # Call the provided action
-            exit()
+            for action in self.actions:
+                action()
             return True
         return False
 

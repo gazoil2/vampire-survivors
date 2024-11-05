@@ -22,11 +22,11 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     """
 
 
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, inventory : Inventory ):
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, inventory : Inventory, experience : int, experience_to_next_level : int ):
         super().__init__(pos_x, pos_y, 5, sprite)
         self.__health: int = 100
-        self.__experience = 0
-        self.__experience_to_next_level = 30
+        self.__experience = experience
+        self.__experience_to_next_level = experience_to_next_level
         self.__level = 1
         self.__inventory = inventory
         self.__stats = PlayerStats.get_base_player_stats()
