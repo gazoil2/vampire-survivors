@@ -1,7 +1,8 @@
 import json
 from business.weapons.interfaces import IInventory
 from business.weapons.inventory import Inventory
-from business.weapons.factories.passive_factory import PassiveItemFactory
+from business.weapons.weapon import Weapon
+from business.weapons.passive_item import PassiveItem
 from business.weapons.factories.weapon_factory import WeaponFactory
 class InventoryDao:
     def __init__(self, json_path):
@@ -12,10 +13,10 @@ class InventoryDao:
         weapons = []
         passives = []
         for weapon_dict in data.get("weapons",[]):
-            weapons.append(WeaponFactory.get_weapon_by_name(weapon_dict["name"], weapon_dict["level"]))
+            weapons.append(Weapon.deserialize(weapon_dict))
         
         for passive_dict in data.get("passives",[]):
-            passives.append(PassiveItemFactory.get_passive_by_name(passive_dict["name"], passive_dict["level"]))
+            passives.append(PassiveItem.deserialize(passive_dict))
 
         if weapons == []:
             weapons.append(WeaponFactory.get_green_wand())
@@ -26,11 +27,11 @@ class InventoryDao:
         data = self.__read_from_json()
         weapon_dict = {"weapons": []}
         for weapon in inventory.get_weapons():
-            weapon_dict["weapons"].append(weapon.to_dict())
+            weapon_dict["weapons"].append(weapon.serialize())
         
         passive_dict = {"passives": []}
         for passive in inventory.get_passives():
-            passive_dict["passives"].append(passive.to_dict())
+            passive_dict["passives"].append(passive.serialize())
         data.update(weapon_dict)
         data.update(passive_dict)
         self.__write_to_json(data)

@@ -47,5 +47,9 @@ class Weapon(IWeapon):
     def get_unlock_info(self):
         return self.__upgrade.unlock_info
 
-    def to_dict(self) -> dict:
+    def serialize(self) -> dict:
         return {"level": self.__weapon_level, "name": self.__name}
+
+    def deserialize(data : dict) -> "Weapon":
+        from business.weapons.factories.weapon_factory import WeaponFactory
+        return WeaponFactory.get_weapon_by_name(data.get("name"),data.get("level"))

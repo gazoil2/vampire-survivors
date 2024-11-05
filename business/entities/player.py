@@ -1,11 +1,13 @@
 """Player entity module."""
 
 import pygame
+import settings
 from typing import Dict
 from random import choice
 from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
-from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer
+from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer, ISerializable
+from presentation.sprite import PlayerSprite
 from business.world.interfaces import IGameWorld
 from business.weapons.stats import PlayerStats
 from presentation.sprite import Sprite
@@ -15,19 +17,18 @@ from business.exceptions import LevelUpException
 from business.weapons.inventory import Inventory
 
 
-class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
+class Player(MovableEntity, IPlayer):
     """Player entity.
 
     The player is the main character of the game. It can move around the game world and shoot at monsters.
     """
 
 
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, inventory : Inventory, experience : int, experience_to_next_level : int ):
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, inventory : Inventory, experience : int, experience_to_next_level : int, health : int):
         super().__init__(pos_x, pos_y, 5, sprite)
         self.__health: int = 100
         self.__experience = experience
         self.__experience_to_next_level = experience_to_next_level
-        self.__level = 1
         self.__inventory = inventory
         self.__stats = PlayerStats.get_base_player_stats()
         self.__attacked_enemies : Dict[IDamageable,CooldownHandler] = {}
@@ -44,10 +45,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
     @property
     def experience_to_next_level(self):
         return self.__experience_to_next_level
-
-    @property
-    def level(self):
-        return self.__level
 
     @property
     def damage_amount(self):
@@ -92,7 +89,6 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         self.__stats = new_stats
     
     def __gain_level(self):
-        self.__level += 1
         self.__experience_to_next_level = self.__experience_to_next_level * 2
         raise LevelUpException
     
@@ -109,4 +105,20 @@ class Player(MovableEntity, IPlayer, IDamageable, ICanDealDamage):
         
         self.__health = min(self.stats.max_health,self.__health + self.stats.recovery)
         self.__inventory.update(world)
-        
+    def serialize(self):
+        return {
+            "health": self.__health,
+            "experience": self.__experience,
+            "experience_to_next_level": self.__experience_to_next_level,
+            "pos_x": self._pos_x,
+            "pos_y": self._pos_y
+        }
+
+    def deserialize( data : dict):
+        health = data.get("health", 100)
+        experience = data.get("experience", 1)
+        experience_to_next_level = data.get("experience_to_next_level", 10)
+        pos_x = data.get("pos_x", settings.SCREEN_WIDTH // 2)
+        pos_y = data.get("pos_y", settings.SCREEN_HEIGHT // 2)
+        inventory = data.get("inventory",Inventory([],[]))
+        return Player(pos_x,pos_y,PlayerSprite(pos_x,pos_y),inventory,experience,experience_to_next_level, health)

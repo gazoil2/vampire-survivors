@@ -1,6 +1,6 @@
 from abc import ABC,abstractmethod
 from typing import List
-from business.entities.interfaces import IAtackShape, IUpdatable
+from business.entities.interfaces import IAtackShape, IUpdatable, ISerializable
 from business.weapons.stats import ProjectileStats, PlayerStats
 class IAtackShapeFactory:
     @abstractmethod
@@ -43,16 +43,14 @@ class IUpgradable:
             str: A string describing the item.
 
         """
-class IWeapon(IUpdatable,IUpgradable):
+class IWeapon(IUpdatable,IUpgradable,ISerializable):
     
     @property
     @abstractmethod
     def name(self):
         """Returns the name of the item"""
-    @abstractmethod
-    def to_dict(self) -> dict:
-        """Returns the data of the weapon as a dict"""
-class IPassiveItem(IUpgradable):
+
+class IPassiveItem(IUpgradable,ISerializable):
     @property
     def stats(self):
         """Returns the player stats modified by the passive item"""
@@ -60,9 +58,6 @@ class IPassiveItem(IUpgradable):
     @property
     def name(self):
         """Returns the name of the item"""
-    @abstractmethod
-    def to_dict(self) -> dict:
-        """Returns the data of the weapon as a dict"""
 
 class IActionStrategy:
     @abstractmethod

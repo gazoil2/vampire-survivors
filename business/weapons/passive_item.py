@@ -35,5 +35,9 @@ class PassiveItem(IPassiveItem):
     def get_unlock_info(self):
         return self.__upgrade.unlock_info
 
-    def to_dict(self) -> dict:
+    def serialize(self) -> dict:
         return {"name": self.__name, "level": self.__level}
+
+    def deserialize(data : dict):
+        return PassiveItem(data["name"], data["level"])
+        #WeaponFactory.get_weapon_by_name(data["name"], data["level"])

@@ -10,7 +10,7 @@ class xpDAO:
         data = self.__read_from_json()
         experience_dict = {"Experience": []}
         for xp in experience:
-            experience_dict["Experience"].append({"pos_x": xp.pos_x,"pos_y":xp.pos_y,"amount": xp.amount})
+            experience_dict["Experience"].append(xp.serialize())
         data.update(experience_dict)
         self.__write_to_json(data)
     
@@ -19,10 +19,7 @@ class xpDAO:
         experience = []
         for experience_dict in data.get("Experience",[]):
             experience_dict : dict
-            pos_x = experience_dict.get("pos_x")
-            pos_y = experience_dict.get("pos_y")
-            amount = experience_dict.get("amount")
-            experience.append(ExperienceGem(pos_x,pos_y,amount))
+            experience.append(ExperienceGem.deserialize(experience_dict))
         return experience
 
     def __write_to_json(self, data):

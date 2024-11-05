@@ -26,3 +26,16 @@ class ExperienceGem(Entity, IExperienceGem):
         return len(thresholds)
     def __str__(self):
         return f"ExperienceGem(amount={self.amount}, pos=({self.pos_x}, {self.pos_y}))"
+
+    def serialize(self):
+        return {
+            "pos_x": self._pos_x,
+            "pos_y": self._pos_y,
+            "amount": self.__amount
+        }
+
+    def deserialize(data : dict):
+        pos_x = data.get("pos_x",0)
+        pos_y = data.get("pos_y",0)
+        amount = data.get("amount",1)
+        return ExperienceGem(pos_x,pos_y,amount)

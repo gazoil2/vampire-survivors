@@ -6,6 +6,18 @@ from presentation.sprite import Sprite
 from business.weapons.stats import PlayerStats, MonsterStats
 if TYPE_CHECKING:
     from business.weapons.interfaces import IInventory
+
+class ISerializable:
+    """Interface for persisting classes"""
+    @abstractmethod
+    def serialize(self) -> dict:
+        """Transform the object into a dictionary"""
+    
+    @staticmethod
+    @abstractmethod
+    def deserialize(data : dict):
+        """Transform the dictionary back into an object"""
+
 class IDamageable(ABC):
     """Interface for entities that can take damage."""
 
@@ -117,7 +129,7 @@ class ICanMove(IHasPosition):
         """Directly updates the position of the entity."""
 
 
-class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
+class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage, ISerializable):
     """Interface for monster entities."""
     @abstractmethod
     def drop_loot(self, world):
@@ -137,7 +149,7 @@ class IBullet(IUpdatable, ICanMove, ICanDealDamage, IDamageable):
     """Interface for bullet entities."""
 
 
-class IExperienceGem(IUpdatable, IHasPosition):
+class IExperienceGem(IUpdatable, IHasPosition, ISerializable):
     """Interface for experience gem entities."""
 
     @property
@@ -150,7 +162,7 @@ class IExperienceGem(IUpdatable, IHasPosition):
         """
 
 
-class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
+class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage, ISerializable):
     """Interface for the player entity."""
 
     @abstractmethod
@@ -161,14 +173,6 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
             gem (IExperienceGem): The experience gem to pick up.
         """
 
-    @property
-    @abstractmethod
-    def level(self) -> int:
-        """The level of the player.
-
-        Returns:
-            int: The level of the player.
-        """
 
     @property
     @abstractmethod
@@ -210,3 +214,4 @@ class IPlayer(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
         """Updates the stats of the player after a level up"""
 class IAtackShape(IUpdatable,IHasPosition):
     """Interface for the diferent shapes an atack has"""
+

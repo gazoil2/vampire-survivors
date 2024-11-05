@@ -7,7 +7,7 @@ from business.entities.interfaces import IDamageable, IMonster, IPlayer, ICanDea
 from business.handlers.cooldown_handler import CooldownHandler
 from business.world.interfaces import IGameWorld
 from business.weapons.stats import MonsterStats
-from presentation.sprite import Sprite
+from presentation.sprite import Sprite, MonsterSprite
 from business.entities.experience_gem import ExperienceGem
 
 class Monster(MovableEntity, IMonster):
@@ -128,3 +128,27 @@ class Monster(MovableEntity, IMonster):
         exp_gem = ExperienceGem(self._pos_x, self._pos_y, amount=self.__monster_stats.xp_drop)
         game_world.add_experience_gem(exp_gem)  
         self._logger.debug("Enemy died, dropping experience gem at %s", exp_gem)
+    
+    def serialize(self):
+        return {
+            "pos_x": self._pos_x,
+            "pos_y": self._pos_y,
+            "health": self.__health,
+            "speed":self.stats.speed,
+            "damage":self.stats.damage,
+            "cooldown":self.stats.attack_cooldown,
+            "xp_drop": self.stats.xp_drop, 
+            "name": self.__name
+        }
+
+    def deserialize(data : dict):
+        name = data.get("name", "green_slime")
+        pos_y = data.get("pos_y",1)
+        pos_x = data.get("pos_x",1)
+        speed = data.get("speed",1)
+        health = data.get("health",1)
+        damage = data.get("damage",1)
+        cooldown = data.get("cooldown",1000)
+        xp_drop = data.get("xp_drop",1)
+        stats = MonsterStats(speed,health,damage,cooldown,xp_drop)
+        return Monster(pos_x,pos_y,MonsterSprite(pos_x,pos_y,name),stats,name)
