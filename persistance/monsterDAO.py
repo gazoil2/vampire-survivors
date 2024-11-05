@@ -3,7 +3,7 @@ from typing import List
 from business.entities.interfaces import IMonster
 from business.entities.monster import Monster, MonsterStats
 from presentation.sprite import MonsterSprite
-class EnemyDAO:
+class MonsterDAO:
     def __init__(self, json_path):
         self.__json_path = json_path
 

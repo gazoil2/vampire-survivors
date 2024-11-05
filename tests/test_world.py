@@ -8,7 +8,8 @@ from business.world.interfaces import IMonsterSpawner, ITileMap
 from business.weapons.factories.weapon_factory import WeaponFactory
 from business.entities.interfaces import IPlayer
 from persistance.xpDAO import xpDAO
-from persistance.enemyDAO import EnemyDAO
+from persistance.bulletDAO import BulletDAO
+from persistance.monsterDAO import MonsterDAO
 from presentation.sprite import MonsterSprite
 from business.entities.monster import Monster,MonsterStats
 from business.weapons.stats import PlayerStats
@@ -38,7 +39,8 @@ class TestGameWorldIntegration(unittest.TestCase):
             enemy_dao=MagicMock(), 
             inventory_dao=MagicMock(), 
             player_dao=MagicMock(),
-            clock_dao=MagicMock()
+            clock_dao=MagicMock(),
+            bullet_dao=MagicMock()
         )
         experience_gem =ExperienceGem(10,20,100)
         game_world.add_experience_gem(experience_gem)
@@ -53,9 +55,8 @@ class TestGameWorldIntegration(unittest.TestCase):
 
         
         pygame.quit()
-    @patch.object(xpDAO,'load_xp', return_value=[])
-    @patch.object(EnemyDAO, 'load_monsters', return_value=[])
-    def test_bullet_kills_enemy_in_world(self,mock_load, mock_xp):
+
+    def test_bullet_kills_enemy_in_world(self):
         enemy_name = "black_slime"
         pygame.init()
         screen = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
@@ -69,8 +70,12 @@ class TestGameWorldIntegration(unittest.TestCase):
         mock_spawner = MagicMock(spec=IMonsterSpawner)
         mock_tile_map = MagicMock(spec=ITileMap) 
         weapon = WeaponFactory.get_spectral_wand()
-        enemy_dao = EnemyDAO('mock_path.json')
-        xp_dao =xpDAO('mock_path.json')
+        enemy_dao = MagicMock()
+        enemy_dao.load_monsters.return_value = []
+        xp_dao = MagicMock()
+        xp_dao.load_xp.return_value = []
+        bullet_dao = MagicMock()
+        bullet_dao.load_bullets.return_value = []
         game_world = GameWorld(
             spawner=mock_spawner,
             tile_map=mock_tile_map,
@@ -79,7 +84,8 @@ class TestGameWorldIntegration(unittest.TestCase):
             enemy_dao=enemy_dao, 
             inventory_dao=MagicMock(), 
             player_dao=MagicMock(),
-            clock_dao=MagicMock()
+            clock_dao=MagicMock(),
+            bullet_dao=bullet_dao
         )
         enemy=Monster(settings.SCREEN_WIDTH // 2,settings.SCREEN_HEIGHT // 2,MonsterSprite(settings.SCREEN_WIDTH // 2,settings.SCREEN_HEIGHT // 2,enemy_name),MonsterStats(1,1,1,1,1),enemy_name)
         weapon._Weapon__shoot(game_world)

@@ -19,7 +19,7 @@ from presentation.sprite import PlayerSprite
 from persistance.playerDAO import PlayerDAO
 from persistance.inventoryDAO import InventoryDao
 from persistance.xpDAO import xpDAO
-from persistance.enemyDAO import EnemyDAO
+from persistance.monsterDAO import MonsterDAO
 from persistance.clockDAO import ClockDAO
 from persistance.bulletDAO import BulletDAO
 
@@ -31,7 +31,7 @@ def initialize_game_world():
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
     xp_dao = xpDAO(SAVE_FILE)
-    enemy_dao = EnemyDAO(SAVE_FILE)
+    enemy_dao = MonsterDAO(SAVE_FILE)
     inventory_dao = InventoryDao(SAVE_FILE)
     player_dao = PlayerDAO(SAVE_FILE)
     clock_dao = ClockDAO(SAVE_FILE)

@@ -3,7 +3,7 @@
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.world.ingameclock import InGameClock
-from persistance.enemyDAO import EnemyDAO
+from persistance.monsterDAO import MonsterDAO
 from persistance.xpDAO import xpDAO
 from persistance.playerDAO import PlayerDAO
 from persistance.inventoryDAO import InventoryDao
@@ -13,7 +13,7 @@ from settings import FPS
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, xp_dao : xpDAO, enemy_dao : EnemyDAO, inventory_dao : InventoryDao, player_dao : PlayerDAO, clock_dao : ClockDAO, bullet_dao : BulletDAO):
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, xp_dao : xpDAO, enemy_dao : MonsterDAO, inventory_dao : InventoryDao, player_dao : PlayerDAO, clock_dao : ClockDAO, bullet_dao : BulletDAO):
         self.__player: IPlayer = player
         self.__monsters: list[IMonster] = enemy_dao.load_monsters()
         self.__bullets: list[IBullet] = bullet_dao.load_bullets()
