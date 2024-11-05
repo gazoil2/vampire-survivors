@@ -182,18 +182,6 @@ class PlayerSprite(Sprite):
         self.flip(self.__facing_right)
         self.__idle_frame = (self.__idle_frame + 1) % 7
 
-#class PlayerSprite(Sprite):
-#    """A class representing the player sprite."""
-#
-#    ASSET = "./assets/adventurer-idle-00.png"
-#
-#    def __init__(self, pos_x: float, pos_y: float):
-#        image: pygame.Surface = pygame.image.load(PlayerSprite.ASSET).convert_alpha()
-#        image = pygame.transform.scale(image, settings.TILE_DIMENSION)
-#        rect: pygame.Rect = image.get_rect(center=(int(pos_x), int(pos_y)))
-#
-#        super().__init__(image, rect)
-#
 
 class MonsterSprite(Sprite):
     """A class representing the monster sprite."""

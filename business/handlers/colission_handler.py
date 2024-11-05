@@ -54,7 +54,6 @@ class CollisionHandler:
                     bullet = next((b for b in world.bullets if b.sprite == bullet_sprite), None)
                     monster = next((m for m in world.monsters if m.sprite == monster_sprite), None)
                     if bullet and monster:
-                        print("askdjfglsahdjflghasdfglhasdglhfhgljasfd")
                         bullet.attack(monster)  # Monster takes damage from the bullet
 
     @staticmethod

@@ -127,5 +127,4 @@ class Monster(MovableEntity, IMonster):
     def drop_loot(self, game_world):
         exp_gem = ExperienceGem(self._pos_x, self._pos_y, amount=self.__monster_stats.xp_drop)
         game_world.add_experience_gem(exp_gem)  
-        print(game_world.experience_gems)
         self._logger.debug("Enemy died, dropping experience gem at %s", exp_gem)
