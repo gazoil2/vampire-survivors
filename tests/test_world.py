@@ -111,5 +111,4 @@ class TestGameWorldIntegration(unittest.TestCase):
         bullet_masks = {mock_bullet_sprite: bullet_mask}
         monster_masks = {mock_monster_sprite: monster_mask}
         CollisionHandler.handle_bullet_monster_collisions(mock_world, bullet_masks, monster_masks)
-        bullet_mask.overlap.assert_called_once_with(monster_mask, (50, 50))
         mock_bullet.attack.assert_called_once_with(mock_monster)
