@@ -22,11 +22,17 @@ class BulletDAO:
         for bullet_dict in data.get("Bullets",[]):
             bullets.append(Bullet.deserialize(bullet_dict))
         return bullets
-
+    def delete_all_data(self):
+        self.__write_to_json({})
     def __write_to_json(self, data):
         with open(self.__json_path, 'w') as json_file:
                 json.dump(data, json_file, indent=4)
 
     def __read_from_json(self) -> dict:
-        with open(self.__json_path, 'r') as json_file:
-            return json.load(json_file)
+        try:
+            with open(self.__json_path, 'r') as json_file:
+                return json.load(json_file)
+        except FileNotFoundError:
+            print(f"The file {self.__json_path} does not exist. Creating a new file.")
+            self.__write_to_json({}) 
+            return {} 

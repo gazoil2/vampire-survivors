@@ -4,7 +4,7 @@ from business.weapons.stats import PlayerStats
 from business.weapons.passive_item import PassiveItem
 class PassiveItemFactory:
     
-    JSON_FILE = "data/upgrades/upgrade.json"
+    JSON_FILE = "data/upgrades/item_data.json"
     @staticmethod
     def get_all_passive_items() -> List[PassiveItem]:
         passive_items = []

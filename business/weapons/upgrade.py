@@ -3,8 +3,8 @@ from business.weapons.exception import InvalidLevelUp
 import json
 
 class Upgrade:
-    DEFAULT_UPGRADE_PATH = "data/upgrades/upgrade.json"
-    def __init__(self, weapon_name: str, json_file: str = "data/upgrades/upgrade.json"):
+    DEFAULT_UPGRADE_PATH = "data/upgrades/item_data.json"
+    def __init__(self, weapon_name: str, json_file: str = "data/upgrades/item_data.json"):
         self.weapon_name = weapon_name
         self.upgrades = self.__load_upgrades(json_file)
         self.type = self.upgrades.get("type")

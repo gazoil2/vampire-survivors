@@ -37,12 +37,8 @@ class TestXpDAO(unittest.TestCase):
         mock_load.return_value = {}  
         xp_dao = xpDAO('mock_path.json')
         experience_gems = [MagicMock(spec=IExperienceGem) for _ in range(2)]
-        experience_gems[0].pos_x = 10
-        experience_gems[0].pos_y = 20
-        experience_gems[0].amount = 100
-        experience_gems[1].pos_x = 30
-        experience_gems[1].pos_y = 40
-        experience_gems[1].amount = 200
+        experience_gems[0].serialize.return_value = {"pos_x": 10, "pos_y": 20, "amount": 100}
+        experience_gems[1].serialize.return_value = {"pos_x": 30, "pos_y": 40, "amount": 200}
         xp_dao.save_xp(experience_gems)
         expected_data = {
             "Experience": [

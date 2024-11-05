@@ -90,6 +90,10 @@ class GameWorld(IGameWorld):
         self.__xp_dao.save_xp(self.__experience_gems)
         self.__bullet_dao.save_bullets(self.__bullets)
 
-
     def delete_data(self):
         self.__player_dao.delete_all_data()
+        self.__inventory_dao.delete_all_data()
+        self.__clock_dao.delete_all_data()
+        self.__enemy_dao.delete_all_data()
+        self.__xp_dao.delete_all_data()
+        self.__bullet_dao.delete_all_data()
