@@ -1,9 +1,1 @@
-{
-    "Player": {
-        "health": 100,
-        "experience": 51,
-        "experience_to_next_level": 80,
-        "pos_x": 470.0,
-        "pos_y": 380.0
-    }
-}
+{}
