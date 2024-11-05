@@ -117,7 +117,7 @@ class Player(MovableEntity, IPlayer):
     def deserialize( data : dict):
         health = data.get("health", 100)
         experience = data.get("experience", 1)
-        experience_to_next_level = data.get("experience_to_next_level", 10)
+        experience_to_next_level = data.get("experience_to_next_level", 30)
         pos_x = data.get("pos_x", settings.SCREEN_WIDTH // 2)
         pos_y = data.get("pos_y", settings.SCREEN_HEIGHT // 2)
         inventory = data.get("inventory",Inventory([],[]))
