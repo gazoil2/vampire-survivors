@@ -17,14 +17,10 @@ class GameWorld(IGameWorld):
         self.__monsters: list[IMonster] = enemy_dao.load_monsters()
         self.__bullets: list[IBullet] = []
         self.__experience_gems: list[IExperienceGem] = xp_dao.load_xp()
-        
-        # Use the singleton InGameClock
-        
+
         self.__clock = InGameClock()
         self.__clock.update(clock_dao.load_time() // 1000)
-        # Initialize the tile map
         self.tile_map: ITileMap = tile_map
-        # Initialize the monster spawner
         self.__xp_dao = xp_dao
         self.__enemy_dao = enemy_dao
         self.__inventory_dao = inventory_dao

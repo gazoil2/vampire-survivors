@@ -30,18 +30,15 @@ class MenuButton:
             font_size (int): The font size for the label.
         """
         self.rect = pygame.Rect(x, y, width, height)
-        self.actions = action  # Callable action triggered when button is clicked
+        self.actions = action 
         self.label = label
-        self.font = pygame.font.Font(None, font_size)  # Font for rendering text
-        self.hovered = False  # To track hover state
+        self.font = pygame.font.Font(None, font_size)  
+        self.hovered = False  
 
     def draw(self, surface: pygame.Surface):
         """Draws the button on the given surface."""
-        # Change button color based on hover state
         color = (100, 100, 100) if self.hovered else (50, 50, 50)
         pygame.draw.rect(surface, color, self.rect, border_radius=10)
-
-        # Draw label text on the button
         if self.label:
             text_surface = self.font.render(self.label, True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=self.rect.center)

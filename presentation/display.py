@@ -38,7 +38,6 @@ class Display(IDisplay):
         )
 
     def __render_ground_tiles(self):
-        # Calculate the range of tiles to render based on the camera position
         start_col = max(0, self.camera.camera_rect.left // settings.TILE_WIDTH)
         end_col = min(
             settings.WORLD_COLUMNS, (self.camera.camera_rect.right // settings.TILE_WIDTH) + 1
@@ -81,33 +80,24 @@ class Display(IDisplay):
         pygame.draw.rect(self.__screen, (0, 255, 0), health_rect)
 
     def __draw_player_and_projectile_info(self):
-        # Font settings
-        font_size = 24  # Define the font size
-        font_color = (255, 255, 255)  # Define the font color (white)
-        margin = 10  # Define the margin between lines
+        font_size = 24
+        font_color = (255, 255, 255)  
+        margin = 10  
+        player_stats = self.__world.player.stats  
+        projectile_stats = player_stats.projectile_stats  
+        power_text = f"Power: {projectile_stats.power}%" 
+        health_text = f"Max Health: {player_stats.max_health}"  
+        recovery_text = f"Recovery: {player_stats.recovery}"  
+        armor_text = f"Armor: {player_stats.armor}" 
+        movement_speed_text = f"Movement Speed: {player_stats.movement_speed}" 
+        lifes_text = f"Lifes: {player_stats.lifes}"  #
 
-        # Access player stats
-        player_stats = self.__world.player.stats  # Get the PlayerStats object
+        projectile_power_text = f"Projectile Power: {projectile_stats.power}%" 
+        projectile_velocity_text = f"Velocity: {projectile_stats.velocity}%"  
+        projectile_duration_text = f"Duration: {projectile_stats.duration}%"  
+        projectile_area_of_effect_text = f"Area of Effect: {projectile_stats.area_of_effect}%"  
+        projectile_reload_time_text = f"Reload Time: {projectile_stats.reload_time}%"  
 
-        # Access projectile stats
-        projectile_stats = player_stats.projectile_stats  # Get the ProjectileStatsMultiplier object
-
-        # Prepare the text for player stats
-        power_text = f"Power: {projectile_stats.power}%"  # Draw power
-        health_text = f"Max Health: {player_stats.max_health}"  # Draw max health
-        recovery_text = f"Recovery: {player_stats.recovery}"  # Draw recovery rate
-        armor_text = f"Armor: {player_stats.armor}"  # Draw armor value
-        movement_speed_text = f"Movement Speed: {player_stats.movement_speed}"  # Draw movement speed
-        lifes_text = f"Lifes: {player_stats.lifes}"  # Draw remaining lives
-
-        # Prepare the text for projectile stats
-        projectile_power_text = f"Projectile Power: {projectile_stats.power}%"  # Draw projectile power
-        projectile_velocity_text = f"Velocity: {projectile_stats.velocity}%"  # Draw projectile velocity
-        projectile_duration_text = f"Duration: {projectile_stats.duration}%"  # Draw projectile duration
-        projectile_area_of_effect_text = f"Area of Effect: {projectile_stats.area_of_effect}%"  # Draw area of effect
-        projectile_reload_time_text = f"Reload Time: {projectile_stats.reload_time}%"  # Draw reload time
-
-        # Render the text surfaces
         power_surface = self.__font_small.render(power_text, True, font_color)
         health_surface = self.__font_small.render(health_text, True, font_color)
         recovery_surface = self.__font_small.render(recovery_text, True, font_color)
@@ -121,7 +111,6 @@ class Display(IDisplay):
         projectile_area_of_effect_surface = self.__font_small.render(projectile_area_of_effect_text, True, font_color)
         projectile_reload_time_surface = self.__font_small.render(projectile_reload_time_text, True, font_color)
 
-        # Define vertical placement using font size, margin, and line index
         placement = {
             "player": [
                 power_surface,
@@ -140,11 +129,9 @@ class Display(IDisplay):
             ]
         }
 
-        # Draw player stats on the screen
         for index, surface in enumerate(placement["player"]):
             self.__screen.blit(surface, (10, font_size * index + margin * index))  # Calculate vertical position
 
-        # Draw projectile stats on the screen
         for index, surface in enumerate(placement["projectile"]):
             self.__screen.blit(surface, (10, font_size * (len(placement["player"]) + index) + margin * (len(placement["player"]) + index)))  # Calculate vertical position
 
@@ -165,11 +152,7 @@ class Display(IDisplay):
     def __draw_player(self):
         adjusted_rect = self.camera.apply(self.__world.player.sprite.rect)
         self.__screen.blit(self.__world.player.sprite.image, adjusted_rect)
-
-        # Draw the player's health bar
         self.__draw_player_health_bar()
-
-        # Draw the player's experience bar
         self.__draw_experience_bar()
 
     def __draw_experience_bar(self):

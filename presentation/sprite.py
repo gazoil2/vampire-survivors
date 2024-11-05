@@ -217,6 +217,7 @@ class MonsterSprite(Sprite):
 
 
 class ImageSprite(Sprite):
+    """A simple sprite for loading images"""
     def __init__(self, pos_x: float, pos_y: float, image_to_load : str):
         image : pygame.Surface  = pygame.image.load(image_to_load).convert_alpha()
         image = pygame.transform.scale(image, settings.TILE_DIMENSION)
@@ -270,15 +271,9 @@ class ExperienceGemSprite(Sprite):
         self.__current_frame = 0
 
     def update(self, *args, **kwargs):
-        # Increment the frame counter for delay
         self.__frame_counter += 1
-
-        # Only update the image every FRAME_DELAY frames
         if self.__frame_counter >= self.FRAME_DELAY:
-            # Reset the frame counter
             self.__frame_counter = 0
-
-            # Update the frame and cycle through the tiles
             self.__current_frame = (self.__current_frame + 1) % self.__frames
             image = self.__tileset.get_tile(self.__current_frame)
             self._image = image

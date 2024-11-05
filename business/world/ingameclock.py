@@ -1,10 +1,6 @@
 class InGameClock:
     """Singleton class to manage in-game time.
 
-    The InGameClock tracks the elapsed game time, allowing for consistent timing 
-    across different components of the game. This class ensures that only one 
-    instance exists throughout the game's lifecycle.
-
     Attributes:
         initial_time (float): The starting time for the game clock.
         __time_elapsed (float): The total time elapsed in the game since initialization.
