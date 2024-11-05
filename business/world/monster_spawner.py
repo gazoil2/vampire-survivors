@@ -72,7 +72,6 @@ class MonsterSpawner(IMonsterSpawner):
 
     def update(self, world: IGameWorld):
         current_minute = (InGameClock().time_elapsed / 1000) // 60
-        print(InGameClock().time_elapsed)
         if current_minute != self.__last_minute or self.__enemies_current_minute == []:
             self.__last_minute = current_minute
             self.__enemies_current_minute = []

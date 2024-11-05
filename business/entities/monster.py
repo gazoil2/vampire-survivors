@@ -125,9 +125,6 @@ class Monster(MovableEntity, IMonster):
                 cooldown_handler.put_on_cooldown()
     
     def drop_loot(self, game_world):
-        # Create an ExperienceGem at the enemy's position
-        
         exp_gem = ExperienceGem(self._pos_x, self._pos_y, amount=self.__monster_stats.xp_drop)
-        # Add the exp_gem to your game world (make sure you have a reference to it)
-        game_world.add_experience_gem(exp_gem)  # Replace with your actual method to add entities
+        game_world.add_experience_gem(exp_gem)  
         self._logger.debug("Enemy died, dropping experience gem at %s", exp_gem)

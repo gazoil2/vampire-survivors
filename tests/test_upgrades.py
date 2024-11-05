@@ -45,23 +45,19 @@ class TestUpgrade(unittest.TestCase):
         """Test retrieving upgrade data."""
         upgrade = Upgrade("Green Wand")
         actual_data = upgrade.get_upgrade_data(1)
-        expected_data = "Increases damage a 5"
+        expected_data = "Increases damage by 5"
         self.assertEqual(actual_data, expected_data)
 
     @patch('builtins.open', new_callable=mock_open, read_data='{"Green Wand": {"type": "weapon", "max_level": 3, "levels": [{"damage": 5}, {"area_of_effect": 0.1}, {"reload_time": -500}]}}')
     def test_max_level_property(self, mock_file):
         """Test the max_level property."""
         upgrade = Upgrade("Green Wand")
-
-        # One assertEqual to check the max level
         self.assertEqual(upgrade.max_level, 3)
 
     @patch('builtins.open', new_callable=mock_open, read_data='{"Green Wand": {"type": "weapon", "max_level": 3, "levels": [{"damage": 5}, {"area_of_effect": 0.1}, {"reload_time": -500}], "unlock_info": "Shoots at the nearest enemy."}}')
     def test_unlock_info(self, mock_file):
         """Test the unlock_info property."""
         upgrade = Upgrade("Green Wand")
-
-        # One assertEqual to check the unlock info
         self.assertEqual(upgrade.unlock_info, "Shoots at the nearest enemy.")
 
 if __name__ == '__main__':

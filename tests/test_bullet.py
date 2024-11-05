@@ -1,54 +1,29 @@
-# pylint: disable=C0114,C0115,C0116
 import unittest
-
-from business.entities.bullet import Bullet
-
-
+from unittest.mock import MagicMock,patch
+from business.weapons.atack_shape import NormalBullet, ProjectileStats
+from business.entities.interfaces import IDamageable
 class TestBullet(unittest.TestCase):
     def setUp(self):
-        self.bullet = Bullet(0, 0, 10, 10, 5)
+        self.mock_stats = MagicMock(spec=ProjectileStats)
+        self.mock_stats.velocity = 1.0  
+        self.mock_stats.damage = 10  
+        self.mock_stats.pierce = 3  
+        self.mock_stats.area_of_effect = 1.0  
+        self.bullet = NormalBullet(0, 0, MagicMock(), self.mock_stats)
+    def test_bullet_movement(self):
+        self.bullet.move(1, 1)  
+        expected_position = (1**2 + 1**2)**0.5
+        self.assertAlmostEqual(self.bullet._pos_x + self.bullet._pos_y, expected_position)
+    
+    def test_bullet_attack(self):
+        target_mock = MagicMock(spec=[IDamageable])
+        target_mock.health = 10
+        target_mock.take_damage = MagicMock()
+        self.bullet.attack(target_mock)
+        target_mock.take_damage.assert_called_once_with(self.mock_stats.damage)
 
-    def test_update_position(self):
-        x_distance, y_distance = 3, 4
+    
+    
 
-        self.bullet = Bullet(0, 0, x_distance, y_distance, 1)
-        self.bullet.update(None)
-
-        x, y = self.bullet.pos_x, self.bullet.pos_y
-        self.assertAlmostEqual(x, 0.6)
-        self.assertAlmostEqual(y, 0.8)
-        self.assertAlmostEqual(x / x_distance, y / y_distance)
-
-    def test_update_position_vertical(self):
-        x_distance, y_distance = 0, 10
-
-        self.bullet = Bullet(0, 0, x_distance, y_distance, 1)
-        self.bullet.update(None)
-
-        x, y = self.bullet.pos_x, self.bullet.pos_y
-        self.assertAlmostEqual(x, 0)
-        self.assertAlmostEqual(y, 1)
-
-    def test_update_position_horizontal(self):
-        x_distance, y_distance = 10, 0
-
-        self.bullet = Bullet(0, 0, x_distance, y_distance, 1)
-        self.bullet.update(None)
-
-        x, y = self.bullet.pos_x, self.bullet.pos_y
-        self.assertAlmostEqual(x, 1)
-        self.assertAlmostEqual(y, 0)
-
-    def test_update_position_non_zero_src(self):
-        src_x, src_y, dst_x, dst_y = 5, 5, 10, 10
-
-        self.bullet = Bullet(src_x, src_y, dst_x, dst_y, 1)
-        self.bullet.update(None)
-
-        x, y = self.bullet.pos_x, self.bullet.pos_y
-        self.assertAlmostEqual(x, 5.707, 2)
-        self.assertAlmostEqual(y, 5.707, 2)
-
-
-if __name__ == "main":
+if __name__ == "__main__":
     unittest.main()

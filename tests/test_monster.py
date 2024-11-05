@@ -10,7 +10,7 @@ class TestMonster(unittest.TestCase):
         self.monster = Monster(5, 5, MagicMock(), MonsterStats(1,100,1,1,1),MagicMock())
 
     def test_attack(self):
-        target_mock = MagicMock(spec=[IDamageable, IHasPosition])
+        target_mock = MagicMock(spec=[IDamageable])
         target_mock.health = 10
         target_mock.take_damage = MagicMock()
         self.monster.attack(target_mock)
@@ -18,7 +18,7 @@ class TestMonster(unittest.TestCase):
 
 
     def test_attack_is_not_called_when_action_is_not_ready(self):
-        target_mock = MagicMock(spec=[IDamageable, IHasPosition])
+        target_mock = MagicMock(spec=[IDamageable])
         target_mock.health = 10
         target_mock.take_damage = MagicMock()
 
