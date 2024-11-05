@@ -3,22 +3,29 @@
 from business.entities.interfaces import IBullet, IExperienceGem, IMonster, IPlayer
 from business.world.interfaces import IGameWorld, IMonsterSpawner, ITileMap
 from business.world.ingameclock import InGameClock
+from persistance.enemyDAO import EnemyDAO
+from persistance.xpDAO import xpDAO
+from persistance.playerDAO import PlayerDAO
+from persistance.inventoryDAO import InventoryDao
 from settings import FPS
 class GameWorld(IGameWorld):
     """Represents the game world."""
 
-    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, initial_time: float):
+    def __init__(self, spawner: IMonsterSpawner, tile_map: ITileMap, player: IPlayer, initial_time: float, xp_dao : xpDAO, enemy_dao : EnemyDAO, inventory_dao : InventoryDao, player_dao : PlayerDAO):
         self.__player: IPlayer = player
-        self.__monsters: list[IMonster] = []
+        self.__monsters: list[IMonster] = enemy_dao.load_monsters()
         self.__bullets: list[IBullet] = []
-        self.__experience_gems: list[IExperienceGem] = []
+        self.__experience_gems: list[IExperienceGem] = xp_dao.load_xp()
         
         # Use the singleton InGameClock
         self.__clock = InGameClock(initial_time)
-
         # Initialize the tile map
         self.tile_map: ITileMap = tile_map
         # Initialize the monster spawner
+        self.__xp_dao = xp_dao
+        self.__enemy_dao = enemy_dao
+        self.__inventory_dao = inventory_dao
+        self.__player_dao = player_dao
         self.__monster_spawner: IMonsterSpawner = spawner
 
     def update(self):
@@ -73,3 +80,12 @@ class GameWorld(IGameWorld):
     @property
     def experience_gems(self) -> list[IExperienceGem]:
         return self.__experience_gems[:]
+    
+    def save_data(self):
+        self.__player_dao.save_player(self.__player)
+        self.__enemy_dao.save_monsters(self.__monsters)
+        self.__xp_dao.save_xp(self.__experience_gems)
+        self.__inventory_dao.save_inventory(self.__player.inventory)
+
+    def delete_data(self):
+        self.__player_dao.delete_all_data()

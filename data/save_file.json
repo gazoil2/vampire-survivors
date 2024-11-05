@@ -1,0 +1,180 @@
+{
+    "Player": {
+        "health": 90,
+        "experience": 40,
+        "experience_to_next_level": 60,
+        "pos_x": 1013.198051533949,
+        "pos_y": 266.00505063388334
+    },
+    "Monsters": [
+        {
+            "health": 5.0,
+            "pos_x": 809.9023266258653,
+            "pos_y": 194.80791821689363,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 5,
+            "pos_x": 830.8260812765586,
+            "pos_y": 265.0101012677651,
+            "speed": 4.0,
+            "damage": 1,
+            "cooldown": 500,
+            "xp_drop": 20,
+            "name": "purple_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 574.256186388785,
+            "pos_y": 180.2444263558537,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 508.7475644174362,
+            "pos_y": 170.93933982822017,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 5,
+            "pos_x": 1013.1492782986686,
+            "pos_y": 266.74516600406105,
+            "speed": 4.0,
+            "damage": 1,
+            "cooldown": 500,
+            "xp_drop": 20,
+            "name": "purple_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 1209.1008114357155,
+            "pos_y": 194.09724009823933,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 609.6739712886244,
+            "pos_y": 266.02408024531957,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 576.5361466505706,
+            "pos_y": 137.33809511662403,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 5,
+            "pos_x": 967.8477631085038,
+            "pos_y": 266.35324701827346,
+            "speed": 4.0,
+            "damage": 1,
+            "cooldown": 500,
+            "xp_drop": 20,
+            "name": "purple_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 1388.3452377915671,
+            "pos_y": 105.85281374238554,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 594.7163414971758,
+            "pos_y": 223.4264068711932,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 5,
+            "pos_x": 1334.0853531617406,
+            "pos_y": 266.51471862576136,
+            "speed": 4.0,
+            "damage": 1,
+            "cooldown": 500,
+            "xp_drop": 20,
+            "name": "purple_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 134.54772721475234,
+            "pos_y": 416.4573234191305,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 533.198051533949,
+            "pos_y": 137,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        },
+        {
+            "health": 10,
+            "pos_x": 537.440692221068,
+            "pos_y": 245.24264068711932,
+            "speed": 1.5,
+            "damage": 2,
+            "cooldown": 1000,
+            "xp_drop": 10,
+            "name": "green_tiny_slime"
+        }
+    ],
+    "Experience": [
+        {
+            "pos_x": 745,
+            "pos_y": -17.677669529663717,
+            "amount": 10
+        }
+    ],
+    "weapons": [
+        {
+            "level": 1,
+            "name": "Green Wand"
+        }
+    ],
+    "passives": [
+        {
+            "name": "Empty Tome",
+            "level": 1
+        }
+    ]
+}

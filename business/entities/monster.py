@@ -14,7 +14,7 @@ class Monster(MovableEntity, IMonster):
     """A monster entity in the game."""
     MONSTER_ATTACK_COOLDOWN = 1000
     MONSTER_SPEED = 2
-    def __init__(self, src_x: int, src_y: int, sprite: Sprite, monster_stats : MonsterStats):
+    def __init__(self, src_x: int, src_y: int, sprite: Sprite, monster_stats : MonsterStats, name :str):
         """
         Initializes a Monster entity.
 
@@ -38,12 +38,20 @@ class Monster(MovableEntity, IMonster):
         self.__damage = monster_stats.damage
         self._speed = monster_stats.speed
         self.__attacked_enemies : Dict[IDamageable,CooldownHandler] = {}
-        
+        self.__name = name
         self._logger.debug("Created %s", self)
 
     @property
     def damage_amount(self):
         return self.__damage
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def stats(self):
+        return self.__monster_stats
 
     def __get_direction_towards_the_player(self, world: IGameWorld):
         direction_x = world.player.pos_x - self.pos_x

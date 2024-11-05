@@ -99,6 +99,6 @@ class MonsterSpawner(IMonsterSpawner):
         else: 
             pos_x = random.randint(0, settings.SCREEN_WIDTH)
             pos_y =  world.player.pos_y + random.choice([settings.SCREEN_HEIGHT // 2, - settings.SCREEN_HEIGHT // 2])
-        monster = Monster(pos_x, pos_y, MonsterSprite(pos_x, pos_y, name),stats)
+        monster = Monster(pos_x, pos_y, MonsterSprite(pos_x, pos_y, name),stats,name)
         world.add_monster(monster)
         self.__logger.debug("Spawning monster at (%d, %d)", pos_x, pos_y)

@@ -100,6 +100,13 @@ class IGameWorld(ABC):
         Returns:
             list[IExperienceGem]: A copy of the list of experience gems in the world.
         """
+    
+    @abstractmethod
+    def save_data(self):
+        """Saves the state of the gameworld"""
+    @abstractmethod
+    def delete_data(self):
+        """Deletes the data of the gameworld"""
 
 
 class IUpdatable(ABC):

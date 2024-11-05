@@ -44,9 +44,14 @@ class IUpgradable:
 
         """
 class IWeapon(IUpdatable,IUpgradable):
+    
     @property
+    @abstractmethod
     def name(self):
         """Returns the name of the item"""
+    @abstractmethod
+    def to_dict(self) -> dict:
+        """Returns the data of the weapon as a dict"""
 class IPassiveItem(IUpgradable):
     @property
     def stats(self):
@@ -55,6 +60,9 @@ class IPassiveItem(IUpgradable):
     @property
     def name(self):
         """Returns the name of the item"""
+    @abstractmethod
+    def to_dict(self) -> dict:
+        """Returns the data of the weapon as a dict"""
 
 class IActionStrategy:
     @abstractmethod

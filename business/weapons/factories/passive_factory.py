@@ -22,6 +22,13 @@ class PassiveItemFactory:
         return passive_items
 
     @staticmethod
+    def get_passive_by_name(name, level):
+        passive = PassiveItem(name)
+        for _ in range(level - 1):
+            passive.upgrade()
+        return passive
+
+    @staticmethod
     def get_spinach():
         return PassiveItem("Spinach")
     

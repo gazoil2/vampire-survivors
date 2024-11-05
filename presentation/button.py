@@ -2,30 +2,62 @@ import pygame
 from business.weapons.interfaces import IActionStrategy
 from typing import Callable
 
-import pygame
-
-import pygame
-
 class FramedImage:
     def __init__(self, image_path: str, size: tuple = (64,64), frame_color=(255, 215, 0), frame_thickness=4):
-        self.image = pygame.image.load(image_path).convert_alpha()  # Load image with transparency
-        self.image = pygame.transform.scale(self.image, size)  # Scale the image to the desired size
-        self.frame_color = frame_color  # Color of the frame (gold by default)
-        self.frame_thickness = frame_thickness  # Thickness of the frame
+        self.image = pygame.image.load(image_path).convert_alpha()  
+        self.image = pygame.transform.scale(self.image, size) 
+        self.frame_color = frame_color  
+        self.frame_thickness = frame_thickness 
 
     def draw(self, surface: pygame.Surface, position: tuple):
-        # Get image rect based on the position (midleft of the button)
         image_rect = self.image.get_rect(midleft=position)
-
-        # Draw the gold frame around the image
         pygame.draw.rect(surface, self.frame_color, image_rect.inflate(self.frame_thickness, self.frame_thickness), self.frame_thickness)
-
-        # Blit the image onto the surface
         surface.blit(self.image, image_rect)
 
 
 
+class MenuButton:
+    def __init__(self, x: int, y: int, width: int, height: int, action: callable, label: str = "", font_size: int = 36):
+        """Initializes the MenuButton.
+        
+        Args:
+            x (int): The x-coordinate of the button.
+            y (int): The y-coordinate of the button.
+            width (int): The width of the button.
+            height (int): The height of the button.
+            action (callable): The function to call when the button is clicked.
+            label (str): The text label to display on the button.
+            font_size (int): The font size for the label.
+        """
+        self.rect = pygame.Rect(x, y, width, height)
+        self.action = action  # Callable action triggered when button is clicked
+        self.label = label
+        self.font = pygame.font.Font(None, font_size)  # Font for rendering text
+        self.hovered = False  # To track hover state
 
+    def draw(self, surface: pygame.Surface):
+        """Draws the button on the given surface."""
+        # Change button color based on hover state
+        color = (100, 100, 100) if self.hovered else (50, 50, 50)
+        pygame.draw.rect(surface, color, self.rect, border_radius=10)
+
+        # Draw label text on the button
+        if self.label:
+            text_surface = self.font.render(self.label, True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=self.rect.center)
+            surface.blit(text_surface, text_rect)
+
+    def update(self, mouse_pos: tuple):
+        """Updates the hover state based on mouse position."""
+        self.hovered = self.rect.collidepoint(mouse_pos)
+
+    def handle_event(self):
+        """Handles the button click event. If clicked, triggers the action."""
+        if self.hovered and pygame.mouse.get_pressed()[0]:
+            self.action()  # Call the provided action
+            exit()
+            return True
+        return False
 
 class UpgradeButton:
     ITEM_FOLDER = "./assets/items/"

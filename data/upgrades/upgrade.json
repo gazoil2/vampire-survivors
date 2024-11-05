@@ -1,5 +1,5 @@
 {
-  "Goo Wand": {
+  "Spectral Wand": {
     "type": "weapon",
     "max_level": 5,
     "levels": [
@@ -19,7 +19,7 @@
         "damage": 30
       }
     ],
-    "unlock_info": "Casts a trail of goo that damages enemies."
+    "unlock_info": "Deals damage around the player."
   },
   "Green Wand": {
     "type": "weapon",

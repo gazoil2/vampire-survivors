@@ -46,3 +46,6 @@ class Weapon(IWeapon):
     
     def get_unlock_info(self):
         return self.__upgrade.unlock_info
+
+    def to_dict(self) -> dict:
+        return {"level": self.__weapon_level, "name": self.__name}

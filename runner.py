@@ -4,8 +4,6 @@ import logging
 
 import pygame
 
-import settings
-from business.entities.player import Player
 from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
@@ -18,21 +16,23 @@ from business.weapons.inventory import Inventory
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from presentation.sprite import PlayerSprite
+from persistance.playerDAO import PlayerDAO
+from persistance.inventoryDAO import InventoryDao
+from persistance.xpDAO import xpDAO
+from persistance.enemyDAO import EnemyDAO
 
-
-def initialize_player():
-    """Initializes the player object"""
-    x, y = settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2
-    return Player(x, y, PlayerSprite(x, y), Inventory([],[]))
+SAVE_FILE = "data/save_file.json"
 
 
 def initialize_game_world():
     """Initializes the game world"""
     monster_spawner = MonsterSpawner()
     tile_map = TileMap()
-    player = initialize_player()
-    player.inventory.add_item_to_inventory(WeaponFactory.get_green_wand())
-    return GameWorld(monster_spawner, tile_map, player, 0)
+    xp_dao = xpDAO(SAVE_FILE)
+    enemy_dao = EnemyDAO(SAVE_FILE)
+    inventory_dao = InventoryDao(SAVE_FILE)
+    player_dao = PlayerDAO(SAVE_FILE)
+    return GameWorld(monster_spawner, tile_map, player_dao.load_player(inventory_dao.load_inventory()), 0,xp_dao,enemy_dao,inventory_dao,player_dao)
 
 
 def main():
@@ -56,7 +56,6 @@ def main():
     game = Game(display, world, input_handler)
     game.run()
 
-    # Properly quit Pygame
     pygame.quit()
 
 

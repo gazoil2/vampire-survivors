@@ -9,7 +9,7 @@ from business.upgrades.upgradestrategy import ActionStrategy
 from presentation.camera import Camera
 from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
-from presentation.button import UpgradeButton, FramedImage
+from presentation.button import UpgradeButton, FramedImage, MenuButton
 from business.weapons.interfaces import IInventory
 
 class Display(IDisplay):
@@ -189,13 +189,33 @@ class Display(IDisplay):
     def render_pause_screen(self):
         """Draws the pause screen overlay."""
         overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 128))
-        pause_text = self.__font_large.render("Paused", True, (255, 255, 255))
-        text_rect = pause_text.get_rect(center=(self.__screen.get_width() // 2, self.__screen.get_height() // 2))
-        self.render_frame()
+        overlay.fill((0, 0, 0, 128))  # Black with alpha for transparency
         self.__screen.blit(overlay, (0, 0))
-        self.__draw_player_and_projectile_info()
+
+        # Render the "Paused" text in the center
+        pause_text = self.__font_large.render("Paused", True, (255, 255, 255))
+        text_rect = pause_text.get_rect(center=(self.__screen.get_width() // 2, self.__screen.get_height() // 2 - 100))
         self.__screen.blit(pause_text, text_rect)
+
+        # Draw any additional elements like frame and player/projectile info
+        self.render_frame()
+        self.__draw_player_and_projectile_info()
+
+        # Initialize buttons if not already done (you can move this to __init__ if preferred)
+        if not self.__buttons:
+            self.__buttons = []
+            height = 50
+            width = 200
+            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 + height, width=width, height=height, action=self.__world.save_data, label="Save & Quit"))
+            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 - height, width=width, height=height, action=self.__world.delete_data, label="Delete & Quit"))
+        for button in self.__buttons:
+            button.draw(self.__screen)
+            button.update(pygame.mouse.get_pos())
+            ended = button.handle_event()
+            if ended:
+                self.__is_in_menu = False
+                self.__buttons = None
+
 
     def render_upgrade_screen(self):
         overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
@@ -260,8 +280,8 @@ class Display(IDisplay):
                 weapon = weapons[i]
                 self.__render_item(weapon.name, (x_position, y_position))
             except IndexError:
-                #self.__render_item("weapon",(x_position, y_position))
-                pass
+                self.__render_item("weapon",(x_position, y_position))
+
                 
 
 
@@ -275,8 +295,7 @@ class Display(IDisplay):
                 passive = passives[i]
                 self.__render_item(passive.name, (x_position, y_position))
             else:
-                pass
-                #self.__render_item("passive",(x_position, y_position))
+                self.__render_item("passive",(x_position, y_position))
 
 
     

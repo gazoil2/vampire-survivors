@@ -82,6 +82,7 @@ class Upgrade:
             upgrade_data = levels[level_index]
             key = list(upgrade_data.keys())[0]
             value = list(upgrade_data.values())[0]
+            key = key.replace("_"," ")
             if value > 0:
                 return f"Increases {key} by {value}"
             else: 

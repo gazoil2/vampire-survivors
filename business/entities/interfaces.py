@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 from presentation.sprite import Sprite
-from business.weapons.stats import PlayerStats
+from business.weapons.stats import PlayerStats, MonsterStats
 if TYPE_CHECKING:
     from business.weapons.interfaces import IInventory
 class IDamageable(ABC):
@@ -122,6 +122,16 @@ class IMonster(IUpdatable, ICanMove, IDamageable, ICanDealDamage):
     @abstractmethod
     def drop_loot(self, world):
         """Function to drop loot"""
+    
+    @property
+    @abstractmethod
+    def stats(self) -> MonsterStats:
+        """Returns the stats of the monster"""
+    
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Returns the name of the monster"""
 
 class IBullet(IUpdatable, ICanMove, ICanDealDamage, IDamageable):
     """Interface for bullet entities."""

@@ -1,7 +1,7 @@
 from business.weapons.stats import PlayerStats
 from business.weapons.upgrade import Upgrade
-from business.weapons.interfaces import IUpgradable
-class PassiveItem(IUpgradable):
+from business.weapons.interfaces import IPassiveItem
+class PassiveItem(IPassiveItem):
     def __init__(self, name : str, weapon_level: int = 1) -> None:
         self.__name = name
         self.__level = weapon_level
@@ -34,3 +34,6 @@ class PassiveItem(IUpgradable):
     
     def get_unlock_info(self):
         return self.__upgrade.unlock_info
+
+    def to_dict(self) -> dict:
+        return {"name": self.__name, "level": self.__level}
