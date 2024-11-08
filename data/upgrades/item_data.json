@@ -4,16 +4,16 @@
     "max_level": 5,
     "levels": [
       {
-        "damage": 10
+        "damage": 3
       },
       {
-        "damage": 15
+        "duration": 200
       },
       {
-        "damage": 20
+        "area_of_effect": 0.8
       },
       {
-        "damage": 25
+        "reload_time": -200
       },
       {
         "damage": 30
@@ -26,10 +26,10 @@
     "max_level": 5,
     "levels": [
       {
-        "damage": 10
+        "damage": 3
       },
       {
-        "area_of_effect": 0.2
+        "area_of_effect": 0.8
       },
       {
         "reload_time": -100
@@ -67,13 +67,10 @@
   },
   "Big Bow": {
     "type": "weapon",
-    "max_level": 5,
+    "max_level": 4,
     "levels": [
       {
-        "damage": 50
-      },
-      {
-        "pierce": 5
+        "damage": 25
       },
       {
         "area_of_effect": 0.4
@@ -92,16 +89,16 @@
     "max_level": 5,
     "levels": [
       {
+        "duration": 500
+      },
+      {
+        "reload_time": -200
+      },
+      {
         "damage": 5
       },
       {
-        "area_of_effect": 0.1
-      },
-      {
-        "reload_time": -100
-      },
-      {
-        "projectile_speed": 300
+        "velocity": 3
       },
       {
         "damage": 7
@@ -112,9 +109,9 @@
   "Spinach": {
       "type": "passive",
       "affects": "power",
-      "increase": 10,
-      "max_level": 10,
-      "unlock_info": "Increases damage dealt to enemies by 10%."
+      "increase": 20,
+      "max_level": 20,
+      "unlock_info": "Increases damage dealt to enemies by 20%."
   },
   "Armor": {
       "type": "passive",
@@ -126,9 +123,9 @@
   "Hollow Heart": {
       "type": "passive",
       "affects": "max_health",
-      "increase": 20,
+      "increase": 40,
       "max_level": 5,
-      "unlock_info": "Increases maximum health by 20."
+      "unlock_info": "Increases maximum health by 40."
   },
   "Pummarola": {
       "type": "passive",
@@ -140,30 +137,30 @@
   "Empty Tome": {
       "type": "passive",
       "affects": "reload_time",
-      "increase": -8,
+      "increase": -10,
       "max_level": 5,
-      "unlock_info": "Decreases reload time by 8%."
+      "unlock_info": "Decreases reload time by 10%."
   },
   "Candelabrador": {
       "type": "passive",
       "affects": "area_of_effect",
-      "increase": 10,
+      "increase": 20,
       "max_level": 5,
-      "unlock_info": "Increases area of effect by 10%."
+      "unlock_info": "Increases area of effect by 20%."
   },
   "Bracer": {
       "type": "passive",
       "affects": "velocity",
-      "increase": 10,
+      "increase": 20,
       "max_level": 5,
-      "unlock_info": "Increases velocity by 10%."
+      "unlock_info": "Increases velocity of projectiles by 20%."
   },
   "Spellbinder": {
       "type": "passive",
       "affects": "duration",
-      "increase": 10,
+      "increase": 50,
       "max_level": 5,
-      "unlock_info": "Increases duration by 10%."
+      "unlock_info": "Increases duration by 50%."
   },
   "Wings": {
       "type": "passive",
