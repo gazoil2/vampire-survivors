@@ -1,6 +1,7 @@
 import math
+import settings
 from typing import List
-from random import uniform
+from random import uniform, choice
 from business.entities.interfaces import IBullet, IMonster
 from business.entities.entity import MovableEntity
 from business.world.interfaces import IGameWorld
@@ -175,22 +176,52 @@ class RotatingBullet(Bullet):
     def __str__(self) -> str:
         return f"RotatingBullet at position ({self._pos_x}, {self._pos_y})"
 
-class TrailBullet(Bullet):
-    """Bullet that orbits around the player and disappears after a set duration."""
+class SantaWaterBullet(Bullet):
+    """Spawns a damage area at a random enemy position."""
     TYPE = "Trailbullet"
+
     def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
-        super().__init__(pos_x, pos_y, sprite, projectile_stats,self.TYPE)
+        super().__init__(pos_x, pos_y, sprite, projectile_stats, self.TYPE)
         sprite.scale_image(self._stats.area_of_effect)
-        sprite.update_pos(pos_x, pos_y)
         self.__time_out_handler = CooldownHandler(self._stats.duration)
+        self.__has_chose_enemy = False
+
+    def __is_monster_on_screen(self, monster: IMonster, player, screen_width: int, screen_height: int) -> bool:
+        """Check if the monster is within the screen bounds."""
+        # Get the player's position as the center of the screen
+        player_x, player_y = player.pos_x, player.pos_y
+
+        # Calculate screen boundaries based on the player's position
+        screen_left = player_x - (screen_width // 2)
+        screen_right = player_x + (screen_width // 2)
+        screen_top = player_y - (screen_height // 2)
+        screen_bottom = player_y + (screen_height // 2)
+
+        # Check if the monster's position is within the screen bounds
+        return screen_left <= monster.pos_x <= screen_right and screen_top <= monster.pos_y <= screen_bottom
+
+    def __choose_enemy(self, monsters: List[IMonster], player, screen_width: int, screen_height: int):
+        """Choose a random monster on screen."""
+        on_screen_monsters = [monster for monster in monsters if self.__is_monster_on_screen(monster, player, screen_width, screen_height)]
+        random_monster = choice(on_screen_monsters)
+        self.update_position(random_monster.pos_x, random_monster.pos_y)
+        self.__has_chose_enemy = True
 
     def update(self, world: IGameWorld):
-        # Check if the bullet's duration has expired
+        if not self.__has_chose_enemy:
+            try:
+                if world.monsters:
+                    self.__choose_enemy(world.monsters, world.player, settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
+                else:
+                    world.remove_bullet(self)
+            except ValueError:
+                world.remove_bullet(self)
+        
         if self.__time_out_handler.is_action_ready():
-            world.remove_bullet(self)  # Remove bullet from the world when its lifetime ends
+            world.remove_bullet(self) 
             return
 
         super().update(world)
 
     def __str__(self) -> str:
-        return f"TrailBullet at position ({self._pos_x}, {self._pos_y})"
+        return f"SantaWaterBullet at position ({self._pos_x}, {self._pos_y})"

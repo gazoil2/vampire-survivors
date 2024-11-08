@@ -8,14 +8,8 @@ from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
 from game import Game
-from business.weapons.weapon import Weapon
-from business.weapons.attack_builder import GreenBulletFactory
-from business.weapons.stats import ProjectileStatsMultiplier, PlayerStats, ProjectileStats
-from business.weapons.factories.weapon_factory import WeaponFactory
-from business.weapons.inventory import Inventory
 from presentation.display import Display
 from presentation.input_handler import InputHandler
-from presentation.sprite import PlayerSprite
 from persistance.playerDAO import PlayerDAO
 from persistance.inventoryDAO import InventoryDao
 from persistance.xpDAO import xpDAO

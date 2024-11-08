@@ -18,15 +18,15 @@ from business.weapons.stats import MonsterStats
 
 class MonsterSpawner(IMonsterSpawner):
     """Spawns monsters in the game world."""
-    THRESHOLDS = [10, 20, 30, 50, 70, 100, 150, 200, 300]
+    THRESHOLDS = [2, 3, 9, 20, 40, 40, 100, 200, 300]
     ENEMY_SPAWN_CONFIG = {
         0: [
-            {"name": "green_tiny_slime", "stats": MonsterStats(speed=1.5, health=10, damage=2, attack_cooldown=1000, xp_drop=THRESHOLDS[0]), "cooldown": 300},
-            {"name": "purple_tiny_slime", "stats": MonsterStats(speed=4.0, health=5, damage=1, attack_cooldown=500, xp_drop=THRESHOLDS[1]), "cooldown": 800},
+            {"name": "green_tiny_slime", "stats": MonsterStats(speed=1.5, health=10, damage=2, attack_cooldown=1000, xp_drop=THRESHOLDS[0]), "cooldown": 700},
+            {"name": "purple_tiny_slime", "stats": MonsterStats(speed=4.0, health=5, damage=1, attack_cooldown=500, xp_drop=THRESHOLDS[1]), "cooldown": 1000},
         ],
         1: [
             {"name": "green_slime", "stats": MonsterStats(speed=1.2, health=15, damage=3, attack_cooldown=500, xp_drop=THRESHOLDS[2]), "cooldown": 400},
-            {"name": "red_slime", "stats": MonsterStats(speed=0.8, health=90, damage=4, attack_cooldown=1500, xp_drop=THRESHOLDS[3]), "cooldown": 1000},
+            {"name": "red_slime", "stats": MonsterStats(speed=0.8, health=50, damage=4, attack_cooldown=1500, xp_drop=THRESHOLDS[3]), "cooldown": 1000},
         ],
         2: [
             {"name": "blue_tiny_slime", "stats": MonsterStats(speed=3.5, health=8, damage=1, attack_cooldown=800, xp_drop=THRESHOLDS[2]), "cooldown": 500},

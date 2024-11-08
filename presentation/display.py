@@ -1,7 +1,7 @@
 """Module for displaying the game world."""
 
 import pygame
-
+import sys
 import settings
 import random
 from business.world.game_world import GameWorld
@@ -193,8 +193,8 @@ class Display(IDisplay):
             self.__pause_buttons = []
             height = 50
             width = 200
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 + height, width=width, height=height, action=[self.__world.save_data,exit], label="Save & Quit"))
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height , width=width, height=height, action=[self.__world.delete_data, exit], label="Delete & Quit"))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 + height, width=width, height=height, action=[self.__world.save_data,sys.exit], label="Save & Quit"))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height , width=width, height=height, action=[self.__world.delete_data, sys.exit], label="Delete & Quit"))
         for button in self.__pause_buttons:
             button.draw(self.__screen)
             button.update(pygame.mouse.get_pos())

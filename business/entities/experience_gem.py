@@ -19,11 +19,11 @@ class ExperienceGem(Entity, IExperienceGem):
 
     def __determine_level(self, amount: int) -> int:
         """Determine the level of the gem based on the amount of experience."""
-        thresholds = [10, 20, 30, 50, 70, 100, 150, 200, 300]  # Customize thresholds
-        for level, threshold in enumerate(thresholds, start=1):
+        THRESHOLDS = [2, 3, 9, 20, 40, 40, 100, 200, 300]
+        for level, threshold in enumerate(THRESHOLDS, start=1):
             if amount <= threshold:
                 return level
-        return len(thresholds)
+        return len(THRESHOLDS)
     def __str__(self):
         return f"ExperienceGem(amount={self.amount}, pos=({self.pos_x}, {self.pos_y}))"
 

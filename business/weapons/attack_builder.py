@@ -1,7 +1,7 @@
 import math
 from typing import List
 from business.weapons.interfaces import IAtackShapeFactory
-from business.weapons.attack_shape import NormalBullet,RandomBullet, RotatingBullet, TrailBullet
+from business.weapons.attack_shape import NormalBullet,RandomBullet, RotatingBullet, SantaWaterBullet
 from business.weapons.stats import ProjectileStats
 import settings
 from presentation.sprite import CircleBullet, ImageSprite
@@ -42,5 +42,5 @@ class CircularProjectileAttackFactory(IAtackShapeFactory):
         return RotatingBullet(player_pos_x, player_pos_y, ImageSprite(player_pos_x,player_pos_y,"./assets/bullets/bible.png"), projectile_stats)
 
 class TrailBulletFactory(IAtackShapeFactory):
-    def create_atack_shape(self, player_pos_x: float, player_pos_y: float, projectile_stats: ProjectileStats) -> TrailBullet:
-        return TrailBullet(player_pos_x, player_pos_y, ImageSprite(player_pos_x, player_pos_y, "./assets/bullets/trail.png"), projectile_stats)
+    def create_atack_shape(self, player_pos_x: float, player_pos_y: float, projectile_stats: ProjectileStats) -> SantaWaterBullet:
+        return SantaWaterBullet(player_pos_x, player_pos_y, ImageSprite(player_pos_x, player_pos_y, "./assets/bullets/trail.png"), projectile_stats)

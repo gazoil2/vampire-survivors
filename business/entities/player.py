@@ -1,20 +1,16 @@
 """Player entity module."""
-
-import pygame
 import settings
 from typing import Dict
-from random import choice
 from business.entities.entity import MovableEntity
 from business.entities.experience_gem import ExperienceGem
-from business.entities.interfaces import ICanDealDamage, IDamageable, IPlayer, ISerializable
+from business.entities.interfaces import IDamageable, IPlayer
 from presentation.sprite import PlayerSprite
 from business.world.interfaces import IGameWorld
 from business.weapons.stats import PlayerStats
 from presentation.sprite import Sprite
 from business.handlers.cooldown_handler import CooldownHandler
-from business.weapons.interfaces import IUpgradable
-from business.exceptions import LevelUpException 
 from business.weapons.inventory import Inventory
+from business.entities.xphandler import XpHandler
 
 
 class Player(MovableEntity, IPlayer):
@@ -24,11 +20,10 @@ class Player(MovableEntity, IPlayer):
     """
 
 
-    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, inventory : Inventory, experience : int, experience_to_next_level : int, health : int):
+    def __init__(self, pos_x: int, pos_y: int, sprite: Sprite, inventory : Inventory, experience : int, level : int, health : int):
         super().__init__(pos_x, pos_y, 5, sprite)
-        self.__health: int = 100
-        self.__experience = experience
-        self.__experience_to_next_level = experience_to_next_level
+        self.__health: int = health
+        self.__experience_handler = XpHandler(level=level,current_xp=experience)
         self.__inventory = inventory
         self.__stats = PlayerStats.get_base_player_stats()
         self.__attacked_enemies : Dict[IDamageable,CooldownHandler] = {}
@@ -36,20 +31,23 @@ class Player(MovableEntity, IPlayer):
         self.__calculate_stats()
 
     def __str__(self):
-        return f"Player(hp={self.__health}, xp={self.__experience}, lvl={self.__level}, pos=({self._pos_x}, {self._pos_y}))"
+        return f"Player(hp={self.__health}, xp={self.experience}, lvl={self.level}, pos=({self._pos_x}, {self._pos_y}))"
 
     @property
     def experience(self):
-        return self.__experience
+        return self.__experience_handler.current_xp
 
     @property
     def experience_to_next_level(self):
-        return self.__experience_to_next_level
+        return self.__experience_handler.xp_to_next_level
 
     @property
     def damage_amount(self):
         return self.stats.armor
 
+    @property
+    def level(self):
+        return self.__experience_handler.level
     @property
     def health(self) -> int:
         return self.__health
@@ -87,18 +85,9 @@ class Player(MovableEntity, IPlayer):
         new_stats = PlayerStats.get_base_player_stats() + self.inventory.get_combined_stats()
         self._speed = new_stats.movement_speed
         self.__stats = new_stats
-    
-    def __gain_level(self):
-        self.__experience_to_next_level = self.__experience_to_next_level * 2
-        raise LevelUpException
-    
         
     def __gain_experience(self, amount: int):
-        self.__experience += amount
-        while self.__experience >= self.__experience_to_next_level:
-            amount_left = self.__experience - self.__experience_to_next_level
-            self.__experience = amount_left
-            self.__gain_level()
+        self.__experience_handler.add_xp(amount)
 
     def update(self, world: IGameWorld):
         super().update(world)
@@ -108,17 +97,17 @@ class Player(MovableEntity, IPlayer):
     def serialize(self):
         return {
             "health": self.__health,
-            "experience": self.__experience,
-            "experience_to_next_level": self.__experience_to_next_level,
+            "experience": self.experience,
             "pos_x": self._pos_x,
-            "pos_y": self._pos_y
+            "pos_y": self._pos_y,
+            "level": self.level
         }
 
     def deserialize( data : dict):
         health = data.get("health", 100)
         experience = data.get("experience", 1)
-        experience_to_next_level = data.get("experience_to_next_level", 30)
         pos_x = data.get("pos_x", settings.SCREEN_WIDTH // 2)
         pos_y = data.get("pos_y", settings.SCREEN_HEIGHT // 2)
         inventory = data.get("inventory",Inventory([],[]))
-        return Player(pos_x,pos_y,PlayerSprite(pos_x,pos_y),inventory,experience,experience_to_next_level, health)
+        level = data.get("level",1)
+        return Player(pos_x,pos_y,PlayerSprite(pos_x,pos_y),inventory,experience,level, health)
