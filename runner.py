@@ -43,7 +43,7 @@ def main():
     """Main function to run the game"""
     # Initialize pygame
     pygame.init()
-    icon = pygame.image.load("icon.ico")
+    icon = pygame.image.load("icon.png")
     pygame.display.set_icon(icon)
     logging.basicConfig(
         level=logging.INFO,  # Change between INFO, WARNING or DEBUG as needed
