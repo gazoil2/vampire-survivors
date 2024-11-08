@@ -12,8 +12,6 @@ from business.entities.experience_gem import ExperienceGem
 
 class Monster(MovableEntity, IMonster):
     """A monster entity in the game."""
-    MONSTER_ATTACK_COOLDOWN = 1000
-    MONSTER_SPEED = 2
     def __init__(self, src_x: int, src_y: int, sprite: Sprite, monster_stats : MonsterStats, name :str):
         """
         Initializes a Monster entity.
@@ -31,7 +29,7 @@ class Monster(MovableEntity, IMonster):
                 and their respective cooldowns (CooldownHandler) to prevent repeated attacks 
                 within a short duration.
         """
-        super().__init__(src_x, src_y, self.MONSTER_SPEED, sprite)
+        super().__init__(src_x, src_y, monster_stats.speed, sprite)
         self.__sprite = sprite
         self.__monster_stats = monster_stats
         self.__health: int = monster_stats.health
