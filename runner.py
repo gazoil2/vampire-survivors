@@ -43,8 +43,8 @@ def main():
     """Main function to run the game"""
     # Initialize pygame
     pygame.init()
-
-    # Logging configuration
+    icon = pygame.image.load("icon.ico")
+    pygame.display.set_icon(icon)
     logging.basicConfig(
         level=logging.INFO,  # Change between INFO, WARNING or DEBUG as needed
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
