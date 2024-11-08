@@ -97,3 +97,13 @@ class GameWorld(IGameWorld):
         self.__enemy_dao.delete_all_data()
         self.__xp_dao.delete_all_data()
         self.__bullet_dao.delete_all_data()
+    
+    def restart_game_world(self):
+        self.__clock.reset()
+        self.__monster_spawner.reset()
+        self.delete_data()
+        self.__player = self.__player_dao.load_player(self.__inventory_dao.load_inventory()) 
+        self.__monsters = self.__enemy_dao.load_monsters()  
+        self.__bullets = self.__bullet_dao.load_bullets() 
+        self.__experience_gems = self.__xp_dao.load_xp()
+        

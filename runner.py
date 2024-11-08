@@ -7,7 +7,7 @@ import pygame
 from business.world.game_world import GameWorld
 from business.world.monster_spawner import MonsterSpawner
 from business.world.tile_map import TileMap
-from game import Game
+from game.game import Game
 from presentation.display import Display
 from presentation.input_handler import InputHandler
 from persistance.playerDAO import PlayerDAO
@@ -59,7 +59,6 @@ def main():
     # Create a game instance and start it
     game = Game(display, world, input_handler)
     game.run()
-
     pygame.quit()
 
 

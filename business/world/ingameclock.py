@@ -33,6 +33,9 @@ class InGameClock:
         """
         self.__time_elapsed += delta_time
 
+    def reset(self):
+        """Sets the timer to zero"""
+        self.__time_elapsed = 0
     @property
     def time_elapsed(self):
         """Get the total elapsed time in the game.

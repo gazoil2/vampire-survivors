@@ -104,9 +104,14 @@ class IGameWorld(ABC):
     @abstractmethod
     def save_data(self):
         """Saves the state of the gameworld"""
+
     @abstractmethod
     def delete_data(self):
         """Deletes the data of the gameworld"""
+    
+    @abstractmethod
+    def restart_game_world(self):
+        """Restart the gameworld"""
 
 
 class IUpdatable(ABC):
@@ -134,6 +139,10 @@ class IMonsterSpawner(IUpdatable):
         Args:
             world (IGameWorld): The game world in which to spawn the monster.
         """
+    
+    @abstractmethod
+    def reset(self):
+        """Reset the clock of the spawn monster"""
 
 
 class ITileMap(ABC):

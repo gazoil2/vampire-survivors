@@ -105,9 +105,9 @@ class Player(MovableEntity, IPlayer):
 
     def deserialize( data : dict):
         health = data.get("health", 100)
-        experience = data.get("experience", 1)
-        pos_x = data.get("pos_x", settings.SCREEN_WIDTH // 2)
-        pos_y = data.get("pos_y", settings.SCREEN_HEIGHT // 2)
+        experience = data.get("experience", 0)
+        pos_x = data.get("pos_x", settings.WORLD_WIDTH // 2)
+        pos_y = data.get("pos_y", settings.WORLD_HEIGHT // 2)
         inventory = data.get("inventory",Inventory([],[]))
         level = data.get("level",1)
         return Player(pos_x,pos_y,PlayerSprite(pos_x,pos_y),inventory,experience,level, health)

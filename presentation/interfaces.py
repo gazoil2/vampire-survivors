@@ -28,6 +28,14 @@ class IDisplay(ABC):
     @abstractmethod
     def render_upgrade_screen(self):
        """Render the upgrade menu"""
+    
+    @abstractmethod
+    def render_game_over_screen(self):
+        """Render the game over screen"""
+    
+    @abstractmethod
+    def render_home_screen(self):
+        """Render the home screen"""
 
     @abstractmethod
     def update_display(self):
@@ -45,7 +53,8 @@ class IInputHandler(ABC):
     @abstractmethod
     def process_input(self):
         """Process the input from the user."""
-
+    
     @abstractmethod
-    def is_paused(self):
-        """Determines whether the game should be paused or not."""
+    def toggle_pause(self):
+        """Toggles the pause menu"""
+

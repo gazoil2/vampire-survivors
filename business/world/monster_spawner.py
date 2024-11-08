@@ -89,7 +89,10 @@ class MonsterSpawner(IMonsterSpawner):
 
                 enemy_spawn_cooldown.put_on_cooldown()
                 self.spawn_monster(world,name,stats)
-        
+    
+    def reset(self):
+        self.__last_minute = -1
+        self.__enemies_current_minute = []
 
     def spawn_monster(self, world: IGameWorld, name : str, stats : MonsterStats):
         random_side_to_spawn=random.randint(1,2)

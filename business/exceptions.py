@@ -9,5 +9,8 @@ class LevelUpException(Exception):
     def __init__(self):
         super().__init__(f"Item  not found in inventory.")
 
-class ExitPauseMenu(Exception):
+class PausePressed(Exception):
     """Exception raised to terminate the pause menu"""
+
+class GameStart(Exception):
+    """Exception to start the game"""

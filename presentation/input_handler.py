@@ -4,6 +4,7 @@ import pygame
 
 from business.world.game_world import GameWorld
 from presentation.interfaces import IInputHandler
+from business.exceptions import PausePressed
 
 
 class InputHandler(IInputHandler):
@@ -11,8 +12,7 @@ class InputHandler(IInputHandler):
 
     def __init__(self, world: GameWorld):
         self.__world = world
-        self.paused = False  
-        self.__pause_key_was_down = False  
+        self.__pause = False
 
     def __get_direction(self, keys):
         x = 0
@@ -31,35 +31,27 @@ class InputHandler(IInputHandler):
             x += 1
 
         return x, y
-
-    def __toggle_pause(self):
-        """Toggles the pause state."""
-        self.paused = not self.paused
     
-    def is_paused(self):
-        return self.paused
-
+    def toggle_pause(self):
+        self.__pause = True
+    
+    def process_pause(self):
+        if self.__pause:
+            self.__pause = False
+            raise PausePressed
     def process_input(self):
         """Processes input for movement and pause functionality."""
         keys = pygame.key.get_pressed()
-
-        # Handle pausing
-        if keys[pygame.K_p]:
-            if not self.__pause_key_was_down:  # Only toggle when key is first pressed
-                self.__toggle_pause()
-            self.__pause_key_was_down = True
+        if self.__pause:
+            self.__pause = False
+            raise PausePressed
+        direction = self.__get_direction(keys)
+        if direction == (0,0):
+            self.__world.player.sprite.idle_sprite_update()
         else:
-            self.__pause_key_was_down = False  # Reset when the key is released
-
-        # Only process movement if the game is not paused
-        if not self.paused:
-            direction = self.__get_direction(keys)
-            if direction == (0,0):
-                self.__world.player.sprite.idle_sprite_update()
-            else:
-                self.__world.player.sprite.walking_sprite_update()
-            if direction[0] == 1:
-                self.__world.player.sprite.set_facing_left()
-            elif direction[0] == -1:
-                self.__world.player.sprite.set_facing_right()
-            self.__world.player.move(direction[0], direction[1])
+            self.__world.player.sprite.walking_sprite_update()
+        if direction[0] == 1:
+            self.__world.player.sprite.set_facing_left()
+        elif direction[0] == -1:
+            self.__world.player.sprite.set_facing_right()
+        self.__world.player.move(direction[0], direction[1])

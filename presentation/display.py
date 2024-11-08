@@ -11,7 +11,7 @@ from presentation.interfaces import IDisplay
 from presentation.tileset import Tileset
 from presentation.button import UpgradeButton, FramedImage, MenuButton
 from business.weapons.interfaces import IInventory
-from business.exceptions import ExitPauseMenu
+from business.exceptions import PausePressed, GameStart
 
 class Display(IDisplay):
     """Class for displaying the game world."""
@@ -28,6 +28,7 @@ class Display(IDisplay):
         self.__is_in_menu = False
         self.__buttons = None
         self.__pause_buttons = None
+        self.__frames_rendered = 0
 
     @property
     def is_in_menu(self):
@@ -148,7 +149,6 @@ class Display(IDisplay):
         self.__screen.blit(cronometer_surface, (time_position_x, 10))
 
 
-
     def __draw_player(self):
         adjusted_rect = self.camera.apply(self.__world.player.sprite.rect)
         self.__screen.blit(self.__world.player.sprite.image, adjusted_rect)
@@ -174,6 +174,7 @@ class Display(IDisplay):
     def render_pause_screen(self):
         """Draws the pause screen overlay."""
         self.__is_in_menu = True
+        self.__frames_rendered +=1
         overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))  # Black with alpha for transparency
        
@@ -188,21 +189,30 @@ class Display(IDisplay):
         self.__screen.blit(overlay, (0, 0))
         self.__draw_player_and_projectile_info()
 
-        # Initialize buttons if not already done (you can move this to __init__ if preferred)
-        if not self.__pause_buttons:
-            self.__pause_buttons = []
+        ## Initialize buttons if not already done (you can move this to __init__ if preferred)
+        if not self.__buttons:
+            self.__buttons = []
             height = 50
             width = 200
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 + height, width=width, height=height, action=[self.__world.save_data,sys.exit], label="Save & Quit"))
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height , width=width, height=height, action=[self.__world.delete_data, sys.exit], label="Delete & Quit"))
-        for button in self.__pause_buttons:
+            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height  * 2 , width=width, height=height, action=[self.__trigger_pause], label="Unpause"))
+            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 , width=width, height=height, action=[self.__world.save_data,lambda:sys.exit("Exiting Game and saving data")], label="Save & Quit"))
+            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 + height , width=width, height=height, action=[self.__world.delete_data,lambda: sys.exit("Exiting Game and deleting data")], label="Delete & Quit"))
+            
+            
+        for button in self.__buttons:
             button.draw(self.__screen)
             button.update(pygame.mouse.get_pos())
-            ended = button.handle_event()
-            if ended:
-                self.__is_in_menu = False
-                self.__pause_buttons = None
+            if self.__frames_rendered >= 30:
+                ended = button.handle_event()
+                if  ended:
+                    self.__is_in_menu = False
+                    self.__buttons = None
 
+    def __trigger_pause(self):
+        self.__buttons = None
+        self.__is_in_menu = False
+        self.__frames_rendered = 0
+        raise PausePressed
     def render_upgrade_screen(self):
         overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))
@@ -245,6 +255,66 @@ class Display(IDisplay):
             if ended:
                 self.__is_in_menu = False
                 self.__buttons = None
+    
+    def render_home_screen(self):
+        self.__is_in_menu = True
+        background_image = pygame.image.load('./assets/mainscreen/main.png')
+        background_image = pygame.transform.scale(background_image, (self.__screen.get_width(), self.__screen.get_height()))
+        self.__screen.blit(background_image, (0, 0))
+
+
+        if not self.__buttons:
+            button_height = 50
+            button_width = 200
+            self.__buttons = [
+                MenuButton(x=self.__screen.get_width() // 2 - button_width // 2, y=settings.SCREEN_HEIGHT // 2 - button_height // 2, width=button_width, height=button_height, action=[self.__game_start], label="Start Game"),
+            ]
+
+        # Draw and handle buttons
+        for button in self.__buttons:
+            button.draw(self.__screen)
+            button.update(pygame.mouse.get_pos())
+            if button.handle_event():
+                self.__is_in_menu = False
+                self.__buttons = None
+
+    def __game_start(self):
+        self.__is_in_menu = False
+        self.__buttons = None
+        raise GameStart
+
+    def render_game_over_screen(self):
+        self.__is_in_menu = True
+        overlay = pygame.Surface(self.__screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))  
+        self.render_frame()
+        self.__screen.blit(overlay, (0, 0))
+
+        end_text = self.__font_large.render("Game Over", True, (255, 0, 0))
+
+        text_rect = end_text.get_rect(center=(self.__screen.get_width() // 2, self.__screen.get_height() // 3))
+        self.__screen.blit(end_text, text_rect)
+
+        if not self.__buttons:
+            button_height = 50
+            button_width = 200
+            start_y = text_rect.bottom + 50  
+
+            self.__buttons = [
+                MenuButton(x=self.__screen.get_width() // 2 - button_width // 2, y=start_y, width=button_width, height=button_height, action=[self.__world.restart_game_world], label="Restart Game"),
+                MenuButton(x=self.__screen.get_width() // 2 - button_width // 2, y=start_y + 60, width=button_width, height=button_height, action=[sys.exit], label="Quit")
+            ]
+
+        # Draw and handle buttons
+        for button in self.__buttons:
+            button.draw(self.__screen)
+            button.update(pygame.mouse.get_pos())
+            if button.handle_event():
+                self.__is_in_menu = False
+                self.__buttons = None
+
+        # Render the overlay and the buttons
+        
 
     def __render_inventory_items(self):
         # Get weapons and passives from the inventory

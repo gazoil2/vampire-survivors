@@ -27,6 +27,7 @@ class Weapon(IWeapon):
         if self.__cooldown_handler.is_action_ready():
             self.__shoot(world)
             self.__cooldown_handler.put_on_cooldown()
+        
         super().update(world)
 
     @property
