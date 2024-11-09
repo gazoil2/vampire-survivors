@@ -185,6 +185,8 @@ class SantaWaterBullet(Bullet):
     def __choose_enemy(self, monsters: List[IMonster], player, screen_width: int, screen_height: int):
         """Choose a random monster on screen."""
         on_screen_monsters = [monster for monster in monsters if self.__is_monster_on_screen(monster, player, screen_width, screen_height)]
+        if not on_screen_monsters:
+            raise ValueError
         random_monster = choice(on_screen_monsters)
         self.update_position(random_monster.pos_x, random_monster.pos_y)
         self.__has_chose_enemy = True
