@@ -224,6 +224,9 @@ class Display(IDisplay):
         if self.__buttons is None:
             inventory = self.__world.player.inventory
             possible_actions = inventory.get_possible_actions()
+            if not possible_actions:
+                self.__is_in_menu = False
+                return
 
             # Ensure there are at least 3 actions to choose from
             if len(possible_actions) < 3:
