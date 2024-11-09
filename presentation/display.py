@@ -190,26 +190,26 @@ class Display(IDisplay):
         self.__draw_player_and_projectile_info()
 
         ## Initialize buttons if not already done (you can move this to __init__ if preferred)
-        if not self.__buttons:
-            self.__buttons = []
+        if not self.__pause_buttons:
+            self.__pause_buttons = []
             height = 50
             width = 200
-            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height  * 2 , width=width, height=height, action=[self.__trigger_pause], label="Unpause"))
-            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 , width=width, height=height, action=[self.__world.save_data,lambda:sys.exit("Exiting Game and saving data")], label="Save & Quit"))
-            self.__buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 + height , width=width, height=height, action=[self.__world.delete_data,lambda: sys.exit("Exiting Game and deleting data")], label="Delete & Quit"))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height  * 2 , width=width, height=height, action=[self.__trigger_pause], label="Unpause"))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 , width=width, height=height, action=[self.__world.save_data,lambda:sys.exit("Exiting Game and saving data")], label="Save & Quit"))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 + height , width=width, height=height, action=[self.__world.delete_data,lambda: sys.exit("Exiting Game and deleting data")], label="Delete & Quit"))
             
             
-        for button in self.__buttons:
+        for button in self.__pause_buttons:
             button.draw(self.__screen)
             button.update(pygame.mouse.get_pos())
             if self.__frames_rendered >= 30:
                 ended = button.handle_event()
                 if  ended:
                     self.__is_in_menu = False
-                    self.__buttons = None
+                    self.__pause_buttons = None
 
     def __trigger_pause(self):
-        self.__buttons = None
+        self.__pause_buttons = None
         self.__is_in_menu = False
         self.__frames_rendered = 0
         raise PausePressed

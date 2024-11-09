@@ -129,7 +129,7 @@ class RotatingBullet(Bullet):
     """Bullet that orbits around the player and disappears after a set duration."""
     TYPE = "Rotatingbullet"
     BASE_ATTACK_RESET = 500
-    BASE_ORBIT_RANGE = 60
+    BASE_ORBIT_RANGE = 100
 
     def __init__(self, pos_x: float, pos_y: float, sprite: Sprite, projectile_stats: ProjectileStats):
         super().__init__(pos_x, pos_y, sprite, projectile_stats, self.TYPE)
@@ -140,38 +140,20 @@ class RotatingBullet(Bullet):
         self.__time_out_handler = CooldownHandler(projectile_stats.duration)
 
     def update(self, world: IGameWorld):
-        # Check if the bullet's duration has expired
         if self.__time_out_handler.is_action_ready():
-            world.remove_bullet(self)  # Remove bullet from the world when its lifetime ends
+            world.remove_bullet(self)  
             return
         if self.__reset_attack_timer.is_action_ready():
             self.__reset_attack_timer.put_on_cooldown()
-            self.__attacked_enemies = []
-        # Update the angle for circular motion
-        self.__angle += 0.05  
-
-        # Get player's position
+            self._attacked_enemies = []
+        self.__angle += 0.07 * self._stats.velocity 
         player_pos_x = world.player.pos_x
         player_pos_y = world.player.pos_y
-
-        # Calculate the position based on orbiting around the player
         direction_x = math.cos(self.__angle) * self.BASE_ORBIT_RANGE
         direction_y = math.sin(self.__angle) * self.BASE_ORBIT_RANGE
-        
-        # Calculate the target position relative to the player's position
         target_pos_x = player_pos_x + direction_x
         target_pos_y = player_pos_y + direction_y
-
-        # Use the update_position function to set the bullet's position
         self.update_position(target_pos_x, target_pos_y)
-
-    def attack(self, damageable: IDamageable):
-        """Damage a target if it hasn't already been damaged."""
-        damageable.take_damage(self._stats.damage)
-
-    def take_damage(self, _: int):
-        """Rotating bullets ignore damage since they disappear after a duration."""
-        pass
 
     def __str__(self) -> str:
         return f"RotatingBullet at position ({self._pos_x}, {self._pos_y})"

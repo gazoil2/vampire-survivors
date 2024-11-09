@@ -18,7 +18,7 @@ class WeaponFactory:
     
     @staticmethod
     def get_bible() -> IWeapon:
-        return Weapon(ProjectileStats(damage=4,velocity=20,area_of_effect=1,reload_time=400,pierce=100,duration=500),CircularProjectileAttackFactory(), "Bible" )
+        return Weapon(ProjectileStats(damage=9,velocity=1,area_of_effect=2,reload_time=900,pierce=100,duration=900),CircularProjectileAttackFactory(), "Bible" )
     
     @staticmethod
     def get_spectral_wand() -> IWeapon:
