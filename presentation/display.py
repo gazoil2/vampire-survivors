@@ -22,9 +22,12 @@ class Display(IDisplay):
         self.camera = Camera()
         self.__ground_tileset = self.__load_ground_tileset()
         self.__world: GameWorld = None
-        self.__font_large = pygame.font.SysFont(None, 48)
-        self.__font_small = pygame.font.SysFont(None, 24)
-        self.__inventory = None
+        self.__font_large = pygame.font.Font(None, 48)
+        self.__font_small = pygame.font.Font(None, 24)
+        self.__victorian_font_large = pygame.font.Font("./assets/typography/victorian.otf", 48)
+        self.__victorian_font = pygame.font.Font("./assets/typography/victorian.otf", 36)
+        self.__button_victorian_font = pygame.font.Font("./assets/typography/victorian.otf", 30)
+        self.__victorian_font_small = pygame.font.Font("./assets/typography/victorian.otf", 24)
         self.__is_in_menu = False
         self.__buttons = None
         self.__pause_buttons = None
@@ -83,58 +86,87 @@ class Display(IDisplay):
     def __draw_player_and_projectile_info(self):
         font_size = 24
         font_color = (255, 255, 255)  
-        margin = 10  
+        margin = 10  # Space between lines of text
+        box_margin = 20  # Space between the two boxes
+        background_color = (100, 100, 100)  # Semi-transparent black for background
+
         player_stats = self.__world.player.stats  
         projectile_stats = player_stats.projectile_stats  
-        power_text = f"Power: {projectile_stats.power}%" 
-        health_text = f"Max Health: {player_stats.max_health}"  
-        recovery_text = f"Recovery: {player_stats.recovery}"  
-        armor_text = f"Armor: {player_stats.armor}" 
-        movement_speed_text = f"Movement Speed: {player_stats.movement_speed}" 
-        lifes_text = f"Lifes: {player_stats.lifes}"  #
-
-        projectile_power_text = f"Projectile Power: {projectile_stats.power}%" 
-        projectile_velocity_text = f"Velocity: {projectile_stats.velocity}%"  
-        projectile_duration_text = f"Duration: {projectile_stats.duration}%"  
-        projectile_area_of_effect_text = f"Area of Effect: {projectile_stats.area_of_effect}%"  
-        projectile_reload_time_text = f"Reload Time: {projectile_stats.reload_time}%"  
-
-        power_surface = self.__font_small.render(power_text, True, font_color)
-        health_surface = self.__font_small.render(health_text, True, font_color)
-        recovery_surface = self.__font_small.render(recovery_text, True, font_color)
-        armor_surface = self.__font_small.render(armor_text, True, font_color)
-        movement_speed_surface = self.__font_small.render(movement_speed_text, True, font_color)
-        lifes_surface = self.__font_small.render(lifes_text, True, font_color)
-
-        projectile_power_surface = self.__font_small.render(projectile_power_text, True, font_color)
-        projectile_velocity_surface = self.__font_small.render(projectile_velocity_text, True, font_color)
-        projectile_duration_surface = self.__font_small.render(projectile_duration_text, True, font_color)
-        projectile_area_of_effect_surface = self.__font_small.render(projectile_area_of_effect_text, True, font_color)
-        projectile_reload_time_surface = self.__font_small.render(projectile_reload_time_text, True, font_color)
-
-        placement = {
-            "player": [
-                power_surface,
-                health_surface,
-                recovery_surface,
-                armor_surface,
-                movement_speed_surface,
-                lifes_surface,
-            ],
-            "projectile": [
-                projectile_power_surface,
-                projectile_velocity_surface,
-                projectile_duration_surface,
-                projectile_area_of_effect_surface,
-                projectile_reload_time_surface,
-            ]
+        
+        # Define stat labels and values separately
+        stats = {
+            "player": {
+                "max health": player_stats.max_health,
+                "recovery": player_stats.recovery,
+                "armor": player_stats.armor,
+                "movement speed": player_stats.movement_speed,
+            },
+            "projectile": {
+                "projectile power": f"{projectile_stats.power}%",
+                "velocity": f"{projectile_stats.velocity}%",
+                "duration": f"{projectile_stats.duration}%",
+                "area of effect": f"{projectile_stats.area_of_effect}%",
+                "reload time": f"{projectile_stats.reload_time}%"
+            }
         }
 
-        for index, surface in enumerate(placement["player"]):
-            self.__screen.blit(surface, (10, font_size * index + margin * index))  # Calculate vertical position
+        # Create surfaces for player and projectile stats (label and value)
+        player_surfaces = []
+        for label, value in stats["player"].items():
+            label_surface = self.__victorian_font_small.render(f"{label}:", True, font_color)  # Stat name
+            if value == 0:
+                value = "_"
+            value_surface = self.__victorian_font_small.render(str(value), True, font_color)    # Stat value
+            player_surfaces.append((label_surface, value_surface))
 
-        for index, surface in enumerate(placement["projectile"]):
-            self.__screen.blit(surface, (10, font_size * (len(placement["player"]) + index) + margin * (len(placement["player"]) + index)))  # Calculate vertical position
+        projectile_surfaces = []
+        for label, value in stats["projectile"].items():
+            label_surface = self.__victorian_font_small.render(f"{label}:", True, font_color)  # Stat name
+            value_surface = self.__victorian_font_small.render(str(value), True, font_color)    # Stat value
+            projectile_surfaces.append((label_surface, value_surface))
+
+        # Define the positions and sizes of the boxes
+        box_width = 300  # Total width for the box
+        player_box_height = (font_size ) * len(player_surfaces) + margin  # Add a margin at the bottom
+        projectile_box_height = (font_size ) * len(projectile_surfaces) + margin
+        
+        # Starting position (left side alignment for labels, right for values)
+        x_pos = 10
+        y_pos = 20  # Start drawing from the top
+        
+        # Draw player stats background box
+        pygame.draw.rect(self.__screen, background_color, (x_pos - 5, y_pos - 5, box_width, player_box_height), border_radius=5)
+
+        # Draw player stats (label left, value right)
+        for index, (label_surface, value_surface) in enumerate(player_surfaces):
+            label_width = label_surface.get_width()  # Get label width
+            value_width = value_surface.get_width()  # Get value width
+
+            # Align the label to the left of the box
+            self.__screen.blit(label_surface, (x_pos + margin, y_pos + index * (font_size )))
+
+            # Align the value to the right of the box
+            self.__screen.blit(value_surface, (x_pos + box_width - value_width - margin, y_pos + index * (font_size )))
+
+        # Update y_pos to draw the projectile box below the player box
+        y_pos += player_box_height + box_margin  # Move below the player box with a margin
+
+        # Draw projectile stats background box
+        pygame.draw.rect(self.__screen, background_color, (x_pos - 5, y_pos - 5, box_width, projectile_box_height), border_radius=5)
+
+        # Draw projectile stats (label left, value right)
+        for index, (label_surface, value_surface) in enumerate(projectile_surfaces):
+            label_width = label_surface.get_width()  # Get label width
+            value_width = value_surface.get_width()  # Get value width
+
+            # Align the label to the left of the box
+            self.__screen.blit(label_surface, (x_pos + margin, y_pos + index * (font_size )))
+
+            # Align the value to the right of the box
+            self.__screen.blit(value_surface, (x_pos + box_width - value_width - margin, y_pos + index * (font_size )))
+
+
+
 
 
     def __draw_time(self):
@@ -143,7 +175,7 @@ class Display(IDisplay):
         minutes = int(time_elapsed // 60)
         seconds = int(time_elapsed % 60)
         cronometer_text = f"{minutes:02}:{seconds:02}"
-        cronometer_surface = self.__font_large.render(cronometer_text, True, (255, 255, 255))
+        cronometer_surface = self.__victorian_font_large.render(cronometer_text, True, (255, 255, 255))
         screen_width = settings.SCREEN_WIDTH
         time_position_x = (screen_width - cronometer_surface.get_width()) // 2
         self.__screen.blit(cronometer_surface, (time_position_x, 10))
@@ -194,9 +226,9 @@ class Display(IDisplay):
             self.__pause_buttons = []
             height = 50
             width = 200
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height  * 2 , width=width, height=height, action=[self.__trigger_pause], label="Unpause"))
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 , width=width, height=height, action=[self.__world.save_data,lambda:sys.exit("Exiting Game and saving data")], label="Save & Quit"))
-            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 + height , width=width, height=height, action=[self.__world.delete_data,lambda: sys.exit("Exiting Game and deleting data")], label="Delete & Quit"))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height  * 2 , width=width, height=height, action=[self.__trigger_pause], label="Unpause", font=self.__button_victorian_font))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 - height // 2 , width=width, height=height, action=[self.__world.save_data,lambda:sys.exit("Exiting Game and saving data")], label="Save & Quit",font=self.__button_victorian_font))
+            self.__pause_buttons.append(MenuButton(x=settings.SCREEN_WIDTH // 2 - width // 2, y=settings.SCREEN_HEIGHT // 2 + height , width=width, height=height, action=[self.__world.delete_data,lambda: sys.exit("Exiting Game and deleting data")], label="Delete & Quit",font=self.__button_victorian_font))
             
             
         for button in self.__pause_buttons:
@@ -270,7 +302,7 @@ class Display(IDisplay):
             button_height = 50
             button_width = 200
             self.__buttons = [
-                MenuButton(x=self.__screen.get_width() // 2 - button_width // 2, y=settings.SCREEN_HEIGHT // 2 - button_height // 2, width=button_width, height=button_height, action=[self.__game_start], label="Start Game"),
+                MenuButton(x=self.__screen.get_width() // 2 - button_width // 2, y=settings.SCREEN_HEIGHT // 2 - button_height // 2, width=button_width, height=button_height, action=[self.__game_start], label="Start Game", font=self.__victorian_font),
             ]
 
         # Draw and handle buttons
@@ -360,7 +392,7 @@ class Display(IDisplay):
     
     def __render_item(self, item_name, position: tuple):
         image_path = f"./assets/items/{item_name}.png"
-        framed_image = FramedImage(image_path)
+        framed_image = FramedImage(image_path, (64,64))
         framed_image.draw(self.__screen, position)
 
         

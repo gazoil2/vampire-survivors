@@ -17,7 +17,7 @@ class FramedImage:
 
 
 class MenuButton:
-    def __init__(self, x: int, y: int, width: int, height: int, action: List[Callable], label: str = "", font_size: int = 36):
+    def __init__(self, x: int, y: int, width: int, height: int, action: List[Callable], label: str = "", font: pygame.font.Font = None):
         """Initializes the MenuButton.
         
         Args:
@@ -27,12 +27,15 @@ class MenuButton:
             height (int): The height of the button.
             action (callable): The function to call when the button is clicked.
             label (str): The text label to display on the button.
-            font_size (int): The font size for the label.
+            font (Font): The font that the button uses.
         """
         self.rect = pygame.Rect(x, y, width, height)
         self.actions = action 
         self.label = label
-        self.font = pygame.font.Font(None, font_size)  
+        if not font:
+            self.font = pygame.font.SysFont(None, 36)
+        else:
+            self.font = font
         self.hovered = False  
 
     def draw(self, surface: pygame.Surface):
